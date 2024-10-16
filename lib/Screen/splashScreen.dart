@@ -8,16 +8,23 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 248, 255, 251),
+        backgroundColor: const Color.fromARGB(255, 248, 255, 251),
         body: Center(
           child:
               BlocBuilder<SplashBloc, SplashState>(builder: (builder, state) {
             return AnimatedContainer(
+              transform: Matrix4.rotationZ(state.rotate),
               duration: const Duration(milliseconds: 1800),
               width: state.imageSize,
               height: state.imageSize,
               curve: Curves.easeInOut,
-              child: Image.asset('assets/nurta_nest_icon.png'),
+              alignment: Alignment.center,
+              child: Opacity(
+                opacity: state.opacity,
+                child: Image.asset(
+                  'assets/NutraNest.png',
+                ),
+              ),
             );
           }),
         ));

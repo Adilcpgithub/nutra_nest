@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
-import 'package:nutra_nest/Screen/splash.dart';
+import 'package:nutra_nest/Screen/splashScreen.dart';
 
 void main() {
   runApp(const MyWidget());
