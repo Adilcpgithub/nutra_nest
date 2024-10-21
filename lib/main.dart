@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
-import 'package:nutra_nest/Screen/splashScreen.dart';
+import 'package:nutra_nest/Screen/splash_screen.dart';
 
 void main() {
   runApp(const MyWidget());
@@ -17,9 +17,12 @@ class MyWidget extends StatelessWidget {
           BlocProvider(
               create: (context) => SplashBloc()..add(StartAnimationEvent()))
         ],
-        child: const MaterialApp(
+        child: MaterialApp(
+          theme: ThemeData(
+            scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
+          ),
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
+          home: const SplashScreen(),
         ));
   }
 }
