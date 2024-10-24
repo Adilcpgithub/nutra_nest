@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
+import 'package:nutra_nest/Screen/login_screen.dart';
 import 'package:nutra_nest/Screen/splash_screen.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyWidget extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           home: const SplashScreen(),
+          //const LoginScreen(),
         ));
   }
 }

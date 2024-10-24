@@ -29,7 +29,7 @@ class SplashScreen extends StatelessWidget {
             child: Opacity(
               opacity: state.opacity,
               child: Image.asset(
-                'assets/NutraNest.png',
+                'assets/NutraNestPo.png',
               ),
             ),
           );
