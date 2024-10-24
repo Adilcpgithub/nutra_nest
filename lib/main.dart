@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/Screen/login_screen.dart';
+import 'package:nutra_nest/Screen/sign_screen.dart';
 import 'package:nutra_nest/Screen/splash_screen.dart';
 
 void main() {
@@ -23,8 +24,8 @@ class MyWidget extends StatelessWidget {
             scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
           ),
           debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
-          //const LoginScreen(),
+          home: const SignScreen(),
+          // const LoginScreen(),
         ));
   }
 }

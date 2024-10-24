@@ -2,6 +2,8 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nutra_nest/Widgets/custom_textbutton.dart';
+import 'package:nutra_nest/Widgets/textformfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isPickerVisible = false;
   bool _isEmailVisibel = false;
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           const Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20),
+                            padding: EdgeInsets.only(top: 15, bottom: 15),
                             child: Text(
                               'Log In',
                               style:
@@ -63,65 +66,102 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           ///////1
-                          TextFormField(
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.white, // The text inside the field
-                            ),
+                          CustomTextFormField(
                             controller: _phoneController,
-                            decoration: InputDecoration(
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                              prefixIcon: _isEmailVisibel
-                                  ? null
-                                  : Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CountryCodePicker(
-                                            onChanged: (countryCode) {
-                                              setState(() {
-                                                _isPickerVisible = false;
-                                              });
-                                            },
-                                            initialSelection: 'US',
-                                            favorite: ['+1', 'IN'],
-                                            showFlag: false,
-                                            showCountryOnly: false,
-                                            showOnlyCountryWhenClosed: false,
-                                            alignLeft: false,
-                                            textStyle: const TextStyle(
-                                              color: Colors
-                                                  .white, // Change the color of the country code text
-                                              fontSize: 18,
-                                            ),
+                            labelText: _isEmailVisibel
+                                ? ' Abc11@gamil.com'
+                                : 'Phone Number',
+                            prefixIcon: _isEmailVisibel
+                                ? null
+                                : Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CountryCodePicker(
+                                          onChanged: (countryCode) {
+                                            setState(() {
+                                              _isPickerVisible = false;
+                                            });
+                                          },
+                                          initialSelection: 'US',
+                                          favorite: const ['+1', 'IN'],
+                                          showFlag: false,
+                                          showCountryOnly: false,
+                                          showOnlyCountryWhenClosed: false,
+                                          alignLeft: false,
+                                          textStyle: const TextStyle(
+                                            color: Colors
+                                                .white, // Change the color of the country code text
+                                            fontSize: 18,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                              labelText: _isEmailVisibel
-                                  ? ' Abc11@gamil.com'
-                                  : 'Phone Number',
-                              labelStyle: const TextStyle(
-                                fontSize: 18,
-                                color: Color.fromARGB(255, 137, 137, 137),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(19),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Color.fromARGB(255, 187, 206, 221)),
-                                borderRadius: BorderRadius.circular(19),
-                              ),
-                            ),
+                                  ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                           ),
+                          // TextFormField(
+                          //   style: const TextStyle(
+                          //     fontSize: 18,
+                          //     color: Colors.white, // The text inside the field
+                          //   ),
+                          //   controller: _phoneController,
+                          //   decoration: InputDecoration(
+                          //     floatingLabelBehavior:
+                          //         FloatingLabelBehavior.never,
+                          //     prefixIcon: _isEmailVisibel
+                          //         ? null
+                          //         : Padding(
+                          //             padding:
+                          //                 const EdgeInsets.only(right: 8.0),
+                          //             child: Row(
+                          //               mainAxisSize: MainAxisSize.min,
+                          //               children: [
+                          //                 CountryCodePicker(
+                          //                   onChanged: (countryCode) {
+                          //                     setState(() {
+                          //                       _isPickerVisible = false;
+                          //                     });
+                          //                   },
+                          //                   initialSelection: 'US',
+                          //                   favorite: const ['+1', 'IN'],
+                          //                   showFlag: false,
+                          //                   showCountryOnly: false,
+                          //                   showOnlyCountryWhenClosed: false,
+                          //                   alignLeft: false,
+                          //                   textStyle: const TextStyle(
+                          //                     color: Colors
+                          //                         .white, // Change the color of the country code text
+                          //                     fontSize: 18,
+                          //                   ),
+                          //                 ),
+                          //               ],
+                          //             ),
+                          //           ),
+                          //     labelText: _isEmailVisibel
+                          //         ? ' Abc11@gamil.com'
+                          //         : 'Phone Number',
+                          //     labelStyle: const TextStyle(
+                          //       fontSize: 18,
+                          //       color: Color.fromARGB(255, 137, 137, 137),
+                          //     ),
+                          //     enabledBorder: OutlineInputBorder(
+                          //       borderSide:
+                          //           const BorderSide(color: Colors.grey),
+                          //       borderRadius: BorderRadius.circular(19),
+                          //     ),
+                          //     focusedBorder: OutlineInputBorder(
+                          //       borderSide: const BorderSide(
+                          //           color: Color.fromARGB(255, 187, 206, 221)),
+                          //       borderRadius: BorderRadius.circular(19),
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            padding: EdgeInsets.only(
+                                top: deviceHeight * 0.01,
+                                bottom: deviceHeight * 0.01),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -136,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       _isEmailVisibel = !_isEmailVisibel;
                                     });
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Use Email     ',
                                     style: TextStyle(
                                         decoration: TextDecoration.underline,
@@ -150,31 +190,40 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           //////2
-                          TextFormField(
+                          CustomTextFormField(
+                            controller: _passwordController,
+                            labelText: ' Password  ',
                             keyboardType: TextInputType.number,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
-                            decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                labelText: ' Password  ',
-                                labelStyle: const TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromARGB(255, 137, 137, 137)),
-                                border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        width: 5, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(19)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color:
-                                            Color.fromARGB(255, 187, 206, 221)),
-                                    borderRadius: BorderRadius.circular(19))),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 15, bottom: 15),
+                          // TextFormField(
+                          //   keyboardType: TextInputType.number,
+                          //   style: const TextStyle(
+                          //     fontSize: 18,
+                          //     color: Colors.white,
+                          //   ),
+                          //   decoration: InputDecoration(
+                          //       floatingLabelBehavior:
+                          //           FloatingLabelBehavior.never,
+                          //       labelText: ' Password  ',
+                          //       labelStyle: const TextStyle(
+                          //           fontSize: 18,
+                          //           color: Color.fromARGB(255, 137, 137, 137)),
+                          //       border: OutlineInputBorder(
+                          //           borderSide: const BorderSide(
+                          //               width: 5, color: Colors.white),
+                          //           borderRadius: BorderRadius.circular(19)),
+                          //       focusedBorder: OutlineInputBorder(
+                          //           borderSide: const BorderSide(
+                          //               color:
+                          //                   Color.fromARGB(255, 187, 206, 221)),
+                          //           borderRadius: BorderRadius.circular(19))),
+                          //
+                          // ),
+
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: deviceHeight * 0.01,
+                                bottom: deviceHeight * 0.01),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -186,26 +235,30 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 57, // Fixed height for button
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 57),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(19)),
-                                backgroundColor:
-                                    const Color.fromARGB(255, 92, 90, 90),
-                              ),
-                              onPressed: () {},
-                              child: const Text(
-                                'LOG IN',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: 57, // Fixed height for button
+                          //   child: TextButton(
+                          //     style: TextButton.styleFrom(
+                          //       minimumSize: const Size(double.infinity, 57),
+                          //       shape: RoundedRectangleBorder(
+                          //           borderRadius: BorderRadius.circular(19)),
+                          //       backgroundColor:
+                          //           const Color.fromARGB(255, 92, 90, 90),
+                          //     ),
+                          //     onPressed: () {},
+                          //     child: const Text(
+                          //       'LOG IN',
+                          //       style: TextStyle(
+                          //           color: Colors.white, fontSize: 18),
+                          //     ),
+                          //   ),
+                          // ),
+                          CustomTextbutton(
+                              buttomName: 'LOG IN', voidCallBack: () {}),
                           Padding(
-                            padding: const EdgeInsets.only(top: 15, bottom: 15),
+                            padding: EdgeInsets.only(
+                                top: deviceHeight * 0.019,
+                                bottom: deviceHeight * 0.019),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -228,7 +281,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
+                            padding:
+                                EdgeInsets.only(bottom: deviceHeight * 0.012),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -265,8 +319,8 @@ class _LoginScreenState extends State<LoginScreen> {
       onChanged: (countryCode) {
         setState(() {});
       },
-      initialSelection: 'US', // Default to US
-      favorite: ['+1', 'IN'], // Favorite country codes
+      initialSelection: 'US',
+      favorite: const ['+1', 'IN'],
       showFlag: false,
       showCountryOnly: false,
       showOnlyCountryWhenClosed: false,
