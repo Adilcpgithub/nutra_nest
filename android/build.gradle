@@ -1,8 +1,22 @@
+buildscript {
+    
+      repositories {
+        google() // Add this line
+        mavenCentral() // Add this line
+    }
+    ext.kotlin_version = "1.9.0" // Update to a compatible version
+    dependencies {
+        // Add the Google services classpath
+        classpath 'com.google.gms:google-services:4.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
+
 }
 
 rootProject.buildDir = "../build"

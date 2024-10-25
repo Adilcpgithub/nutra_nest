@@ -1,13 +1,29 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
-import 'package:nutra_nest/Blocs/SignUp/bloc/sign_up_bloc.dart';
-import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
-import 'package:nutra_nest/Screen/login_screen.dart';
-import 'package:nutra_nest/Screen/sign_up_screen.dart';
-import 'package:nutra_nest/Screen/splash_screen.dart';
+import 'package:nutra_nest/blocs/LoginBloc/bloc/login_bloc.dart';
+import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
+import 'package:nutra_nest/blocs/Splash/bloc/splash_bloc.dart';
+import 'package:nutra_nest/screen/login_screen.dart';
+import 'package:nutra_nest/screen/sign_up_screen.dart';
+import 'package:nutra_nest/screen/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //       options: FirebaseOptions(
+  //           apiKey: "AIzaSyCPhgJ67PJp0-rEJPz82wFpAUVavdaV77M",
+  //           authDomain: "nutranest-a6417.firebaseapp.com",
+  //           projectId: "nutranest-a6417",
+  //           storageBucket: "nutranest-a6417.appspot.com",
+  //           messagingSenderId: "544605270040",
+  //           appId: "1:544605270040:web:ebe8021bc66785c5fc536d",
+  //           measurementId: "G-KEXM8FGNPN"));
+  // } else {
+  //await Firebase.initializeApp();
+  // }
   runApp(const MyWidget());
 }
 

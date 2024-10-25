@@ -1,14 +1,17 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/SignUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
 
 class SignScreen extends StatelessWidget {
   SignScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
+//  AuthService authService = AuthService();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -171,7 +174,7 @@ class SignScreen extends StatelessWidget {
                             child: CustomTextbutton(
                                 buttomName: 'SING UP',
                                 voidCallBack: () {
-                                  _submittion();
+                                  //  _submittion();
                                 }),
                           ),
                           Padding(
@@ -247,6 +250,9 @@ class SignScreen extends StatelessWidget {
   }
 
   void _submittion() {
-    if (_formKey.currentState!.validate()) {}
+    if (_formKey.currentState!.validate()) {
+      // authService.createUserWithEmailAndPassword(
+      //     email: _emailController.text, password: _passwordController.text);
+    }
   }
 }
