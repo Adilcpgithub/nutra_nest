@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/Screen/login_screen.dart';
 import 'package:nutra_nest/Screen/sign_screen.dart';
@@ -17,15 +18,16 @@ class MyWidget extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (context) => SplashBloc()..add(StartAnimationEvent()))
+              create: (context) => SplashBloc()..add(StartAnimationEvent())),
+          BlocProvider(create: (context) => LoginBloc())
         ],
         child: MaterialApp(
           theme: ThemeData(
             scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
           ),
           debugShowCheckedModeBanner: false,
-          home: const SignScreen(),
-          // const LoginScreen(),
+          home: // const SignScreen(),
+              const LoginScreen(),
         ));
   }
 }

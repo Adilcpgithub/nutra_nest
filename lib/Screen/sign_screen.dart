@@ -64,27 +64,6 @@ class _SignScreenState extends State<SignScreen> {
                         labelText: ' Name  ',
                         keyboardType: TextInputType.number,
                       ),
-                      //   TextFormField(
-                      //     keyboardType: TextInputType.number,
-                      //     style: const TextStyle(
-                      //       fontSize: 18,
-                      //       color: Colors.white,
-                      //     ),
-                      //     decoration: InputDecoration(
-                      //         floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //         labelText: ' Name  ',
-                      //         labelStyle: const TextStyle(
-                      //             fontSize: 18,
-                      //             color: Color.fromARGB(255, 137, 137, 137)),
-                      //         border: OutlineInputBorder(
-                      //             borderSide: const BorderSide(
-                      //                 width: 5, color: Colors.white),
-                      //             borderRadius: BorderRadius.circular(19)),
-                      //         focusedBorder: OutlineInputBorder(
-                      //             borderSide: const BorderSide(
-                      //                 color: Color.fromARGB(255, 187, 206, 221)),
-                      //             borderRadius: BorderRadius.circular(19))),
-                      //   ),
                     ),
                     //2//////////////////
                     Padding(
@@ -131,27 +110,6 @@ class _SignScreenState extends State<SignScreen> {
                         labelText: ' Email  ',
                         keyboardType: TextInputType.number,
                       ),
-                      // TextFormField(
-                      //   keyboardType: TextInputType.number,
-                      //   style: const TextStyle(
-                      //     fontSize: 18,
-                      //     color: Colors.white,
-                      //   ),
-                      //   decoration: InputDecoration(
-                      //       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //       labelText: ' Email  ',
-                      //       labelStyle: const TextStyle(
-                      //           fontSize: 18,
-                      //           color: Color.fromARGB(255, 137, 137, 137)),
-                      //       border: OutlineInputBorder(
-                      //           borderSide: const BorderSide(
-                      //               width: 5, color: Colors.white),
-                      //           borderRadius: BorderRadius.circular(19)),
-                      //       focusedBorder: OutlineInputBorder(
-                      //           borderSide: const BorderSide(
-                      //               color: Color.fromARGB(255, 187, 206, 221)),
-                      //           borderRadius: BorderRadius.circular(19))),
-                      // ),
                     ),
                     //4////////////////////////
                     Padding(
@@ -162,27 +120,6 @@ class _SignScreenState extends State<SignScreen> {
                         labelText: ' Password  ',
                         keyboardType: TextInputType.number,
                       ),
-                      // TextFormField(
-                      //   keyboardType: TextInputType.number,
-                      //   style: const TextStyle(
-                      //     fontSize: 18,
-                      //     color: Colors.white,
-                      //   ),
-                      //   decoration: InputDecoration(
-                      //       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //       labelText: ' Password  ',
-                      //       labelStyle: const TextStyle(
-                      //           fontSize: 18,
-                      //           color: Color.fromARGB(255, 137, 137, 137)),
-                      //       border: OutlineInputBorder(
-                      //           borderSide: const BorderSide(
-                      //               width: 5, color: Colors.white),
-                      //           borderRadius: BorderRadius.circular(19)),
-                      //       focusedBorder: OutlineInputBorder(
-                      //           borderSide: const BorderSide(
-                      //               color: Color.fromARGB(255, 187, 206, 221)),
-                      //           borderRadius: BorderRadius.circular(19))),
-                      // ),
                     ),
                     Padding(
                       padding:
