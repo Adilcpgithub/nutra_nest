@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/SignUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/screen/sign_success.dart';
 
 class SignScreen extends StatelessWidget {
   SignScreen({super.key});
-
+  AuthService authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -170,8 +175,8 @@ class SignScreen extends StatelessWidget {
                                 vertical: deviceHeight * 0.002),
                             child: CustomTextbutton(
                                 buttomName: 'SING UP',
-                                voidCallBack: () {
-                                  _submittion();
+                                voidCallBack: () async {
+                                  await _submittion(context);
                                 }),
                           ),
                           Padding(
@@ -246,7 +251,21 @@ class SignScreen extends StatelessWidget {
     );
   }
 
-  void _submittion() {
-    if (_formKey.currentState!.validate()) {}
+  Future<void> _submittion(BuildContext context) async {
+    UserCredential? data;
+    if (_formKey.currentState!.validate()) {
+      data = await authService.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+    }
+    if (data != null) {
+      log('sign up success');
+      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+        return const SignSuccess();
+      }));
+    }
+    _nameController.clear();
+    _phoneController.clear();
+    _emailController.clear();
+    _passwordController.clear();
   }
 }
