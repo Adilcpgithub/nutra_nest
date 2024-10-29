@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/SignUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
-import 'package:nutra_nest/Screen/login_screen.dart';
 import 'package:nutra_nest/screen/sign_up_screen.dart';
+import 'package:nutra_nest/screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,10 +30,10 @@ class MyWidget extends StatelessWidget {
             scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
           ),
           debugShowCheckedModeBanner: false,
-          home: // SplashScreen()
+          home: //SplashScreen()
               //SignSuccess(),
-              // SignUpScreen(),
-              const LoginScreen(),
+              SignUpScreen(),
+          //const LoginScreen(),
         ));
   }
 }

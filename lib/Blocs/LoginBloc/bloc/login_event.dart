@@ -15,6 +15,11 @@ class TogglePickerVisibility extends LoginEvent {
   List<Object> get props => [];
 }
 
+class ActivateValidation extends LoginEvent {
+  @override
+  List<Object> get props => [];
+}
+
 class UpdatePhoneNumber extends LoginEvent {
   final String phoneNumber;
   const UpdatePhoneNumber(this.phoneNumber);

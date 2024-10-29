@@ -1,6 +1,7 @@
 part of 'sign_up_bloc.dart';
 
-class SignUpEvent extends Equatable {
+@immutable
+sealed class SignUpEvent extends Equatable {
   const SignUpEvent();
 
   @override
@@ -28,6 +29,11 @@ class PasswordChanged extends SignUpEvent {
 }
 
 class SignUpSubmitted extends SignUpEvent {}
+
+class ActivateValidation extends SignUpEvent {
+  @override
+  List<Object> get props => [];
+}
 
 class TogglePickerVisibility extends SignUpEvent {
   @override

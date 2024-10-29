@@ -5,7 +5,7 @@ class SignUpState extends Equatable {
   final String phoneNumber;
   final String email;
   final String password;
-
+  final bool activateValidation;
   final bool isPickerVisible;
 
   const SignUpState(
@@ -13,7 +13,8 @@ class SignUpState extends Equatable {
       required this.phoneNumber,
       required this.email,
       required this.password,
-      required this.isPickerVisible});
+      required this.isPickerVisible,
+      required this.activateValidation});
 
   factory SignUpState.initial() {
     return const SignUpState(
@@ -21,7 +22,8 @@ class SignUpState extends Equatable {
         phoneNumber: '',
         email: '',
         password: '',
-        isPickerVisible: false);
+        isPickerVisible: false,
+        activateValidation: false);
   }
 
   SignUpState copyWith(
@@ -30,16 +32,18 @@ class SignUpState extends Equatable {
       String? email,
       String? password,
       bool? isFormValid,
-      bool? isPickerVisible}) {
+      bool? isPickerVisible,
+      bool? activateValidation}) {
     return SignUpState(
         name: name ?? this.name,
         phoneNumber: phoneNumber ?? this.phoneNumber,
         email: email ?? this.email,
         password: password ?? this.password,
-        isPickerVisible: isPickerVisible ?? this.isPickerVisible);
+        isPickerVisible: isPickerVisible ?? this.isPickerVisible,
+        activateValidation: activateValidation ?? this.activateValidation);
   }
 
   @override
   List<Object> get props =>
-      [name, phoneNumber, email, password, isPickerVisible];
+      [name, phoneNumber, email, password, isPickerVisible, activateValidation];
 }

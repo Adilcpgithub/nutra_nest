@@ -1,5 +1,7 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
@@ -22,10 +24,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<TogglePickerVisibility>((event, emit) {
       emit(state.copyWith(isPickerVisible: !state.isPickerVisible));
     });
-    ////
-    on<SignUpSubmitted>((event, emit) {});
 
-    ///
+    on<ActivateValidation>((event, emit) {
+      emit(state.copyWith(activateValidation: true));
+    });
+    //
+    on<SignUpSubmitted>((event, emit) {});
   }
 
   bool _validateForm() {

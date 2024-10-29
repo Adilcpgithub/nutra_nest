@@ -12,6 +12,7 @@ class SplashScreen extends StatelessWidget {
       listener: (context, state) async {
         if (state.opacity == 1.0) {
           await Future.delayed(const Duration(milliseconds: 1500));
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const LoginScreen()),
               (Route<dynamic> rout) => false);

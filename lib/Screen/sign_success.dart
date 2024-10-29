@@ -14,7 +14,7 @@ class SignSuccess extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 160,
             ),
             SizedBox(
@@ -26,14 +26,14 @@ class SignSuccess extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
+            const Text(
               ' Successful!',
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 27,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 120,
             ),
             CustomTextbutton(

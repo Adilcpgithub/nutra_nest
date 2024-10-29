@@ -1,5 +1,7 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
 part 'login_event.dart';
@@ -15,6 +17,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
     on<UpdatePhoneNumber>((event, emit) {
       emit(state.copyWith(phoneNumber: event.phoneNumber));
+    });
+    on<ActivateValidation>((event, emit) {
+      emit(state.copyWith(activateValidation: true));
     });
   }
 }

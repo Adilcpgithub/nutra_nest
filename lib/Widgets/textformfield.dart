@@ -13,7 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorText;
 
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.hintText = '',
@@ -24,7 +24,7 @@ class CustomTextFormField extends StatelessWidget {
     this.floatingLabelBehavior,
     this.errorText,
     this.validator,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

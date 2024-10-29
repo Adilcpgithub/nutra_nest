@@ -51,7 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 //  :
                 Form(
                   key: _formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: state.activateValidation
+                      ? AutovalidateMode.onUserInteraction
+                      : null,
                   child: Container(
                     height: deviceHeight / 2,
                     width: deviceWidth > 400 ? 600 : deviceWidth,
@@ -118,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         children: [
                                           CountryCodePicker(
                                             onChanged: (countryCode) {
-                                              print('object');
+                                              // print('object');
                                               log('s');
 
                                               // context
@@ -214,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextbutton(
                               buttomName: 'LOG IN',
                               voidCallBack: () async {
-                                await _submittion();
+                                await _submittion(context);
                               }),
                           Padding(
                             padding: EdgeInsets.only(
@@ -278,9 +280,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _submittion() async {
+  Future<void> _submittion(BuildContext context) async {
+    context.read<LoginBloc>().add(ActivateValidation());
     UserCredential? data;
-
     if (_formKey.currentState?.validate() ?? false) {
       if (_formKey.currentState!.validate()) {
         data = await authService.logInUserWithEmailAndPassword(
@@ -293,20 +295,4 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-
-  // Widget _showCountryCodePicker(BuildContext context) {
-  //   return CountryCodePicker(
-  //     onChanged: (countryCode) {
-  //       context
-  //           .read<LoginBloc>()
-  //           .add(UpdatePhoneNumber(countryCode.toString()));
-  //       setState(() {});
-  //     },
-  //     initialSelection: 'US',
-  //     favorite: const ['+1', 'IN'],
-  //     showFlag: false,
-  //     showCountryOnly: false,
-  //     showOnlyCountryWhenClosed: false,
-  //   );
-  // }
 }

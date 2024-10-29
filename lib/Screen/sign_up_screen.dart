@@ -4,10 +4,10 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutra_nest/Blocs/SignUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -21,7 +21,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
-    double deviceWidth = MediaQuery.of(context).size.width;
+    // double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: BlocBuilder<SignUpBloc, SignUpState>(
@@ -41,7 +41,9 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ),
                 Form(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  autovalidateMode: state.activateValidation
+                      ? AutovalidateMode.onUserInteraction
+                      : null,
                   key: _formKey,
                   child: Container(
                     height: deviceHeight * 2 / 3,
@@ -56,7 +58,7 @@ class SignUpScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 45),
                       child: Column(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 20),
                             child: Text(
                               'Sign Up',
@@ -264,6 +266,7 @@ class SignUpScreen extends StatelessWidget {
   }
 
   Future<void> _submittion(BuildContext context) async {
+    //  context.read<SignUpBloc>().add(ActivateValidation());
     UserCredential? data;
     if (_formKey.currentState?.validate() ?? false) {
       if (_formKey.currentState!.validate()) {
@@ -271,6 +274,7 @@ class SignUpScreen extends StatelessWidget {
             email: _emailController.text, password: _passwordController.text);
         if (data != null) {
           log('sign up success');
+          // ignore: use_build_context_synchronously
           Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
             return const SignSuccess();
           }));
