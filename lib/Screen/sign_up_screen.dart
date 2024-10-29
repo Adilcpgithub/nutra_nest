@@ -10,9 +10,9 @@ import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
 
-class SignScreen extends StatelessWidget {
-  SignScreen({super.key});
-  AuthService authService = AuthService();
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({super.key});
+  final AuthService authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -41,7 +41,7 @@ class SignScreen extends StatelessWidget {
                   ),
                 ),
                 Form(
-                  //  autovalidateMode: AutovalidateMode.always,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   key: _formKey,
                   child: Container(
                     height: deviceHeight * 2 / 3,
@@ -95,6 +95,10 @@ class SignScreen extends StatelessWidget {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter Phone';
                                   }
+                                  final mobileRegex = RegExp(r'^[0-9]{7,10}$');
+                                  if (!mobileRegex.hasMatch(value)) {
+                                    return 'Please enter a valid mobile number (7 to 10 digits)';
+                                  }
                                   return null;
                                 },
                                 labelText: 'Phone Number',
@@ -140,6 +144,11 @@ class SignScreen extends StatelessWidget {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter Email';
                                   }
+                                  final emailRegex =
+                                      RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                                  if (!emailRegex.hasMatch(value)) {
+                                    return 'Please enter a valid email address';
+                                  }
                                   return null;
                                 },
                                 controller: _emailController,
@@ -159,6 +168,9 @@ class SignScreen extends StatelessWidget {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter Password';
+                                  }
+                                  if (value.length < 6) {
+                                    return 'Password must be 6 or more numbers';
                                   }
                                   return null;
                                 },
@@ -253,19 +265,26 @@ class SignScreen extends StatelessWidget {
 
   Future<void> _submittion(BuildContext context) async {
     UserCredential? data;
-    if (_formKey.currentState!.validate()) {
-      data = await authService.createUserWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
+    if (_formKey.currentState?.validate() ?? false) {
+      if (_formKey.currentState!.validate()) {
+        data = await authService.createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+        if (data != null) {
+          log('sign up success');
+          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+            return const SignSuccess();
+          }));
+
+          _nameController.clear();
+          _phoneController.clear();
+          _emailController.clear();
+          _passwordController.clear();
+        } else {
+          log('sign up failed');
+        }
+      }
+    } else {
+      log('fill forms');
     }
-    if (data != null) {
-      log('sign up success');
-      Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-        return const SignSuccess();
-      }));
-    }
-    _nameController.clear();
-    _phoneController.clear();
-    _emailController.clear();
-    _passwordController.clear();
   }
 }
