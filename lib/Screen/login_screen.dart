@@ -8,6 +8,7 @@ import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/screen/sign_success.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -289,6 +290,9 @@ class _LoginScreenState extends State<LoginScreen> {
             email: _emailController.text, password: _passwordController.text);
         if (data != null) {
           log('login  success');
+          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+            return const SignSuccess();
+          }));
           _emailController.clear();
           _passwordController.clear();
         }

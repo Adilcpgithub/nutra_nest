@@ -37,7 +37,9 @@ class SignSuccess extends StatelessWidget {
               height: 120,
             ),
             CustomTextbutton(
-                buttomName: 'START SHOPPING', voidCallBack: () async {}),
+                color: Colors.black,
+                buttomName: 'START SHOPPING',
+                voidCallBack: () async {}),
           ],
         ),
       ),

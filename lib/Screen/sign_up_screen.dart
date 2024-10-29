@@ -267,6 +267,11 @@ class SignUpScreen extends StatelessWidget {
 
   Future<void> _submittion(BuildContext context) async {
     //  context.read<SignUpBloc>().add(ActivateValidation());
+    final signUpBloc = context.read<SignUpBloc>();
+
+    // Dispatch an event to trigger form validation if needed.
+    signUpBloc.add(ActivateValidation());
+
     UserCredential? data;
     if (_formKey.currentState?.validate() ?? false) {
       if (_formKey.currentState!.validate()) {

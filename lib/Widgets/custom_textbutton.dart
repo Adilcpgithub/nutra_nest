@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class CustomTextbutton extends StatelessWidget {
   final String buttomName;
   final VoidCallback voidCallBack;
+  final Color color;
   const CustomTextbutton(
-      {super.key, required this.buttomName, required this.voidCallBack});
+      {super.key,
+      required this.buttomName,
+      required this.voidCallBack,
+      this.color = const Color.fromARGB(255, 92, 90, 90)});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,7 @@ class CustomTextbutton extends StatelessWidget {
           minimumSize: const Size(double.infinity, 57),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
-          backgroundColor: const Color.fromARGB(255, 92, 90, 90),
+          backgroundColor: color,
         ),
         onPressed: voidCallBack,
         child: Text(
