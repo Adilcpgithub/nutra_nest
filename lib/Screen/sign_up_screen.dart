@@ -280,8 +280,6 @@ class SignUpScreen extends StatelessWidget {
     if (_formKey.currentState?.validate() ?? false) {
       try {
         // Show loading dialog
-        if (!context.mounted) return;
-
         showDialog(
           context: context,
           barrierDismissible: false,

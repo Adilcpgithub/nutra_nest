@@ -25,11 +25,14 @@ class AuthService {
   }) async {
     try {
       log('Checking if phone number exists...');
+
+      // Perform the Firestore query and await the result
       final querySnapshot = await _firestore
           .collection('users')
           .where('phoneNumber', isEqualTo: phoneNumber)
-          .get();
+          .get(); // This will return a QuerySnapshot
 
+      // Now you can access the `docs` property from the `QuerySnapshot`
       if (querySnapshot.docs.isNotEmpty) {
         log('Phone number already exists');
         return AuthResponse(
@@ -39,24 +42,19 @@ class AuthService {
       log('Creating user with email and password...');
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
-      print(
-          '/////////////////////////////////////////////////////////////////////////////////////');
+
       if (userCredential != null) {
         log(userCredential.toString());
       }
-      print(
-          '/////////////////////////////////////////////////////////////////////////////////////');
 
       log('Saving user data to Firestore...');
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'name': name,
         'email': email,
-        'password': password,
         'phoneNumber': phoneNumber,
-      }).timeout(const Duration(seconds: 10));
+      }).timeout(const Duration(seconds: 30));
 
       log('User data saved successfully. Returning true.');
-
       return AuthResponse(success: true); // Successful completion
     } on TimeoutException catch (_) {
       log('Firestore operation timed out.');
@@ -71,12 +69,12 @@ class AuthService {
       return AuthResponse(success: false, errorMessage: errorMessage);
     } catch (e) {
       log('An error occurred during sign-up: $e');
-
       return AuthResponse(
           success: false, errorMessage: 'An unexpected error occurred');
     }
   }
 
+//------------------------------------------------------------
   Future<bool> logInUserWithEmailAndPassword(
       {String? email, String? phoneNumber, required String password}) async {
     if (email != null && phoneNumber == null) {
@@ -94,7 +92,7 @@ class AuthService {
         final querysnapshot = await _firestore
             .collection('users')
             .where('phoneNumber', isEqualTo: phoneNumber)
-            .where('password', isEqualTo: password)
+            //7025720988 .where('password', isEqualTo: password)
             .get();
         if (querysnapshot.docs.isEmpty) {
           throw Exception('Invalid phone number or password.');
