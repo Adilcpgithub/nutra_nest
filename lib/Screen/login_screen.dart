@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
+import 'package:nutra_nest/Screen/sign_up_screen.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
@@ -20,9 +21,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final AuthService authService = AuthService();
-
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailorPhoneNumberController =
+      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String selectedCountryCode = '+91';
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ///////1
                           Flexible(
                             child: CustomTextFormField(
-                              controller: _emailController,
+                              controller: _emailorPhoneNumberController,
                               labelText: state.isEmailVisible
                                   ? ' Email'
                                   : 'Phone Number',
@@ -121,14 +123,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                         children: [
                                           CountryCodePicker(
                                             onChanged: (countryCode) {
-                                              // print('object');
-                                              log('s');
-
-                                              // context
-                                              //     .read<LoginBloc>()
-                                              //     .add(ToggleEmailVisibility());
+                                              selectedCountryCode =
+                                                  countryCode.dialCode!;
+                                              print(selectedCountryCode);
+                                              context
+                                                  .read<LoginBloc>()
+                                                  .add(ToggleEmailVisibility());
                                             },
-                                            initialSelection: 'US',
+                                            initialSelection: 'IN',
                                             favorite: const ['+1', 'IN'],
                                             showFlag: false,
                                             showCountryOnly: false,
@@ -164,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context
                                         .read<LoginBloc>()
                                         .add(ToggleEmailVisibility());
+                                    _emailorPhoneNumberController.clear();
                                   },
                                   child: Text(
                                     state.isEmailVisible
@@ -217,7 +220,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextbutton(
                               buttomName: 'LOG IN',
                               voidCallBack: () async {
-                                await _submittion(context);
+                                await _submittion(
+                                    context, state.isEmailVisible);
                               }),
                           Padding(
                             padding: EdgeInsets.only(
@@ -239,7 +243,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (ctx) => SignUpScreen()),
+                                      (Route<dynamic> route) => false,
+                                    );
+                                  },
                                 ),
                               ],
                             ),
@@ -281,20 +291,32 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _submittion(BuildContext context) async {
+  Future<void> _submittion(BuildContext context, bool isEmailVisible) async {
     context.read<LoginBloc>().add(ActivateValidation());
-    UserCredential? data;
+
+    late bool data;
     if (_formKey.currentState?.validate() ?? false) {
       if (_formKey.currentState!.validate()) {
-        data = await authService.logInUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text);
-        if (data != null) {
+        if (isEmailVisible) {
+          data = await authService.logInUserWithEmailAndPassword(
+              email: _emailorPhoneNumberController.text,
+              password: _passwordController.text);
+        } else {
+          data = await authService.logInUserWithEmailAndPassword(
+              phoneNumber:
+                  selectedCountryCode + _emailorPhoneNumberController.text,
+              password: _passwordController.text);
+        }
+
+        if (data) {
           log('login  success');
           Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
             return const SignSuccess();
           }));
-          _emailController.clear();
+          _emailorPhoneNumberController.clear();
           _passwordController.clear();
+        } else {
+          print('sumthing went wrong');
         }
       }
     }

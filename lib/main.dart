@@ -6,6 +6,8 @@ import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/screen/login_screen.dart';
+import 'package:nutra_nest/screen/otp_verification_screen.dart';
+import 'package:nutra_nest/screen/sign_success.dart';
 import 'package:nutra_nest/screen/sign_up_screen.dart';
 import 'package:nutra_nest/screen/splash_screen.dart';
 
@@ -50,8 +52,11 @@ class MyWidget extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: //SplashScreen()
               //SignSuccess(),
-              // SignUpScreen(),
-              const LoginScreen(),
+              // OtpVerificationScreen()
+              //  OtpVerificationScreen()
+
+              SignUpScreen(),
+          // const LoginScreen(),
         ));
   }
 }

@@ -8,6 +8,7 @@ import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
+import 'package:nutra_nest/screen/login_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String selectedCountryCode = '+91';
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
@@ -82,7 +84,6 @@ class SignUpScreen extends StatelessWidget {
                                 onChanged: (name) =>
                                     signUpBloc.add(NameChanged(name)),
                                 labelText: ' Name  ',
-                                keyboardType: TextInputType.number,
                               ),
                             ),
                           ),
@@ -104,6 +105,7 @@ class SignUpScreen extends StatelessWidget {
                                   return null;
                                 },
                                 labelText: 'Phone Number',
+                                keyboardType: TextInputType.number,
                                 onChanged: (phone) =>
                                     signUpBloc.add(PhoneChanged(phone)),
                                 prefixIcon: Padding(
@@ -113,11 +115,14 @@ class SignUpScreen extends StatelessWidget {
                                     children: [
                                       CountryCodePicker(
                                         onChanged: (countryCode) {
+                                          selectedCountryCode =
+                                              countryCode.dialCode!;
+                                          print(selectedCountryCode);
                                           context
                                               .read<SignUpBloc>()
                                               .add(TogglePickerVisibility());
                                         },
-                                        initialSelection: 'US',
+                                        initialSelection: 'IN',
                                         favorite: const ['+1', 'IN'],
                                         showFlag: false,
                                         showCountryOnly: false,
@@ -157,7 +162,6 @@ class SignUpScreen extends StatelessWidget {
                                 labelText: ' Email  ',
                                 onChanged: (email) =>
                                     signUpBloc.add(EmailChanged(email)),
-                                keyboardType: TextInputType.number,
                               ),
                             ),
                           ),
@@ -180,7 +184,6 @@ class SignUpScreen extends StatelessWidget {
                                 labelText: ' Password  ',
                                 onChanged: (password) =>
                                     signUpBloc.add(PasswordChanged(password)),
-                                keyboardType: TextInputType.number,
                               ),
                             ),
                           ),
@@ -216,7 +219,12 @@ class SignUpScreen extends StatelessWidget {
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (ctx) {
+                                      return const LoginScreen();
+                                    }));
+                                  },
                                 ),
                               ],
                             ),
@@ -266,34 +274,76 @@ class SignUpScreen extends StatelessWidget {
   }
 
   Future<void> _submittion(BuildContext context) async {
-    //  context.read<SignUpBloc>().add(ActivateValidation());
     final signUpBloc = context.read<SignUpBloc>();
-
-    // Dispatch an event to trigger form validation if needed.
     signUpBloc.add(ActivateValidation());
 
-    UserCredential? data;
     if (_formKey.currentState?.validate() ?? false) {
-      if (_formKey.currentState!.validate()) {
-        data = await authService.createUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text);
-        if (data != null) {
-          log('sign up success');
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-            return const SignSuccess();
-          }));
+      try {
+        // Show loading dialog
+        if (!context.mounted) return;
 
-          _nameController.clear();
-          _phoneController.clear();
-          _emailController.clear();
-          _passwordController.clear();
-        } else {
-          log('sign up failed');
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => WillPopScope(
+            onWillPop: () async => false, // Prevent back button dismissal
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        );
+
+        // Perform sign up
+        final response = await authService.createUserWithEmailAndPassword(
+          name: _nameController.text.trim(),
+          phoneNumber: selectedCountryCode + _phoneController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+
+        // Always close the dialog first
+        if (context.mounted) {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+
+        // Handle the response
+        if (response.success) {
+          _clearFormFields();
+
+          // Navigate to success screen
+          if (context.mounted) {
+            await Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const SignSuccess()),
+            );
+          }
+        } else if (context.mounted) {
+          // Show error message if registration failed
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.errorMessage ?? 'Registration failed'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        // Ensure to close the dialog in case of an error
+        if (context.mounted) {
+          Navigator.of(context, rootNavigator: true).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('An unexpected error occurred'),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       }
-    } else {
-      log('fill forms');
     }
+  }
+
+  void _clearFormFields() {
+    _nameController.clear();
+    _phoneController.clear();
+    _emailController.clear();
+    _passwordController.text = ''; // Use this for password fields
   }
 }
