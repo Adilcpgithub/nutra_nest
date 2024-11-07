@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class AuthResponse {
   final bool success;
@@ -43,9 +42,7 @@ class AuthService {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      if (userCredential != null) {
-        log(userCredential.toString());
-      }
+      log(userCredential.toString());
 
       log('Saving user data to Firestore...');
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
@@ -81,7 +78,7 @@ class AuthService {
       try {
         final cred = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
-        log("Signed in withemail and password ");
+        log("Signed in withemail and password  $cred");
         return true;
       } catch (e) {
         log('something went wrong when login $e');

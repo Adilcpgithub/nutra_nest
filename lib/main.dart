@@ -28,6 +28,7 @@ void main() async {
       await Firebase.initializeApp();
     }
   } catch (e) {
+    // ignore: avoid_print
     print("Firebase initialization error: $e");
   }
   runApp(const MyWidget());
