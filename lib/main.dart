@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
-import 'package:nutra_nest/screen/login_screen.dart';
-import 'package:nutra_nest/screen/otp_verification_screen.dart';
+import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
-import 'package:nutra_nest/screen/sign_up_screen.dart';
+import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
 import 'package:nutra_nest/screen/splash_screen.dart';
 
 void main() async {
@@ -46,17 +46,17 @@ class MyWidget extends StatelessWidget {
           BlocProvider(create: (context) => SignUpBloc())
         ],
         child: MaterialApp(
-          theme: ThemeData(
-            scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
-          ),
-          debugShowCheckedModeBanner: false,
-          home: //SplashScreen()
-              //SignSuccess(),
-              // OtpVerificationScreen()
-              //  OtpVerificationScreen()
-
-              SignUpScreen(),
-          // const LoginScreen(),
-        ));
+            theme: ThemeData(
+              scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
+            ),
+            debugShowCheckedModeBanner: false,
+            home: //SplashScreen()
+                //SignSuccess(),
+                // OtpVerificationScreen()
+                //  OtpVerificationScreen()
+                MyHomePage()
+            //SignUpScreen(),
+            // const LoginScreen(),
+            ));
   }
 }

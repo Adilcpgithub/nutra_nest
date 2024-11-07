@@ -92,7 +92,7 @@ class AuthService {
         final querysnapshot = await _firestore
             .collection('users')
             .where('phoneNumber', isEqualTo: phoneNumber)
-            //7025720988 .where('password', isEqualTo: password)
+            // .where('password', isEqualTo: password)
             .get();
         if (querysnapshot.docs.isEmpty) {
           throw Exception('Invalid phone number or password.');

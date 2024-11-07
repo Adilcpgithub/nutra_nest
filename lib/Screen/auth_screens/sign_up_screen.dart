@@ -8,7 +8,7 @@ import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
-import 'package:nutra_nest/screen/login_screen.dart';
+import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
 
 class SignUpScreen extends StatelessWidget {
