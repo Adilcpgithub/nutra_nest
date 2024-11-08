@@ -10,7 +10,10 @@ import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
 import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
 import 'package:nutra_nest/screen/splash_screen.dart';
+import 'package:nutra_nest/screen/user/add_address.dart';
+import 'package:nutra_nest/screen/user/delete_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
+import 'package:nutra_nest/screen/user/manage_address.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,18 +51,21 @@ class MyWidget extends StatelessWidget {
           BlocProvider(create: (context) => SignUpBloc())
         ],
         child: MaterialApp(
-          theme: ThemeData(
-            scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
-          ),
-          debugShowCheckedModeBanner: false,
-          home: //SplashScreen()
-              //SignSuccess(),
-              // OtpVerificationScreen()
-              //  OtpVerificationScreen()
-              //  MyHomePage()
-              EditProfile(),
-          //SignUpScreen(),
-          // const LoginScreen(),
-        ));
+            theme: ThemeData(
+              scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
+            ),
+            debugShowCheckedModeBanner: false,
+            home: //SplashScreen()
+                //SignSuccess(),
+                // OtpVerificationScreen()
+                //  OtpVerificationScreen()
+                //  MyHomePage()
+                // EditProfile(),
+                // const AddAddress(),
+                //SignUpScreen(),
+                // const ManageAddress(),
+                const DeleteScreen()
+            // const LoginScreen(),
+            ));
   }
 }

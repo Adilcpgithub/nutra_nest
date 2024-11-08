@@ -21,7 +21,8 @@ class SmallTextbutton extends StatelessWidget {
         border: Border.all(width: 1.4),
         borderRadius: BorderRadius.circular(9),
       ),
-      height: 57, // Fixed height for button
+      height: 41,
+      width: 150, // Fixed height for button
       child: TextButton(
         style: TextButton.styleFrom(
           minimumSize: const Size(double.infinity, 57),
@@ -34,7 +35,7 @@ class SmallTextbutton extends StatelessWidget {
           style: TextStyle(
               color: textColor,
               fontSize: 11,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w600,
               letterSpacing: 0.1),
         ),
       ),
