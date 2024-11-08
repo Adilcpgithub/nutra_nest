@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
 class DeleteScreen extends StatelessWidget {
   const DeleteScreen({super.key});
@@ -39,6 +42,61 @@ class DeleteScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 65,
+              ),
+              const Text(
+                'Are you sure you want to delete your account?\n'
+                '            This action cannot be undone.',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 18,
+              ),
+              const Text(
+                '• All your personal information, order history, and saved items\n'
+                '   will be permanently removed',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                '•You will no longer be able to access your account or any \n'
+                'associated data.',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 18,
+              ),
+              const Text(
+                'Are you sure you want to delete your account?\n'
+                '            This action cannot be undone.',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    SmallTextbutton(
+                      buttomName: 'DELETE ACCOUNT',
+                      voidCallBack: () {},
+                    ),
+                    const SizedBox(
+                      width: 18,
+                    ),
+                    SmallTextbutton(
+                      buttomName: 'CANCEL',
+                      voidCallBack: () {},
+                      buttomColor: Colors.white,
+                      textColor: Colors.black,
+                    )
+                  ],
+                ),
               ),
             ],
           ),

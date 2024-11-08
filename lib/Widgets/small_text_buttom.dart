@@ -34,7 +34,7 @@ class SmallTextbutton extends StatelessWidget {
           buttomName,
           style: TextStyle(
               color: textColor,
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.1),
         ),
