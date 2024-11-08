@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
+import 'package:nutra_nest/screen/user/edit_profile.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -90,12 +91,25 @@ class AccountScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: GestureDetector(
-                  onTap: () async {
-                    var data = await authService
-                        .getUserData(await userStatus.getUserId());
-                    data!.forEach((key, value) {
-                      log(' key $key  value $value');
-                    });
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const EditProfile(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var curvedAnimation = CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut, // Choose any curve here
+                          );
+
+                          return FadeTransition(
+                            opacity: curvedAnimation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(

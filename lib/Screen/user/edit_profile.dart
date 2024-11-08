@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/widgets/model_text_form_feild.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
@@ -10,10 +13,25 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  AuthService authService = AuthService();
+  UserStatus userStatus = UserStatus();
   final TextEditingController _nameCountroller = TextEditingController();
   final TextEditingController _mobileNumberCountroller =
       TextEditingController();
-  final TextEditingController _emailIdCountroller = TextEditingController();
+  final TextEditingController _emailCountroller = TextEditingController();
+  _fetUserData() async {
+    var data = await authService.getUserData(await userStatus.getUserId());
+    _nameCountroller.text = data?['name'] ?? '';
+    _emailCountroller.text = data?['email'] ?? '';
+    _mobileNumberCountroller.text = data?['phoneNumber'] ?? '';
+  }
+
+  @override
+  void initState() {
+    _fetUserData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,8 +175,7 @@ class _EditProfileState extends State<EditProfile> {
                   SizedBox(
                       height: 42,
                       child: Stack(children: [
-                        modelTextFormFeild(
-                            countroller: _mobileNumberCountroller),
+                        modelTextFormFeild(countroller: _emailCountroller),
                         Positioned(
                           top: 12,
                           bottom: 13,
