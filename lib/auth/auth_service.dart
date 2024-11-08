@@ -36,6 +36,11 @@ class AuthService {
 
       // Skip saving user data to Firestore and return a successful response
       log('User created successfully.');
+      String userId = credential.user!.uid;
+      storeDataToFirebase(
+          email: email, userId: userId, phoneNumber: phoneNumber, name: name);
+      // Save additional data to Firestore
+
       return AuthResponse(success: true); // Successful completion
     } on TimeoutException catch (_) {
       log('Operation timed out.');
@@ -52,6 +57,38 @@ class AuthService {
       log('An error occurred during sign-up: $e');
       return AuthResponse(
           success: false, errorMessage: 'An unexpected error occurred');
+    }
+  }
+
+  Future<void> storeDataToFirebase({
+    required String email,
+    required String userId,
+    required String phoneNumber,
+    required String name,
+  }) async {
+    await _firestore.collection('users').doc(userId).set({
+      'name': name,
+      'email': email,
+      'phoneNumber': phoneNumber,
+    });
+  }
+
+  Future<Map<String, dynamic>?> getUserData(String userId) async {
+    try {
+      // Fetch the user document from Firestore
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(userId).get();
+
+      // Check if the document exists and return the data
+      if (userDoc.exists) {
+        return userDoc.data() as Map<String, dynamic>;
+      } else {
+        print('User not found in Firestore');
+        return null;
+      }
+    } catch (e) {
+      print('Error retrieving user data: $e');
+      return null;
     }
   }
 
@@ -274,5 +311,10 @@ class UserStatus {
   Future<bool> isUserLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('is_logged_in') ?? false;
+  }
+
+  Future<String> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('user_id') ?? '';
   }
 }
