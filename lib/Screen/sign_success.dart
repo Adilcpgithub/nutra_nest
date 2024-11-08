@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/widgets/custom_textbutton.dart';
 
 class SignSuccess extends StatelessWidget {
@@ -39,7 +40,22 @@ class SignSuccess extends StatelessWidget {
             CustomTextbutton(
                 color: Colors.black,
                 buttomName: 'START SHOPPING',
-                voidCallBack: () async {}),
+                voidCallBack: () async {
+                  Navigator.of(context).pushReplacement(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          MyHomePage(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        // For example, a fade transition
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                }),
           ],
         ),
       ),

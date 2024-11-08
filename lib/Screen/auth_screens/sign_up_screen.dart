@@ -48,7 +48,7 @@ class SignUpScreen extends StatelessWidget {
                       : null,
                   key: _formKey,
                   child: Container(
-                    height: deviceHeight * 2 / 3,
+                    height: 700,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
@@ -220,10 +220,26 @@ class SignUpScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (ctx) {
-                                      return const LoginScreen();
-                                    }));
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            LoginScreen(),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          var curvedAnimation = CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves
+                                                .easeInOut, // Choose any curve here
+                                          );
+
+                                          return FadeTransition(
+                                            opacity: curvedAnimation,
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
                                   },
                                 ),
                               ],
@@ -310,8 +326,19 @@ class SignUpScreen extends StatelessWidget {
 
           // Navigate to success screen
           if (context.mounted) {
-            await Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const SignSuccess()),
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const SignSuccess(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  // For example, a fade transition
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+              ),
             );
           }
         } else if (context.mounted) {

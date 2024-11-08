@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? AutovalidateMode.onUserInteraction
                       : null,
                   child: Container(
-                    height: deviceHeight / 2,
+                    height: 500,
                     width: deviceWidth > 400 ? 600 : deviceWidth,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 0, 0, 0),
@@ -156,21 +156,23 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 const Text(
-                                  'or  ',
+                                  //'or  '
+                                  '',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 13),
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    context
-                                        .read<LoginBloc>()
-                                        .add(ToggleEmailVisibility());
-                                    _emailorPhoneNumberController.clear();
+                                    // context
+                                    //     .read<LoginBloc>()
+                                    //     .add(ToggleEmailVisibility());
+                                    // _emailorPhoneNumberController.clear();
                                   },
                                   child: Text(
                                     state.isEmailVisible
-                                        ? 'Use Phone'
-                                        : 'Use Email',
+                                        ? '' // 'Use Phone'
+                                        : '' //'Use Email',
+                                    ,
                                     style: const TextStyle(
                                         decoration: TextDecoration.underline,
                                         decorationColor: Colors.white,
@@ -243,10 +245,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   onTap: () {
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (ctx) => SignUpScreen()),
-                                      (Route<dynamic> route) => false,
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            SignUpScreen(),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          var curvedAnimation = CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves
+                                                .easeInOut, // Choose any curve here
+                                          );
+
+                                          return FadeTransition(
+                                            opacity: curvedAnimation,
+                                            child: child,
+                                          );
+                                        },
+                                      ),
                                     );
                                   },
                                 ),
@@ -293,29 +310,55 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _submittion(BuildContext context, bool isEmailVisible) async {
     context.read<LoginBloc>().add(ActivateValidation());
 
-    late bool data;
+    AuthResponse response;
     if (_formKey.currentState?.validate() ?? false) {
       if (_formKey.currentState!.validate()) {
-        if (isEmailVisible) {
-          data = await authService.logInUserWithEmailAndPassword(
-              email: _emailorPhoneNumberController.text,
-              password: _passwordController.text);
-        } else {
-          data = await authService.logInUserWithEmailAndPassword(
-              phoneNumber:
-                  selectedCountryCode + _emailorPhoneNumberController.text,
-              password: _passwordController.text);
-        }
+        // if (isEmailVisible) {
+        //   response = await authService.logInUserWithEmailAndPassword(
+        //       email: _emailorPhoneNumberController.text,
+        //       password: _passwordController.text);
+        //  } else {
 
-        if (data) {
+        response = await authService.logInUserWithEmailAndPassword(
+            // phoneNumber:
+            //     selectedCountryCode + _emailorPhoneNumberController.text,
+            email: _emailorPhoneNumberController.text,
+            password: _passwordController.text);
+        // }
+
+        if (response.success) {
           log('login  success');
-          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-            return const SignSuccess();
-          }));
+          // await Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+          //   return const SignSuccess();
+          // }));
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  SignSuccess(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                var curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeInOut, // Choose any curve here
+                );
+
+                return FadeTransition(
+                  opacity: curvedAnimation,
+                  child: child,
+                );
+              },
+            ),
+          );
+
           _emailorPhoneNumberController.clear();
           _passwordController.clear();
         } else {
-          print('sumthing went wrong');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.errorMessage ?? 'Registration failed'),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       }
     }

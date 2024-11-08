@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AuthService authService = AuthService();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -46,19 +49,29 @@ class AccountScreen extends StatelessWidget {
                       SizedBox(
                         height: 17,
                       ),
-                      Container(
-                          height: 41,
-                          width: 41,
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(7.0),
-                            child: Image.asset(
-                              'assets/image copy 6.png',
-                              width: 20.0,
-                            ),
-                          )),
+                      GestureDetector(
+                        onTap: () async {
+                          await authService.signOut();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => LoginScreen()),
+                              (Route<dynamic> route) => false);
+                        },
+                        child: Container(
+                            height: 41,
+                            width: 41,
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(7.0),
+                              child: Image.asset(
+                                'assets/image copy 6.png',
+                                width: 20.0,
+                              ),
+                            )),
+                      ),
                       const Text(
                         'Logout',
                         style: TextStyle(

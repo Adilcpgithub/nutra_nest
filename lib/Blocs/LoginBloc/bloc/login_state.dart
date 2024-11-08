@@ -7,7 +7,7 @@ class LoginState extends Equatable {
   final bool activateValidation;
 
   const LoginState(
-      {this.isEmailVisible = false,
+      {this.isEmailVisible = true,
       this.isPickerVisible = false,
       this.phoneNumber = '',
       this.activateValidation = false});

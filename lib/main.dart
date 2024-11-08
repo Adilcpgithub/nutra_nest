@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
+import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
@@ -38,8 +42,30 @@ void main() async {
   runApp(const MyWidget());
 }
 
-class MyWidget extends StatelessWidget {
+class MyWidget extends StatefulWidget {
   const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  bool status = false;
+  @override
+  void initState() {
+    log('intitstate calling ');
+    super.initState();
+    _checkUserStatus();
+  }
+
+  Future<void> _checkUserStatus() async {
+    UserStatus userStatus = UserStatus();
+    bool loggedInStatus = await userStatus.isUserLoggedIn();
+    setState(() {
+      status = loggedInStatus;
+      print(status);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,21 +77,22 @@ class MyWidget extends StatelessWidget {
           BlocProvider(create: (context) => SignUpBloc())
         ],
         child: MaterialApp(
-            theme: ThemeData(
-              scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
-            ),
-            debugShowCheckedModeBanner: false,
-            home: //SplashScreen()
-                //SignSuccess(),
-                // OtpVerificationScreen()
-                //  OtpVerificationScreen()
-                //  MyHomePage()
-                // EditProfile(),
-                // const AddAddress(),
-                //SignUpScreen(),
-                // const ManageAddress(),
-                const DeleteScreen()
-            // const LoginScreen(),
-            ));
+          theme: ThemeData(
+            scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
+          ),
+          debugShowCheckedModeBanner: false,
+          home: //SplashScreen()
+              //SignSuccess(),
+              // OtpVerificationScreen()
+              //  OtpVerificationScreen()
+              //  MyHomePage()
+              // EditProfile(),
+              // const AddAddress(),
+              //SignUpScreen(),
+              // const ManageAddress(),
+              // const DeleteScreen()
+
+              status ? MyHomePage() : const LoginScreen(),
+        ));
   }
 }
