@@ -19,7 +19,7 @@ class AccountScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 57,
+                height: 41,
               ),
               Row(
                 children: [

@@ -198,7 +198,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               controller: _passwordController,
                               labelText: ' Password  ',
-                              keyboardType: TextInputType.number,
                             ),
                           ),
 
@@ -312,54 +311,52 @@ class _LoginScreenState extends State<LoginScreen> {
 
     AuthResponse response;
     if (_formKey.currentState?.validate() ?? false) {
-      if (_formKey.currentState!.validate()) {
-        // if (isEmailVisible) {
-        //   response = await authService.logInUserWithEmailAndPassword(
-        //       email: _emailorPhoneNumberController.text,
-        //       password: _passwordController.text);
-        //  } else {
+      // if (isEmailVisible) {
+      //   response = await authService.logInUserWithEmailAndPassword(
+      //       email: _emailorPhoneNumberController.text,
+      //       password: _passwordController.text);
+      //  } else {
 
-        response = await authService.logInUserWithEmailAndPassword(
-            // phoneNumber:
-            //     selectedCountryCode + _emailorPhoneNumberController.text,
-            email: _emailorPhoneNumberController.text,
-            password: _passwordController.text);
-        // }
+      response = await authService.logInUserWithEmailAndPassword(
+          // phoneNumber:
+          //     selectedCountryCode + _emailorPhoneNumberController.text,
+          email: _emailorPhoneNumberController.text,
+          password: _passwordController.text);
+      // }
 
-        if (response.success) {
-          log('login  success');
-          // await Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-          //   return const SignSuccess();
-          // }));
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  SignSuccess(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                var curvedAnimation = CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeInOut, // Choose any curve here
-                );
+      if (response.success) {
+        log('login  success');
+        // await Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+        //   return const SignSuccess();
+        // }));
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                SignSuccess(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              var curvedAnimation = CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut, // Choose any curve here
+              );
 
-                return FadeTransition(
-                  opacity: curvedAnimation,
-                  child: child,
-                );
-              },
-            ),
-          );
+              return FadeTransition(
+                opacity: curvedAnimation,
+                child: child,
+              );
+            },
+          ),
+        );
 
-          _emailorPhoneNumberController.clear();
-          _passwordController.clear();
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(response.errorMessage ?? 'Registration failed'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
+        _emailorPhoneNumberController.clear();
+        _passwordController.clear();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response.errorMessage ?? 'Registration failed'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }

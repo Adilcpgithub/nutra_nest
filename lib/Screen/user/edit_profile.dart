@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/model/user_model.dart';
 import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/screen/user/delete_screen.dart';
@@ -18,6 +21,8 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AuthService authService = AuthService();
   UserStatus userStatus = UserStatus();
   final TextEditingController _nameCountroller = TextEditingController();
@@ -26,9 +31,12 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _emailCountroller = TextEditingController();
   File? _selectedImage;
   Image? _defaulImage;
+  String? imagePath;
+  UserModel? userModel;
 
   @override
   void initState() {
+    log('init state calling');
     _defaulImage = Image.asset('assets/image copy 15.png');
     _fetUserData();
     super.initState();
@@ -37,19 +45,53 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
+    final userId = await userStatus.getUserId();
     if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
+      // File imageFile = File(pickedFile.path);
+      // String fileName = 'users/$userId/profile_image.jpg';
+      try {
+        log(1.toString());
+        log(pickedFile.path);
+        // final uploadTask =
+        //     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
+        // final downloadUrl = await uploadTask.ref.getDownloadURL();
+
+        String datas = pickedFile.path;
+        await _firestore.collection('users').doc(userId).update({
+          'imageUrl': datas,
+        });
+        log(pickedFile.path);
+        log(2.toString());
+        setState(() {
+          imagePath = pickedFile.path;
+        });
+        final data = await _firestore.collection('users').doc(userId).get();
+        log(data.toString());
+
+        //  print("Image uploaded successfully: $downloadUrl");
+      } catch (e) {
+        print("Failed to upload image: $e");
+      }
     }
   }
 
-  _fetUserData() async {
-    var data = await authService.getUserData(await userStatus.getUserId());
-    _nameCountroller.text = data?['name'] ?? '';
-    _emailCountroller.text = data?['email'] ?? '';
-    _mobileNumberCountroller.text = data?['phoneNumber'] ?? '';
+  Future<void> _fetUserData() async {
+    final snapshot =
+        await authService.getUserData(await userStatus.getUserId());
+    setState(() async {
+      log(snapshot.toString());
+      if (snapshot != null) {
+        userModel = UserModel.fromMap(snapshot, await userStatus.getUserId());
+      }
+      log(snapshot.toString());
+
+      _nameCountroller.text = userModel!.name;
+      _emailCountroller.text = userModel!.email;
+      _mobileNumberCountroller.text = userModel!.phoneNumber;
+      if (userModel?.imageUrl != null) {
+        imagePath = userModel!.imageUrl;
+      }
+    });
   }
 
   @override
@@ -129,9 +171,9 @@ class _EditProfileState extends State<EditProfile> {
                         border: Border.all(width: 1.8),
                         borderRadius: BorderRadius.circular(5)),
                     child: Padding(
-                      padding: EdgeInsets.all(_selectedImage != null ? 0 : 35),
-                      child: _selectedImage != null
-                          ? Image.file(_selectedImage!)
+                      padding: EdgeInsets.all(imagePath != null ? 0 : 35),
+                      child: imagePath != null
+                          ? Image.asset(imagePath!)
                           : Image.asset('assets/image copy 15.png'),
                     ),
                   ),
@@ -148,9 +190,10 @@ class _EditProfileState extends State<EditProfile> {
                         padding: const EdgeInsets.only(
                             top: 5, bottom: 6, left: 6, right: 5),
                         child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
                               print('hkjhkjhkobject');
-                              _pickImage();
+                              await _pickImage();
+                              _fetUserData();
                             },
                             child: Image.asset('assets/image copy 16.png')),
                       ),
