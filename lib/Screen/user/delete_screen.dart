@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
@@ -231,7 +232,7 @@ void _showDeleteAccountBottomSheet(BuildContext context) {
                   Navigator.of(context).pushReplacement(
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          const EditProfile(), // Your destination page
+                          const LoginScreen(), // Your destination page
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         var curvedAnimation = CurvedAnimation(

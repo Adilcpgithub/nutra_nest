@@ -21,7 +21,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+  // final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AuthService authService = AuthService();
   UserStatus userStatus = UserStatus();
@@ -37,8 +37,9 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     log('init state calling');
-    _defaulImage = Image.asset('assets/image copy 15.png');
     _fetUserData();
+    _defaulImage = Image.asset('assets/image copy 15.png');
+
     super.initState();
   }
 
@@ -76,22 +77,26 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future<void> _fetUserData() async {
-    final snapshot =
-        await authService.getUserData(await userStatus.getUserId());
-    setState(() async {
-      log(snapshot.toString());
-      if (snapshot != null) {
-        userModel = UserModel.fromMap(snapshot, await userStatus.getUserId());
-      }
-      log(snapshot.toString());
+    var data = await authService.getUserData(await userStatus.getUserId());
+    _nameCountroller.text = data?['name'] ?? '';
+    _emailCountroller.text = data?['email'] ?? '';
+    _mobileNumberCountroller.text = data?['phoneNumber'] ?? '';
+    // final snapshot =
+    //     await authService.getUserData(await userStatus.getUserId());
+    // setState(() async {
+    //   log(snapshot.toString());
+    //   if (snapshot != null) {
+    //     userModel = UserModel.fromMap(snapshot, await userStatus.getUserId());
+    //   }
+    //   log(snapshot.toString());
 
-      _nameCountroller.text = userModel!.name;
-      _emailCountroller.text = userModel!.email;
-      _mobileNumberCountroller.text = userModel!.phoneNumber;
-      if (userModel?.imageUrl != null) {
-        imagePath = userModel!.imageUrl;
-      }
-    });
+    //   _nameCountroller.text = userModel!.name;
+    //   _emailCountroller.text = userModel!.email;
+    //   _mobileNumberCountroller.text = userModel!.phoneNumber;
+    //   if (userModel?.imageUrl != null) {
+    //     imagePath = userModel!.imageUrl;
+    //   }
+    // });
   }
 
   @override

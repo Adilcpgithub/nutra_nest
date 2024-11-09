@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
+import 'package:nutra_nest/screen/user/manage_address.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -155,42 +156,66 @@ class AccountScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: const Color(0xFFAFB5BB),
-                      borderRadius: BorderRadius.circular(10)),
-                  width: double.maxFinite,
-                  height: 60,
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 19,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const ManageAddress(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var curvedAnimation = CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut, // Choose any curve here
+                          );
+
+                          return FadeTransition(
+                            opacity: curvedAnimation,
+                            child: child,
+                          );
+                        },
                       ),
-                      Image.asset(
-                        'assets/image copy.png',
-                        height: 24,
-                      ),
-                      const SizedBox(width: 59), // Space between icon and text
-                      const Expanded(
-                        child: Text(
-                          'Update Address', // Example with longer text
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                          overflow: TextOverflow
-                              .ellipsis, // Ellipsis if text is too long
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFAFB5BB),
+                        borderRadius: BorderRadius.circular(10)),
+                    width: double.maxFinite,
+                    height: 60,
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 19,
                         ),
-                      ),
-                      const SizedBox(width: 16), // Space between text and arrow
-                      Image.asset(
-                        'assets/image copy 2.png',
-                        height: 13,
-                      ),
-                      const SizedBox(
-                        width: 22,
-                      ),
-                    ],
+                        Image.asset(
+                          'assets/image copy.png',
+                          height: 24,
+                        ),
+                        const SizedBox(
+                            width: 59), // Space between icon and text
+                        const Expanded(
+                          child: Text(
+                            'Update Address', // Example with longer text
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                            overflow: TextOverflow
+                                .ellipsis, // Ellipsis if text is too long
+                          ),
+                        ),
+                        const SizedBox(
+                            width: 16), // Space between text and arrow
+                        Image.asset(
+                          'assets/image copy 2.png',
+                          height: 13,
+                        ),
+                        const SizedBox(
+                          width: 22,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

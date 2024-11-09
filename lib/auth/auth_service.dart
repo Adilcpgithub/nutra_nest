@@ -60,19 +60,17 @@ class AuthService {
     }
   }
 
-  Future<void> storeDataToFirebase(
-      {required String email,
-      required String userId,
-      required String phoneNumber,
-      required String name,
-      String? imageUrl}) async {
+  Future<void> storeDataToFirebase({
+    required String email,
+    required String userId,
+    required String phoneNumber,
+    required String name,
+  }) async {
     await _firestore.collection('users').doc(userId).set({
       'name': name,
       'email': email,
       'phoneNumber': phoneNumber,
-      //  'imageUrl': imageUrl,
     });
-    await getUserData(userId);
   }
 
   Future<Map<String, dynamic>?> getUserData(String userId) async {
@@ -84,10 +82,9 @@ class AuthService {
 
       // Check if the document exists and return the data
       if (userDoc.exists) {
-        log(1.toString());
-        (userDoc.data() as Map<String, dynamic>);
-        log('message');
-        log(userDoc.toString());
+        // log(1.toString());
+        // (userDoc.data() as Map<String, dynamic>);
+
         return userDoc.data() as Map<String, dynamic>;
       } else {
         log(2.toString());
