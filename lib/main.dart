@@ -77,22 +77,22 @@ class _MyWidgetState extends State<MyWidget> {
           BlocProvider(create: (context) => SignUpBloc())
         ],
         child: MaterialApp(
-          theme: ThemeData(
-            scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
-          ),
-          debugShowCheckedModeBanner: false,
-          home: //SplashScreen()
-              //SignSuccess(),
-              // OtpVerificationScreen()
-              //  OtpVerificationScreen()
-              //  MyHomePage()
-              // EditProfile(),
-              // const AddAddress(),
-              //SignUpScreen(),
-              // const ManageAddress(),
-              // const DeleteScreen()
-
-              status ? MyHomePage() : const LoginScreen(),
-        ));
+            theme: ThemeData(
+              scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
+            ),
+            debugShowCheckedModeBanner: false,
+            home: //SplashScreen()
+                //SignSuccess(),
+                // OtpVerificationScreen()
+                //  OtpVerificationScreen()
+                //  MyHomePage()
+                // EditProfile(),
+                // const AddAddress(),
+                //SignUpScreen(),
+                // const ManageAddress(),
+                // const DeleteScreen()
+                const SplashScreen()
+            // status ? MyHomePage() : const LoginScreen(),
+            ));
   }
 }

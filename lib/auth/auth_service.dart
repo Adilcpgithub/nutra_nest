@@ -176,6 +176,10 @@ class AuthService {
     } catch (e) {
       print("Failed to delete user account: $e");
     }
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user_id');
+    await prefs.setBool('is_logged_in', false);
   }
 }
 
