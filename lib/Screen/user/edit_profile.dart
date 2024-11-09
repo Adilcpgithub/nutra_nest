@@ -223,7 +223,44 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   SizedBox(
                       height: 42,
-                      child: modelTextFormFeild(countroller: _nameCountroller)
+                      child: Stack(children: [
+                        modelTextFormFeild(countroller: _nameCountroller),
+                        Positioned(
+                          top: 12,
+                          bottom: 13,
+                          right: 13,
+                          child: GestureDetector(
+                            onTap: () {
+                              log('tapeed11');
+                              if (_nameCountroller.text.isNotEmpty) {
+                                setState(() {
+                                  authService.updateName(_nameCountroller.text);
+                                });
+                              }
+                              log('tapeessd22');
+                            },
+                            child: SizedBox(
+                              height: 18,
+                              width: 58,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(3)),
+                                height: 30,
+                                width: 60,
+                                child: const Text(
+                                  'Update',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ])
                       //--------------------------
                       ),
                   const SizedBox(
@@ -243,24 +280,34 @@ class _EditProfileState extends State<EditProfile> {
                             top: 12,
                             bottom: 13,
                             right: 13,
-                            child: SizedBox(
-                                height: 18,
-                                width: 58,
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(3)),
-                                  height: 30,
-                                  width: 60,
-                                  child: const Text(
-                                    'Update',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                )))
+                            child: GestureDetector(
+                              onTap: () {
+                                if (_mobileNumberCountroller.text.isNotEmpty) {
+                                  setState(() {
+                                    authService.updatephoneNumber(
+                                        _mobileNumberCountroller.text);
+                                  });
+                                }
+                              },
+                              child: SizedBox(
+                                  height: 18,
+                                  width: 58,
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.circular(3)),
+                                    height: 30,
+                                    width: 60,
+                                    child: const Text(
+                                      'Update',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  )),
+                            ))
                       ])
                       //--------------------------
                       ),
@@ -279,22 +326,32 @@ class _EditProfileState extends State<EditProfile> {
                           top: 12,
                           bottom: 13,
                           right: 13,
-                          child: SizedBox(
-                            height: 18,
-                            width: 58,
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(3)),
-                              height: 30,
-                              width: 60,
-                              child: const Text(
-                                'Update',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w400),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (_emailCountroller.text.isNotEmpty) {
+                                setState(() {
+                                  authService
+                                      .updateEmail(_emailCountroller.text);
+                                });
+                              }
+                            },
+                            child: SizedBox(
+                              height: 18,
+                              width: 58,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(3)),
+                                height: 30,
+                                width: 60,
+                                child: const Text(
+                                  'Update',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
+                                ),
                               ),
                             ),
                           ),
@@ -314,7 +371,13 @@ class _EditProfileState extends State<EditProfile> {
                   padding: const EdgeInsets.symmetric(horizontal: 95),
                   child: SmallTextbutton(
                     buttomName: 'SUBMIT',
-                    voidCallBack: () {},
+                    voidCallBack: () {
+                      authService.updateName(_nameCountroller.text);
+
+                      authService
+                          .updatephoneNumber(_mobileNumberCountroller.text);
+                      authService.updateEmail(_emailCountroller.text);
+                    },
                   ),
                 ),
               ),

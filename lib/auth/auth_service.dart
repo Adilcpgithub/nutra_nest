@@ -181,7 +181,30 @@ class AuthService {
     await prefs.remove('user_id');
     await prefs.setBool('is_logged_in', false);
   }
+
+  Future<void> updateName(String name) async {
+    await _firestore
+        .collection('users')
+        .doc(await userStatus.getUserId())
+        .update({'name': name});
+  }
+
+  Future<void> updateEmail(String emai) async {
+    await _firestore
+        .collection('users')
+        .doc(await userStatus.getUserId())
+        .update({'email': emai});
+  }
+
+  Future<void> updatephoneNumber(String phoneNumber) async {
+    await _firestore
+        .collection('users')
+        .doc(await userStatus.getUserId())
+        .update({'phoneNumber': phoneNumber});
+  }
 }
+//  'email': email,
+//       'phoneNumber': phoneNumber,
 
 class UserStatus {
   Future<void> saveUsersSession(String userId) async {
