@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/screen/user/edit_profile.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
 class DeleteScreen extends StatelessWidget {
@@ -20,17 +21,40 @@ class DeleteScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Container(
-                      height: 39,
-                      width: 39,
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 26,
-                        color: Colors.white,
-                      )),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  const EditProfile(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var curvedAnimation = CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut, // Choose any curve here
+                            );
+
+                            return FadeTransition(
+                              opacity: curvedAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Container(
+                        height: 39,
+                        width: 39,
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 26,
+                          color: Colors.white,
+                        )),
+                  ),
                   const SizedBox(
                     width: 92.5,
                   ),

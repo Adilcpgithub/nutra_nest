@@ -1,7 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
+import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/screen/user/delete_screen.dart';
 import 'package:nutra_nest/widgets/model_text_form_feild.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
@@ -19,17 +24,32 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _mobileNumberCountroller =
       TextEditingController();
   final TextEditingController _emailCountroller = TextEditingController();
+  File? _selectedImage;
+  Image? _defaulImage;
+
+  @override
+  void initState() {
+    _defaulImage = Image.asset('assets/image copy 15.png');
+    _fetUserData();
+    super.initState();
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
+  }
+
   _fetUserData() async {
     var data = await authService.getUserData(await userStatus.getUserId());
     _nameCountroller.text = data?['name'] ?? '';
     _emailCountroller.text = data?['email'] ?? '';
     _mobileNumberCountroller.text = data?['phoneNumber'] ?? '';
-  }
-
-  @override
-  void initState() {
-    _fetUserData();
-    super.initState();
   }
 
   @override
@@ -47,17 +67,42 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Row(
                 children: [
-                  Container(
-                      height: 39,
-                      width: 39,
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 26,
-                        color: Colors.white,
-                      )),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  const MyHomePage(
+                            setIndex: 3,
+                          ),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var curvedAnimation = CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut, // Choose any curve here
+                            );
+
+                            return FadeTransition(
+                              opacity: curvedAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Container(
+                        height: 39,
+                        width: 39,
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          size: 26,
+                          color: Colors.white,
+                        )),
+                  ),
                   const SizedBox(
                     width: 92.5,
                   ),
@@ -70,6 +115,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ],
               ),
+
               const SizedBox(
                 height: 40,
               ),
@@ -83,10 +129,10 @@ class _EditProfileState extends State<EditProfile> {
                         border: Border.all(width: 1.8),
                         borderRadius: BorderRadius.circular(5)),
                     child: Padding(
-                      padding: const EdgeInsets.all(35.0),
-                      child: Image.asset(
-                        'assets/image copy 15.png',
-                      ),
+                      padding: EdgeInsets.all(_selectedImage != null ? 0 : 35),
+                      child: _selectedImage != null
+                          ? Image.file(_selectedImage!)
+                          : Image.asset('assets/image copy 15.png'),
                     ),
                   ),
                   Positioned(
@@ -101,7 +147,12 @@ class _EditProfileState extends State<EditProfile> {
                       child: Padding(
                         padding: const EdgeInsets.only(
                             top: 5, bottom: 6, left: 6, right: 5),
-                        child: Image.asset('assets/image copy 16.png'),
+                        child: GestureDetector(
+                            onTap: () {
+                              print('hkjhkjhkobject');
+                              _pickImage();
+                            },
+                            child: Image.asset('assets/image copy 16.png')),
                       ),
                     ),
                   )
@@ -230,7 +281,27 @@ class _EditProfileState extends State<EditProfile> {
                     buttomColor: Colors.white,
                     textColor: Colors.black,
                     buttomName: 'Delete Account',
-                    voidCallBack: () {},
+                    voidCallBack: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  DeleteScreen(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var curvedAnimation = CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut, // Choose any curve here
+                            );
+
+                            return FadeTransition(
+                              opacity: curvedAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               )

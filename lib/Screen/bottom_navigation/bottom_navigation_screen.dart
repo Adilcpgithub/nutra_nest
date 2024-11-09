@@ -5,7 +5,8 @@ import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/whish_list_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final int setIndex;
+  const MyHomePage({super.key, this.setIndex = 0});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -27,6 +28,12 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    _selectedIndex = widget.setIndex;
+    super.initState();
   }
 
   @override

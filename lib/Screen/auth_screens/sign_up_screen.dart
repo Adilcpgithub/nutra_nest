@@ -224,7 +224,7 @@ class SignUpScreen extends StatelessWidget {
                                       PageRouteBuilder(
                                         pageBuilder: (context, animation,
                                                 secondaryAnimation) =>
-                                            LoginScreen(),
+                                            const LoginScreen(),
                                         transitionsBuilder: (context, animation,
                                             secondaryAnimation, child) {
                                           var curvedAnimation = CurvedAnimation(
