@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/auth/dd.dart';
+import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
-import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
-import 'package:nutra_nest/screen/sign_success.dart';
-import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
-import 'package:nutra_nest/screen/splash_screen.dart';
-import 'package:nutra_nest/screen/user/add_address.dart';
-import 'package:nutra_nest/screen/user/delete_screen.dart';
-import 'package:nutra_nest/screen/user/edit_profile.dart';
-import 'package:nutra_nest/screen/user/manage_address.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +35,10 @@ void main() async {
     // ignore: avoid_print
     print("Firebase initialization error: $e");
   }
+
+  // ignore: deprecated_member_use
+  CloudinaryContext.cloudinary =
+      Cloudinary.fromCloudName(cloudName: "devitg04d");
   runApp(const MyWidget());
 }
 
@@ -74,25 +74,28 @@ class _MyWidgetState extends State<MyWidget> {
           BlocProvider(
               create: (context) => SplashBloc()..add(StartAnimationEvent())),
           BlocProvider(create: (context) => LoginBloc()),
-          BlocProvider(create: (context) => SignUpBloc())
+          BlocProvider(create: (context) => SignUpBloc()),
+          BlocProvider(create: (context) => ProfilBloc()),
         ],
         child: MaterialApp(
-            theme: ThemeData(
-              scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
-            ),
-            debugShowCheckedModeBanner: false,
-            home: //SplashScreen()
-                //SignSuccess(),
-                // OtpVerificationScreen()
-                //  OtpVerificationScreen()
-                //  MyHomePage()
-                // EditProfile(),
-                // const AddAddress(),
-                //SignUpScreen(),
-                // const ManageAddress(),
-                // const DeleteScreen()
-                const SplashScreen()
-            // status ? MyHomePage() : const LoginScreen(),
-            ));
+          theme: ThemeData(
+            scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
+          ),
+          debugShowCheckedModeBanner: false,
+          home: //SplashScreen()
+              //SignSuccess(),
+              // OtpVerificationScreen()
+              //  OtpVerificationScreen()
+              //  MyHomePage()
+              // EditProfile(),
+              // const AddAddress(),
+              //SignUpScreen(),
+              // const ManageAddress(),
+              // const DeleteScreen()
+              // const SplashScreen()
+
+              Dee(),
+          // status ? MyHomePage() : const LoginScreen(),
+        ));
   }
 }

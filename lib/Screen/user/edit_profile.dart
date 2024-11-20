@@ -1,11 +1,17 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_flutter/image/cld_image.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
 import 'package:nutra_nest/model/user_model.dart';
 import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
@@ -101,6 +107,11 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize Cloudinary inside the build method
+    final cloudinary = Cloudinary.fromCloudName(cloudName: 'devitg04d');
+
+    // Generate a URL for the image
+    final imageUrl = cloudinary.image('user_1231').toString();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -168,18 +179,55 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Stack(
                 children: [
-                  Container(
-                    height: 135,
-                    width: 135,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 1.8),
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: EdgeInsets.all(imagePath != null ? 0 : 35),
-                      child: imagePath != null
-                          ? Image.asset(imagePath!)
-                          : Image.asset('assets/image copy 15.png'),
+                  BlocProvider(
+                    create: (context) => ProfilBloc(),
+                    child: BlocConsumer<ProfilBloc, ProfilState>(
+                      listener: (context, state) {
+                        if (state is CloudinaryUploadSuccess) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Image Uploaded!')));
+                        } else if (state is CloudinaryError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.errorMessage)));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is CloudinaryLoading) {
+                          return const CircularProgressIndicator();
+                        } else if (state is CloudinaryUploadSuccess) {
+                          return Container(
+                            height: 135,
+                            width: 135,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(width: 1.8),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Padding(
+                                padding:
+                                    EdgeInsets.all(imagePath != null ? 0 : 35),
+                                child: Image.network(state.imageUrl!)
+                                // : Image.asset('assets/image copy 15.png'),
+                                ),
+                          );
+                        } else if (state is ShowDefaulImage) {
+                          return Container(
+                            height: 135,
+                            width: 135,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(width: 1.8),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.all(imagePath != null ? 0 : 35),
+                              child: Image.asset(state.DefaultImage),
+                            ),
+                          );
+                        } else {
+                          return Image.network(
+                              'https://res.cloudinary.com/devitg04d/image/upload/v123456/<user_1231>.jpg');
+                        }
+                      },
                     ),
                   ),
                   Positioned(
@@ -196,8 +244,9 @@ class _EditProfileState extends State<EditProfile> {
                             top: 5, bottom: 6, left: 6, right: 5),
                         child: GestureDetector(
                             onTap: () async {
-                              print('hkjhkjhkobject');
-                              await _pickImage();
+                              BlocProvider.of<ProfilBloc>(context).add(
+                                  UploadImageEvent(
+                                      await userStatus.getUserId()));
                               _fetUserData();
                             },
                             child: Image.asset('assets/image copy 16.png')),
@@ -397,7 +446,7 @@ class _EditProfileState extends State<EditProfile> {
                         PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  DeleteScreen(),
+                                  const DeleteScreen(),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                             var curvedAnimation = CurvedAnimation(

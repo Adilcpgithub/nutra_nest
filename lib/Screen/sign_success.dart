@@ -44,7 +44,7 @@ class SignSuccess extends StatelessWidget {
                   Navigator.of(context).pushReplacement(
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          MyHomePage(),
+                          const MyHomePage(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         // For example, a fade transition

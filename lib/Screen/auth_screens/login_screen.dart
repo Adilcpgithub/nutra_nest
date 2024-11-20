@@ -332,7 +332,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                SignSuccess(),
+                const SignSuccess(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               var curvedAnimation = CurvedAnimation(

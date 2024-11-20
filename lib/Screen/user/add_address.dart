@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/widgets/model_text_form_feild.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';

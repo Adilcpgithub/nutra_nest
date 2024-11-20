@@ -161,8 +161,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   void dispose() {
     // Dispose all controllers and focus nodes
-    _otpControllers.forEach((controller) => controller.dispose());
-    _focusNodes.forEach((focusNode) => focusNode.dispose());
+    for (var controller in _otpControllers) {
+      controller.dispose();
+    }
+    for (var focusNode in _focusNodes) {
+      focusNode.dispose();
+    }
     super.dispose();
   }
 
@@ -190,11 +194,11 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
             counterText: "",
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(width: 3.0, color: Colors.grey),
+              borderSide: const BorderSide(width: 3.0, color: Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.black,
                 width: 2,
               ),
@@ -216,32 +220,32 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Verification',
               style: TextStyle(
                   color: Colors.black,
                   fontSize: 27,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Enter the verification code we just sent you on your phone',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 12,
               ),
             ),
-            SizedBox(height: 69),
+            const SizedBox(height: 69),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(6, (index) => _buildOTPField(index)),
               ),
             ),
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 50),
               child: CustomTextbutton(
                 color: Colors.black,
                 buttomName: 'VIRIFY CODE',
@@ -254,12 +258,12 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             const Text(
               'Resend code ?',
-              style: const TextStyle(
+              style: TextStyle(
                   decoration: TextDecoration.underline,
                   decorationColor: Colors.black,
                   decorationThickness: 1.3,

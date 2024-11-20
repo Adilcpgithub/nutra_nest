@@ -177,7 +177,7 @@ void _showDeleteAccountBottomSheet(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             const Text(
@@ -204,7 +204,7 @@ void _showDeleteAccountBottomSheet(BuildContext context) {
                 labelText: ' Email',
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Flexible(
               child: CustomTextFormField(
                 validator: (value) {
@@ -220,7 +220,7 @@ void _showDeleteAccountBottomSheet(BuildContext context) {
                 labelText: ' Password  ',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Flexible(
               child: SmallTextbutton(
                 buttomName: 'DELETE',

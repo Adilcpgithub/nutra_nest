@@ -64,10 +64,10 @@ class ManageAddress extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Row(
+            const Row(
               children: [
                 Text(
                   'Saved Addresses',
@@ -78,7 +78,7 @@ class ManageAddress extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             //----------------------------
@@ -88,7 +88,7 @@ class ManageAddress extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        color: Color(0xFFAFB5BB),
+                        color: const Color(0xFFAFB5BB),
                         borderRadius: BorderRadius.circular(9)),
                     padding: const EdgeInsets.all(10),
                     width: double.infinity,

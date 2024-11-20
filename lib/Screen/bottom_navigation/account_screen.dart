@@ -19,7 +19,7 @@ class AccountScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 41,
               ),
               Row(
@@ -51,7 +51,7 @@ class AccountScreen extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 17,
                       ),
                       GestureDetector(
@@ -60,7 +60,7 @@ class AccountScreen extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (ctx) => LoginScreen()),
+                                  builder: (ctx) => const LoginScreen()),
                               (Route<dynamic> route) => false);
                         },
                         child: Container(
