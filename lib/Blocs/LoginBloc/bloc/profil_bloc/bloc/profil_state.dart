@@ -1,6 +1,8 @@
 part of 'profil_bloc.dart';
 
 sealed class ProfilState extends Equatable {
+  final defaultImage = 'assets/image copy 15.png';
+
   const ProfilState();
 
   @override

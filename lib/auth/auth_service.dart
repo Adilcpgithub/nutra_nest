@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthResponse {
@@ -15,6 +18,8 @@ class AuthResponse {
 class AuthService {
   final _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instanceFor(
+      bucket: 'nutranest-a6417.firebasestorage.app');
   final UserStatus userStatus = UserStatus();
 
 //--------------------------------------------------------------
@@ -65,12 +70,57 @@ class AuthService {
     required String userId,
     required String phoneNumber,
     required String name,
+    String? imageUrl,
   }) async {
     await _firestore.collection('users').doc(userId).set({
       'name': name,
       'email': email,
       'phoneNumber': phoneNumber,
-    });
+      if (imageUrl != null) 'profileImage': imageUrl,
+    }, SetOptions(merge: true));
+  }
+
+  //! Image Picking
+  Future<String?> uploadImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile?.path == null) {
+      log('image picking failed');
+      return null;
+    }
+    log(pickedFile!.path);
+    File? imageFile = File(pickedFile.path);
+    return await uploadImageToFireStore(imageFile);
+  }
+
+  // Upload image to Firebase Storage
+  Future<String?> uploadImageToFireStore(File imageFile) async {
+    log('1');
+    try {
+      final ref = _storage
+          .ref()
+          .child('users/${UserStatus.userIdFinal}/profileImage.jpg');
+      final uploadTask = ref.putFile(imageFile);
+      await uploadTask.whenComplete(() {});
+      log('2');
+      // Get the download URL
+      final imageUrl = await ref.getDownloadURL();
+      log('3');
+
+      // Save the URL to Firestore
+      try {
+        await _firestore.collection('users').doc(UserStatus.userIdFinal).set({
+          'profileImage': imageUrl,
+        }, SetOptions(merge: true));
+        log('4');
+        return imageUrl;
+      } catch (e) {
+        log('error coccoure when store image url in firestore :$e');
+      }
+    } catch (e) {
+      print('Error uploading image: $e');
+    }
+    return null;
   }
 
   Future<Map<String, dynamic>?> getUserData(String userId) async {
@@ -203,14 +253,15 @@ class AuthService {
         .update({'phoneNumber': phoneNumber});
   }
 }
-//  'email': email,
-//       'phoneNumber': phoneNumber,
 
 class UserStatus {
+  static String userIdFinal = '';
   Future<void> saveUsersSession(String userId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_id', userId);
+
     await prefs.setBool('is_logged_in', true);
+    await getUserId();
   }
 
   Future<bool> isUserLoggedIn() async {
@@ -220,6 +271,7 @@ class UserStatus {
 
   Future<String> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    userIdFinal = prefs.getString('user_id') ?? '';
     return prefs.getString('user_id') ?? '';
   }
 }

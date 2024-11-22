@@ -5,6 +5,7 @@ import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
 import 'package:nutra_nest/screen/user/manage_address.dart';
+import 'package:nutra_nest/utity/colors.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -12,6 +13,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthService authService = AuthService();
+
     UserStatus userStatus = UserStatus();
     return Scaffold(
       body: Padding(
@@ -28,6 +30,8 @@ class AccountScreen extends StatelessWidget {
                       height: 39,
                       width: 39,
                       decoration: BoxDecoration(
+                          border:
+                              Border.all(width: 1.5, color: CustomColors.green),
                           color: Colors.black,
                           borderRadius: BorderRadius.circular(10)),
                       child: const Icon(
@@ -41,8 +45,10 @@ class AccountScreen extends StatelessWidget {
                   const Expanded(
                     child: Text(
                       'Hey! Nutra-Nest',
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
                     ),
                   ),
                   const SizedBox(
@@ -64,9 +70,11 @@ class AccountScreen extends StatelessWidget {
                               (Route<dynamic> route) => false);
                         },
                         child: Container(
-                            height: 41,
-                            width: 41,
+                            height: 39,
+                            width: 39,
                             decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1.5, color: CustomColors.green),
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Padding(
@@ -78,9 +86,11 @@ class AccountScreen extends StatelessWidget {
                             )),
                       ),
                       const Text(
-                        'Logout',
+                        'Log out',
                         style: TextStyle(
-                            fontSize: 10, fontWeight: FontWeight.w500),
+                            color: CustomColors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500),
                       )
                     ],
                   ),
@@ -114,7 +124,7 @@ class AccountScreen extends StatelessWidget {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: const Color(0xFFAFB5BB),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     width: double.maxFinite,
                     height: 60,
@@ -179,7 +189,7 @@ class AccountScreen extends StatelessWidget {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: const Color(0xFFAFB5BB),
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     width: double.maxFinite,
                     height: 60,
@@ -223,7 +233,7 @@ class AccountScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: const Color(0xFFAFB5BB),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   width: double.maxFinite,
                   height: 60,
@@ -264,7 +274,7 @@ class AccountScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: const Color(0xFFAFB5BB),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   width: double.maxFinite,
                   height: 60,
@@ -305,7 +315,7 @@ class AccountScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: const Color(0xFFAFB5BB),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   width: double.maxFinite,
                   height: 60,

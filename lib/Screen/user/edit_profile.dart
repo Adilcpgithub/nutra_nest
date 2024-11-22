@@ -83,10 +83,13 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Future<void> _fetUserData() async {
-    var data = await authService.getUserData(await userStatus.getUserId());
+    await userStatus.getUserId();
+
+    var data = await authService.getUserData(UserStatus.userIdFinal);
     _nameCountroller.text = data?['name'] ?? '';
     _emailCountroller.text = data?['email'] ?? '';
     _mobileNumberCountroller.text = data?['phoneNumber'] ?? '';
+    log(data.toString());
     // final snapshot =
     //     await authService.getUserData(await userStatus.getUserId());
     // setState(() async {
@@ -205,27 +208,22 @@ class _EditProfileState extends State<EditProfile> {
                             child: Padding(
                                 padding:
                                     EdgeInsets.all(imagePath != null ? 0 : 35),
-                                child: Image.network(state.imageUrl!)
-                                // : Image.asset('assets/image copy 15.png'),
-                                ),
+                                child: Image.network(state.imageUrl!)),
                           );
-                        } else if (state is ShowDefaulImage) {
+                        } else {
                           return Container(
                             height: 135,
                             width: 135,
                             decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 77, 40, 40),
                                 border: Border.all(width: 1.8),
                                 borderRadius: BorderRadius.circular(5)),
                             child: Padding(
                               padding:
                                   EdgeInsets.all(imagePath != null ? 0 : 35),
-                              child: Image.asset(state.DefaultImage),
+                              child: Image.asset(state.defaultImage),
                             ),
                           );
-                        } else {
-                          return Image.network(
-                              'https://res.cloudinary.com/devitg04d/image/upload/v123456/<user_1231>.jpg');
                         }
                       },
                     ),
@@ -245,9 +243,8 @@ class _EditProfileState extends State<EditProfile> {
                         child: GestureDetector(
                             onTap: () async {
                               BlocProvider.of<ProfilBloc>(context).add(
-                                  UploadImageEvent(
-                                      await userStatus.getUserId()));
-                              _fetUserData();
+                                  UploadImageEvent(UserStatus.userIdFinal));
+                              // _fetUserData();
                             },
                             child: Image.asset('assets/image copy 16.png')),
                       ),

@@ -9,32 +9,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
-import 'package:nutra_nest/auth/dd.dart';
 import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async {
+  // await FirebaseAppCheck.instance.activate(
+  // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+  // androidProvider: AndroidProvider.debug,
+  //  appleProvider: AppleProvider.appAttest,
+  //);
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    if (kIsWeb) {
-      await Firebase.initializeApp(
-          options: const FirebaseOptions(
-              apiKey: "AIzaSyCPhgJ67PJp0-rEJPz82wFpAUVavdaV77M",
-              authDomain: "nutranest-a6417.firebaseapp.com",
-              projectId: "nutranest-a6417",
-              storageBucket: "nutranest-a6417.appspot.com",
-              messagingSenderId: "544605270040",
-              appId: "1:544605270040:web:ebe8021bc66785c5fc536d",
-              measurementId: "G-KEXM8FGNPN"));
-    } else {
-      await Firebase.initializeApp();
-    }
-  } catch (e) {
-    // ignore: avoid_print
-    print("Firebase initialization error: $e");
-  }
+  await Firebase.initializeApp();
+  await FirebaseAppCheck.instance.activate(
+    // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    //  appleProvider: AppleProvider.appAttest,
+  );
+  // try {
+  //   if (kIsWeb) {
+  //     await Firebase.initializeApp(
+  //         options: const FirebaseOptions(
+  //             apiKey: "AIzaSyCPhgJ67PJp0-rEJPz82wFpAUVavdaV77M",
+  //             authDomain: "nutranest-a6417.firebaseapp.com",
+  //             projectId: "nutranest-a6417",
+  //             storageBucket: "nutranest-a6417.appspot.com",
+  //             messagingSenderId: "544605270040",
+  //             appId: "1:544605270040:web:ebe8021bc66785c5fc536d",
+  //             measurementId: "G-KEXM8FGNPN"));
+  //   } else {
+  await Firebase.initializeApp();
+  //   }
+  // } catch (e) {
+  //   // ignore: avoid_print
+  //   print("Firebase initialization error: $e");
+  // }
 
   // ignore: deprecated_member_use
   CloudinaryContext.cloudinary =
@@ -79,7 +90,7 @@ class _MyWidgetState extends State<MyWidget> {
         ],
         child: MaterialApp(
           theme: ThemeData(
-            scaffoldBackgroundColor: const Color.fromARGB(255, 248, 255, 251),
+            scaffoldBackgroundColor: Colors.black,
           ),
           debugShowCheckedModeBanner: false,
           home: //SplashScreen()
@@ -94,8 +105,8 @@ class _MyWidgetState extends State<MyWidget> {
               // const DeleteScreen()
               // const SplashScreen()
 
-              Dee(),
-          // status ? MyHomePage() : const LoginScreen(),
+              // Dee(),
+              status ? const MyHomePage() : const LoginScreen(),
         ));
   }
 }

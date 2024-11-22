@@ -3,6 +3,7 @@ import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/cart_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/whish_list_screen.dart';
+import 'package:nutra_nest/utity/colors.dart';
 
 class MyHomePage extends StatefulWidget {
   final int setIndex;
@@ -17,9 +18,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0; // To track the selected tab
 
   final List<Widget> _screens = [
-    HomeScreen(),
-    CartScreen(),
-    WhishListScreen(),
+    const HomeScreen(),
+    const CartScreen(),
+    const WhishListScreen(),
     const AccountScreen(),
   ]; // List of screens to switch between
 
@@ -41,9 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: _screens[_selectedIndex], // Display the selected screen
       bottomNavigationBar: Container(
-        color: Colors.white, // Background color for the bar
+        color: Colors.transparent, // Background color for the bar
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
+          padding: const EdgeInsets.only(top: 6, left: 10, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -100,13 +101,17 @@ class _MyHomePageState extends State<MyHomePage> {
       child: GestureDetector(
         onTap: () => _onItemTapped(index), // Update selected index on tap
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 2, left: 2, right: 2),
+          padding: const EdgeInsets.only(
+            bottom: 10,
+            left: 8,
+            right: 8,
+          ),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 250),
-            height: 73, // Adjust height to cover full bottom area
+            height: 68, // Adjust height to cover full bottom area
             decoration: BoxDecoration(
-              color: isSelected ? Colors.black : Colors.white,
-              borderRadius: BorderRadius.circular(8),
+              color: isSelected ? CustomColors.green : Colors.white,
+              borderRadius: BorderRadius.circular(15),
             ),
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Center(

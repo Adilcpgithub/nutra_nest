@@ -11,11 +11,13 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final String? errorText;
+  final Color? borderColor;
 
   const CustomTextFormField({
     super.key,
     required this.controller,
     required this.labelText,
+    this.borderColor,
     this.hintText = '',
     this.onChanged,
     this.keyboardType = TextInputType.text,
@@ -42,6 +44,7 @@ class CustomTextFormField extends StatelessWidget {
           labelStyle: const TextStyle(fontSize: 18, color: Colors.grey),
           hintText: hintText,
           prefixIcon: prefixIcon,
+
           errorText: errorText, // Show error text here
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -49,22 +52,25 @@ class CustomTextFormField extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.grey),
+            borderSide: BorderSide(color: borderColor ?? Colors.grey),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-                color: Colors.grey), // Keep color same as enabled
+            borderSide: BorderSide(
+                color:
+                    borderColor ?? Colors.grey), // Keep color same as enabled
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-                color: Colors.grey), // Keep color same as enabled
+            borderSide: BorderSide(
+                color:
+                    borderColor ?? Colors.grey), // Keep color same as enabled
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-                color: Colors.grey), // Keep color same as enabled
+            borderSide: BorderSide(
+                color:
+                    borderColor ?? Colors.grey), // Keep color same as enabled
           ),
         ),
         validator: validator,
