@@ -14,10 +14,10 @@ class ImageCarousel extends StatelessWidget {
     return Center(
         child: Container(
       width: double.infinity,
-      height: 150, // Adjust height as needed
+      height: 190, // Adjust height as needed
       child: CarouselSlider(
         options: CarouselOptions(
-          autoPlay: true, // Enables automatic sliding
+          autoPlay: true,
           enlargeCenterPage: false, // Makes the center image larger
           aspectRatio: 15 / 10, // Aspect ratio of the slider
           autoPlayInterval: const Duration(seconds: 3), // Time for each slide
@@ -28,7 +28,7 @@ class ImageCarousel extends StatelessWidget {
           return Builder(
             builder: (BuildContext context) {
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                margin: const EdgeInsets.symmetric(horizontal: 10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16.0),
                   image: DecorationImage(
@@ -44,5 +44,3 @@ class ImageCarousel extends StatelessWidget {
     ));
   }
 }
-
-void main() => runApp(MaterialApp(home: ImageCarousel()));

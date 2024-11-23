@@ -13,17 +13,12 @@ final class ProfilInitial extends ProfilState {}
 
 class CloudinaryLoading extends ProfilState {}
 
-class CloudinaryUploadSuccess extends ProfilState {
-  final String? imageUrl;
-
-  CloudinaryUploadSuccess(this.imageUrl);
-}
-
+// ignore: must_be_immutable
 class CloudinaryUrlRetrieved extends ProfilState {
-  String imageUrl =
-      'https://api.cloudinary.com/v1_1/devitg04d/image/upload/user_1231';
+  String imageUrl = '';
+  final bool isNewUpload;
 
-  CloudinaryUrlRetrieved(this.imageUrl);
+  CloudinaryUrlRetrieved({required this.imageUrl, this.isNewUpload = false});
 }
 
 class CloudinaryDeleted extends ProfilState {}

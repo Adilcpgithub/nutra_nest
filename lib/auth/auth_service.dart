@@ -127,15 +127,15 @@ class AuthService {
     log('get user data called');
     try {
       // Fetch the user document from Firestore
-      DocumentSnapshot userDoc =
+      DocumentSnapshot userSnapshot =
           await _firestore.collection('users').doc(userId).get();
 
       // Check if the document exists and return the data
-      if (userDoc.exists) {
+      if (userSnapshot.exists) {
         // log(1.toString());
-        // (userDoc.data() as Map<String, dynamic>);
+        // (userSnapshot.data() as Map<String, dynamic>);
 
-        return userDoc.data() as Map<String, dynamic>;
+        return userSnapshot.data() as Map<String, dynamic>;
       } else {
         log(2.toString());
         log('User not found in Firestore');

@@ -17,11 +17,7 @@ class UploadImageEvent extends ProfilEvent {
 
 class DefaultImageEvent extends ProfilEvent {}
 
-class GetImageUrlEvent extends ProfilEvent {
-  final String userId;
-
-  GetImageUrlEvent(this.userId);
-}
+class GetImageUrlEvent extends ProfilEvent {}
 
 class DeleteImageEvent extends ProfilEvent {
   final String userId;

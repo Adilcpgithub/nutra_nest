@@ -15,6 +15,7 @@ part 'profil_state.dart';
 class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
   ProfilBloc() : super(ProfilInitial()) {
     on<UploadImageEvent>(_onUploadImage);
+    on<GetImageUrlEvent>(_onGetImageUrl);
   }
 
   Future<void> _onUploadImage(
@@ -23,27 +24,22 @@ class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
     emit(CloudinaryLoading());
     String? imageUrl = await authService.uploadImage();
     if (imageUrl != null) {
-      emit(CloudinaryUploadSuccess(imageUrl));
+      emit(CloudinaryUrlRetrieved(imageUrl: imageUrl, isNewUpload: false));
     }
   }
 
   Future<void> _onGetImageUrl(
       GetImageUrlEvent event, Emitter<ProfilState> emit) async {
+    AuthService authService = AuthService();
     emit(CloudinaryLoading());
+    var data = await authService.getUserData(UserStatus.userIdFinal);
+    String imageUrl = data?['profileImage'] ?? '';
 
-    final url = Uri.parse(
-        'https://res.cloudinary.com/devitg04d/image/upload/user_${event.userId}.jpg');
-
-    try {
-      final response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        emit(CloudinaryUrlRetrieved(url.toString()));
-      } else {
-        emit(CloudinaryError('Failed to retrieve image URL.'));
-      }
-    } catch (e) {
-      emit(CloudinaryError('Error fetching image URL: $e'));
+    if (imageUrl.isNotEmpty) {
+      log('you have image $imageUrl');
+      emit(CloudinaryUrlRetrieved(imageUrl: imageUrl, isNewUpload: true));
+    } else {
+      emit(ShowDefaulImage());
     }
   }
 

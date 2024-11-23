@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: Container(
         color: Colors.transparent, // Background color for the bar
         child: Padding(
-          padding: const EdgeInsets.only(top: 6, left: 10, right: 10),
+          padding: const EdgeInsets.only(top: 6, left: 5, right: 5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -103,8 +103,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Padding(
           padding: const EdgeInsets.only(
             bottom: 10,
-            left: 8,
-            right: 8,
+            left: 2,
+            right: 2,
           ),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 250),

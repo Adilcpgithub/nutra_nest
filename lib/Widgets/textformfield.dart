@@ -11,13 +11,11 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final String? errorText;
-  final Color? borderColor;
 
   const CustomTextFormField({
     super.key,
     required this.controller,
     required this.labelText,
-    this.borderColor,
     this.hintText = '',
     this.onChanged,
     this.keyboardType = TextInputType.text,
@@ -32,48 +30,46 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        onChanged: onChanged,
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        style: const TextStyle(fontSize: 18, color: Colors.white),
-        decoration: InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.never,
-          labelText: labelText,
-          labelStyle: const TextStyle(fontSize: 18, color: Colors.grey),
-          hintText: hintText,
-          prefixIcon: prefixIcon,
-
-          errorText: errorText, // Show error text here
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: borderColor ?? Colors.grey),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-                color:
-                    borderColor ?? Colors.grey), // Keep color same as enabled
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-                color:
-                    borderColor ?? Colors.grey), // Keep color same as enabled
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-                color:
-                    borderColor ?? Colors.grey), // Keep color same as enabled
-          ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: BorderRadius.circular(15),
         ),
-        validator: validator,
+        child: TextFormField(
+          onChanged: onChanged,
+          controller: controller,
+          keyboardType: keyboardType,
+          obscureText: obscureText,
+          style: const TextStyle(fontSize: 18, color: Colors.white),
+          decoration: InputDecoration(
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            labelText: labelText,
+            labelStyle: const TextStyle(fontSize: 18, color: Colors.grey),
+            hintText: hintText,
+            prefixIcon: prefixIcon,
+
+            errorText: errorText, // Show error text here
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              // Keep color same as enabled
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          validator: validator,
+        ),
       ),
     );
   }

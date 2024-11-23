@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Center(
                     child: Image.asset(
                       'assets/NutraNestPo.png',
-                      height: 220,
+                      height: 180,
                     ),
                   ),
                 ),
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? AutovalidateMode.onUserInteraction
                       : null,
                   child: Container(
-                    height: 500,
+                    height: 420,
                     width: deviceWidth > 400 ? 600 : deviceWidth,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 0, 0, 0),
@@ -67,11 +67,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Column(
                         children: [
                           const Padding(
-                            padding: EdgeInsets.only(top: 15, bottom: 15),
+                            padding: EdgeInsets.only(top: 5, bottom: 5),
                             child: Flexible(
                               child: Text(
                                 'Log In',

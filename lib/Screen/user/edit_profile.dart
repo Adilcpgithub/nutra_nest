@@ -16,6 +16,7 @@ import 'package:nutra_nest/model/user_model.dart';
 import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/screen/user/delete_screen.dart';
+import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/widgets/model_text_form_feild.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
@@ -44,42 +45,10 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     log('init state calling');
     _fetUserData();
+    context.read<ProfilBloc>().add(GetImageUrlEvent());
     _defaulImage = Image.asset('assets/image copy 15.png');
 
     super.initState();
-  }
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    final userId = await userStatus.getUserId();
-    if (pickedFile != null) {
-      // File imageFile = File(pickedFile.path);
-      // String fileName = 'users/$userId/profile_image.jpg';
-      try {
-        log(1.toString());
-        log(pickedFile.path);
-        // final uploadTask =
-        //     await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
-        // final downloadUrl = await uploadTask.ref.getDownloadURL();
-
-        String datas = pickedFile.path;
-        await _firestore.collection('users').doc(userId).update({
-          'imageUrl': datas,
-        });
-        log(pickedFile.path);
-        log(2.toString());
-        setState(() {
-          imagePath = pickedFile.path;
-        });
-        final data = await _firestore.collection('users').doc(userId).get();
-        log(data.toString());
-
-        //  print("Image uploaded successfully: $downloadUrl");
-      } catch (e) {
-        print("Failed to upload image: $e");
-      }
-    }
   }
 
   Future<void> _fetUserData() async {
@@ -90,22 +59,6 @@ class _EditProfileState extends State<EditProfile> {
     _emailCountroller.text = data?['email'] ?? '';
     _mobileNumberCountroller.text = data?['phoneNumber'] ?? '';
     log(data.toString());
-    // final snapshot =
-    //     await authService.getUserData(await userStatus.getUserId());
-    // setState(() async {
-    //   log(snapshot.toString());
-    //   if (snapshot != null) {
-    //     userModel = UserModel.fromMap(snapshot, await userStatus.getUserId());
-    //   }
-    //   log(snapshot.toString());
-
-    //   _nameCountroller.text = userModel!.name;
-    //   _emailCountroller.text = userModel!.email;
-    //   _mobileNumberCountroller.text = userModel!.phoneNumber;
-    //   if (userModel?.imageUrl != null) {
-    //     imagePath = userModel!.imageUrl;
-    //   }
-    // });
   }
 
   @override
@@ -182,51 +135,49 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Stack(
                 children: [
-                  BlocProvider(
-                    create: (context) => ProfilBloc(),
-                    child: BlocConsumer<ProfilBloc, ProfilState>(
-                      listener: (context, state) {
-                        if (state is CloudinaryUploadSuccess) {
+                  BlocConsumer<ProfilBloc, ProfilState>(
+                    listener: (context, state) {
+                      if (state is CloudinaryUrlRetrieved) {
+                        log(state.isNewUpload.toString());
+                        if (!state.isNewUpload) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Image Uploaded!')));
-                        } else if (state is CloudinaryError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.errorMessage)));
                         }
-                      },
-                      builder: (context, state) {
-                        if (state is CloudinaryLoading) {
-                          return const CircularProgressIndicator();
-                        } else if (state is CloudinaryUploadSuccess) {
-                          return Container(
-                            height: 135,
-                            width: 135,
+                      } else if (state is CloudinaryError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.errorMessage)));
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is CloudinaryLoading) {
+                        return const CircularProgressIndicator();
+                      } else if (state is CloudinaryUrlRetrieved) {
+                        return Container(
+                            height: 160,
+                            width: 160,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border.all(width: 1.8),
                                 borderRadius: BorderRadius.circular(5)),
-                            child: Padding(
-                                padding:
-                                    EdgeInsets.all(imagePath != null ? 0 : 35),
-                                child: Image.network(state.imageUrl!)),
-                          );
-                        } else {
-                          return Container(
-                            height: 135,
-                            width: 135,
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 77, 40, 40),
-                                border: Border.all(width: 1.8),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.all(imagePath != null ? 0 : 35),
-                              child: Image.asset(state.defaultImage),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                            child: Image.network(
+                              state.imageUrl,
+                              fit: BoxFit.cover,
+                            ));
+                      } else {
+                        return Container(
+                          height: 135,
+                          width: 135,
+                          decoration: BoxDecoration(
+                              color: CustomColors.white,
+                              border: Border.all(width: 1.8),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: EdgeInsets.all(imagePath != null ? 0 : 35),
+                            child: Image.asset(state.defaultImage),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   Positioned(
                     bottom: 8,
@@ -461,6 +412,9 @@ class _EditProfileState extends State<EditProfile> {
                     },
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 20,
               )
             ],
           ),

@@ -31,11 +31,14 @@ class SignUpScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
                   height: deviceHeight / 3,
                   child: Center(
                     child: Image.asset(
                       'assets/NutraNestPo.png',
-                      height: 220,
+                      height: 180,
                     ),
                   ),
                 ),
@@ -45,7 +48,7 @@ class SignUpScreen extends StatelessWidget {
                       : null,
                   key: _formKey,
                   child: Container(
-                    height: 700,
+                    height: 630,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.only(
@@ -54,7 +57,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 45),
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Column(
                         children: [
                           const Padding(
