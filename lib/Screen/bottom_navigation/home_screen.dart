@@ -12,16 +12,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(),
-                _buildSerchBar(),
-                _builCarousel(),
-                _buildTypeofCycles()
+                _buildSearchBar(),
+                _buildFeaturedSection(),
+                _buildSparePartsSection(),
+                _buildCycleTypesGrid(),
               ],
             ),
           ),
@@ -107,7 +110,7 @@ Widget _buildHeader() {
 }
 
 //adfashskdflasdhf
-Widget _buildSerchBar() {
+Widget _buildSearchBar() {
   final TextEditingController _searchCountroller = TextEditingController();
   return FadeInDown(
     child: Column(
@@ -138,16 +141,16 @@ Widget _buildSerchBar() {
   );
 }
 
-Widget _builCarousel() {
+Widget _buildFeaturedSection() {
   return FadeInUp(
     child: Column(
       children: [
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Text(
-                'Wheel Deals',
+                'Featured',
                 style: GoogleFonts.nunito(
                     color: CustomColors.white,
                     fontWeight: FontWeight.bold,
@@ -165,13 +168,44 @@ Widget _builCarousel() {
   );
 }
 
-Widget _buildTypeofCycles() {
+Widget _categoryContainer(
+    String categoryName, IconData icon, VoidCallback function) {
+  return GestureDetector(
+    onTap: () => function,
+    child: Container(
+      height: 90,
+      width: 90,
+      decoration: BoxDecoration(
+          color: Colors.grey[900], borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            size: 30,
+            icon,
+            color: CustomColors.green,
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Text(categoryName,
+              style: GoogleFonts.lato(
+                  color: CustomColors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11))
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildCycleTypesGrid() {
   return Column(
     children: [
       Row(
         children: [
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               'Type of Cycles',
               style: GoogleFonts.nunito(
@@ -244,4 +278,188 @@ Widget _cycleContainer(String cycleName, IconData icon, VoidCallback function) {
       ),
     ),
   );
+}
+
+Widget _buildSparePartsSection() {
+  return FadeInUp(
+    duration: const Duration(milliseconds: 500),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            'Spare Parts',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: sparePartsList.length,
+            itemBuilder: (context, index) {
+              final part = sparePartsList[index];
+              return SparePartCard(
+                imagePath: part.image,
+                title: part.name,
+                price: part.price,
+                rating: part.rating,
+                onTap: () {},
+              );
+            },
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class SparePart {
+  final String name;
+  final String image;
+  final double price;
+  final double rating;
+
+  SparePart({
+    required this.name,
+    required this.image,
+    required this.price,
+    required this.rating,
+  });
+}
+
+final List<SparePart> sparePartsList = [
+  SparePart(
+    name: 'Bike Chain',
+    image: 'assets/NutraNest.png', // Add your image assets
+    price: 29.99,
+    rating: 4.5,
+  ),
+  SparePart(
+    name: 'Brake Set',
+    image: 'assets/NutraNest.png',
+    price: 49.99,
+    rating: 4.8,
+  ),
+  SparePart(
+    name: 'Pedals',
+    image: 'assets/NutraNest.png',
+    price: 19.99,
+    rating: 4.3,
+  ),
+  // Add more spare parts as needed
+];
+
+class SparePartCard extends StatelessWidget {
+  final String imagePath;
+  final String title;
+  final double price;
+  final double rating;
+  final VoidCallback onTap;
+
+  const SparePartCard({
+    required this.imagePath,
+    required this.title,
+    required this.price,
+    required this.rating,
+    required this.onTap,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 160,
+        margin: const EdgeInsets.only(right: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Modified Image Container
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(16)),
+              child: Container(
+                height: 100,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(116, 8, 208, 98),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        '\$${price.toStringAsFixed(2)}',
+                        style: GoogleFonts.poppins(
+                          color: CustomColors.green,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        rating.toString(),
+                        style: GoogleFonts.poppins(
+                          color: Colors.grey[400],
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

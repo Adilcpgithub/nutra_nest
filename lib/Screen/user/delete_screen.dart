@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
+import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
 
@@ -61,13 +62,15 @@ class DeleteScreen extends StatelessWidget {
                         )),
                   ),
                   const SizedBox(
-                    width: 92.5,
+                    width: 85.5,
                   ),
                   const Expanded(
                     child: Text(
                       'Delete Account',
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                      style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red),
                     ),
                   ),
                 ],
@@ -75,34 +78,59 @@ class DeleteScreen extends StatelessWidget {
               const SizedBox(
                 height: 65,
               ),
-              const Text(
-                'Are you sure you want to delete your account?\n'
-                '            This action cannot be undone.',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 18,
-              ),
-              const Text(
-                '• All your personal information, order history, and saved items\n'
-                '   will be permanently removed',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              const Text(
-                '•You will no longer be able to access your account or any \n'
-                'associated data.',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 18,
-              ),
-              const Text(
-                'Are you sure you want to delete your account?\n'
-                '            This action cannot be undone.',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              Container(
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(46, 183, 28, 28),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: const Padding(
+                  padding:
+                      EdgeInsets.only(top: 15, right: 8, bottom: 15, left: 8),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Are you sure you want to delete your account?\n'
+                        '            This action cannot be undone.',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Color.fromARGB(181, 244, 67, 54)),
+                      ),
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      const Text(
+                        '• All your personal information, order history, and saved items\n'
+                        '   will be permanently removed',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(181, 244, 67, 54)),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text(
+                        '•You will no longer be able to access your account or any \n'
+                        'associated data.',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(181, 244, 67, 54)),
+                      ),
+                      const SizedBox(
+                        height: 18,
+                      ),
+                      const Text(
+                        'Are you sure you want to delete your account?\n'
+                        '            This action cannot be undone.',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(181, 244, 67, 54)),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 50,
