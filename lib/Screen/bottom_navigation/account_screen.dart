@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
 import 'package:nutra_nest/screen/user/manage_address.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -334,11 +336,94 @@ Widget _buildhead(BuildContext context) {
               ),
               GestureDetector(
                 onTap: () async {
-                  await authService.signOut();
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (ctx) => const LoginScreen()),
-                      (Route<dynamic> route) => false);
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.black87,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(height: 30),
+                              Text(
+                                'Are You Sure ?',
+                                style: GoogleFonts.radioCanada(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: SmallTextbutton(
+                                        buttomColor: CustomColors.green,
+                                        textColor: CustomColors.white,
+                                        buttomName: 'LOG OUT',
+                                        voidCallBack: () async {},
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Flexible(
+                                      child: SmallTextbutton(
+                                        buttomColor: CustomColors.black,
+                                        textColor: CustomColors.green,
+                                        buttomName: 'CANCEL',
+                                        voidCallBack: () {
+                                          Navigator.of(context).pop(
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation,
+                                                      secondaryAnimation) =>
+                                                  const EditProfile(),
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  secondaryAnimation,
+                                                  child) {
+                                                var curvedAnimation =
+                                                    CurvedAnimation(
+                                                  parent: animation,
+                                                  curve: Curves
+                                                      .easeInOut, // Choose any curve here
+                                                );
+
+                                                return FadeTransition(
+                                                  opacity: curvedAnimation,
+                                                  child: child,
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+
+                  // await authService.signOut();
+                  // Navigator.pushAndRemoveUntil(
+                  //     context,
+                  //     MaterialPageRoute(builder: (ctx) => const LoginScreen()),
+                  //     (Route<dynamic> route) => false);
                 },
                 child: Container(
                     height: 39,

@@ -202,6 +202,9 @@ Widget _categoryContainer(
 Widget _buildCycleTypesGrid() {
   return Column(
     children: [
+      const SizedBox(
+        height: 20,
+      ),
       Row(
         children: [
           Padding(
@@ -245,7 +248,10 @@ Widget _buildCycleTypesGrid() {
             )
           ],
         ),
-      )
+      ),
+      const SizedBox(
+        height: 20,
+      ),
     ],
   );
 }
@@ -402,14 +408,12 @@ class SparePartCard extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(116, 8, 208, 98),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.cover,
-                    ),
+                child: ClipRRect(
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(16)),
+                  child: Image.asset(
+                    imagePath,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),

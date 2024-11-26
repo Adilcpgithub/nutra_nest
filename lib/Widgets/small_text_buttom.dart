@@ -5,8 +5,10 @@ class SmallTextbutton extends StatelessWidget {
   final VoidCallback voidCallBack;
   final Color buttomColor;
   final Color textColor;
+  final Color borderColor;
   const SmallTextbutton(
       {super.key,
+      this.borderColor = Colors.green,
       required this.buttomName,
       required this.voidCallBack,
       this.buttomColor = Colors.black,
@@ -15,10 +17,10 @@ class SmallTextbutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(1.4),
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: buttomColor,
-        border: Border.all(width: 1.4),
+        border: Border.all(width: 0, color: borderColor),
         borderRadius: BorderRadius.circular(9),
       ),
       height: 41,

@@ -445,7 +445,7 @@ class _EditProfileState extends State<EditProfile> {
             );
           },
           style: OutlinedButton.styleFrom(
-            side: BorderSide(color: CustomColors.green),
+            side: const BorderSide(color: CustomColors.green),
             minimumSize: const Size(double.infinity, 50),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
