@@ -22,13 +22,12 @@ class SignUpScreen extends StatelessWidget {
     double deviceHeight = MediaQuery.of(context).size.height;
     // double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
       body: BlocBuilder<SignUpBloc, SignUpState>(
         builder: (context, state) {
           final signUpBloc = context.read<SignUpBloc>();
           return SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 10,
@@ -42,241 +41,255 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Form(
-                  autovalidateMode: state.activateValidation
-                      ? AutovalidateMode.onUserInteraction
-                      : null,
-                  key: _formKey,
-                  child: Container(
-                    height: 630,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                SingleChildScrollView(
+                  child: Form(
+                    autovalidateMode: state.activateValidation
+                        ? AutovalidateMode.onUserInteraction
+                        : null,
+                    key: _formKey,
+                    child: Container(
+                      height: 600,
+                      decoration: const BoxDecoration(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 35),
-                      child: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Text(
-                              'Sign Up',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 32),
-                            ),
-                          ),
-                          //1///////////////////////
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: deviceHeight * 0.002),
-                              child: CustomTextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter Name';
-                                  }
-                                  return null;
-                                },
-                                controller: _nameController,
-                                onChanged: (name) =>
-                                    signUpBloc.add(NameChanged(name)),
-                                labelText: ' Name  ',
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
+                        child: Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 20, bottom: 20),
+                              child: Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.w700),
                               ),
                             ),
-                          ),
-                          //2//////////////////
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: deviceHeight * 0.002),
-                              child: CustomTextFormField(
-                                controller: _phoneController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter Phone';
-                                  }
-                                  final mobileRegex = RegExp(r'^[0-9]{7,10}$');
-                                  if (!mobileRegex.hasMatch(value)) {
-                                    return 'Please enter a valid mobile number (7 to 10 digits)';
-                                  }
-                                  return null;
-                                },
-                                labelText: 'Phone Number',
-                                keyboardType: TextInputType.number,
-                                onChanged: (phone) =>
-                                    signUpBloc.add(PhoneChanged(phone)),
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CountryCodePicker(
-                                        onChanged: (countryCode) {
-                                          selectedCountryCode =
-                                              countryCode.dialCode!;
-                                          print(selectedCountryCode);
-                                          context
-                                              .read<SignUpBloc>()
-                                              .add(TogglePickerVisibility());
-                                        },
-                                        initialSelection: 'IN',
-                                        favorite: const ['+1', 'IN'],
-                                        showFlag: false,
-                                        showCountryOnly: false,
-                                        showOnlyCountryWhenClosed: false,
-                                        alignLeft: false,
-                                        textStyle: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
+                            //1///////////////////////
+                            SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: deviceHeight * 0.002),
+                                child: CustomTextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Name';
+                                    }
+                                    return null;
+                                  },
+                                  controller: _nameController,
+                                  onChanged: (name) =>
+                                      signUpBloc.add(NameChanged(name)),
+                                  labelText: ' Name  ',
+                                ),
+                              ),
+                            ),
+                            //2//////////////////
+                            SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: deviceHeight * 0.002),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomTextFormField(
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter Phone';
+                                        }
+                                        final mobileRegex =
+                                            RegExp(r'^[0-9]{7,10}$');
+                                        if (!mobileRegex.hasMatch(value)) {
+                                          return 'Please enter a valid mobile number (7 to 10 digits)';
+                                        }
+                                        return null;
+                                      },
+                                      controller: _phoneController,
+                                      labelText: 'Phone Number',
+                                      keyboardType: TextInputType.number,
+                                      onChanged: (phone) =>
+                                          signUpBloc.add(PhoneChanged(phone)),
+                                      prefixIcon: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            CountryCodePicker(
+                                              onChanged: (countryCode) {
+                                                selectedCountryCode =
+                                                    countryCode.dialCode!;
+                                                print(selectedCountryCode);
+                                                context.read<SignUpBloc>().add(
+                                                    TogglePickerVisibility());
+                                              },
+                                              initialSelection: 'IN',
+                                              favorite: const ['+1', 'IN'],
+                                              showFlag: false,
+                                              showCountryOnly: false,
+                                              showOnlyCountryWhenClosed: false,
+                                              alignLeft: false,
+                                              textStyle: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                              ),
-                            ),
-                          ),
-                          //3///////////////////
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: deviceHeight * 0.002),
-                              child: CustomTextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter Email';
-                                  }
-                                  final emailRegex =
-                                      RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                                  if (!emailRegex.hasMatch(value)) {
-                                    return 'Please enter a valid email address';
-                                  }
-                                  return null;
-                                },
-                                controller: _emailController,
-                                labelText: ' Email  ',
-                                onChanged: (email) =>
-                                    signUpBloc.add(EmailChanged(email)),
-                              ),
-                            ),
-                          ),
-                          //4////////////////////////
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: deviceHeight * 0.002),
-                              child: CustomTextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter Password';
-                                  }
-                                  if (value.length < 6) {
-                                    return 'Password must be 6 or more numbers';
-                                  }
-                                  return null;
-                                },
-                                controller: _passwordController,
-                                labelText: ' Password  ',
-                                onChanged: (password) =>
-                                    signUpBloc.add(PasswordChanged(password)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: deviceHeight * 0.002),
-                            child: CustomTextbutton(
-                                buttomName: 'SING UP',
-                                voidCallBack: () async {
-                                  await _submittion(context);
-                                }),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: deviceHeight * 0.002),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: deviceHeight * 0.02),
-                                  child: const Text(
-                                    'Already having an account?   ',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 11),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  child: const Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      PageRouteBuilder(
-                                        pageBuilder: (context, animation,
-                                                secondaryAnimation) =>
-                                            const LoginScreen(),
-                                        transitionsBuilder: (context, animation,
-                                            secondaryAnimation, child) {
-                                          var curvedAnimation = CurvedAnimation(
-                                            parent: animation,
-                                            curve: Curves
-                                                .easeInOut, // Choose any curve here
-                                          );
-
-                                          return FadeTransition(
-                                            opacity: curvedAnimation,
-                                            child: child,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(
-                              top: 10,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      'By continuing, you agree to Perfect match’s',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    Text(
-                                      'Terms of Service, Privacy Policy',
-                                      style: TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          decorationColor: Colors.white,
-                                          decorationThickness: 1.5,
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
+                            //3///////////////////
+                            SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: deviceHeight * 0.002),
+                                child: CustomTextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Email';
+                                    }
+                                    final emailRegex =
+                                        RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                                    if (!emailRegex.hasMatch(value)) {
+                                      return 'Please enter a valid email address';
+                                    }
+                                    return null;
+                                  },
+                                  controller: _emailController,
+                                  labelText: ' Email  ',
+                                  onChanged: (email) =>
+                                      signUpBloc.add(EmailChanged(email)),
+                                ),
+                              ),
+                            ),
+                            //4////////////////////////
+                            SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: deviceHeight * 0.002),
+                                child: CustomTextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Password';
+                                    }
+                                    if (value.length < 6) {
+                                      return 'Password must be 6 or more numbers';
+                                    }
+                                    return null;
+                                  },
+                                  controller: _passwordController,
+                                  labelText: ' Password  ',
+                                  onChanged: (password) =>
+                                      signUpBloc.add(PasswordChanged(password)),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: deviceHeight * 0.002),
+                              child: CustomTextbutton(
+                                  buttomName: 'SING UP',
+                                  voidCallBack: () async {
+                                    await _submittion(context);
+                                  }),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: deviceHeight * 0.002),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: deviceHeight * 0.02),
+                                    child: const Text(
+                                      'Already having an account?   ',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 11),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    child: const Text(
+                                      'Login',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation,
+                                                  secondaryAnimation) =>
+                                              const LoginScreen(),
+                                          transitionsBuilder: (context,
+                                              animation,
+                                              secondaryAnimation,
+                                              child) {
+                                            var curvedAnimation =
+                                                CurvedAnimation(
+                                              parent: animation,
+                                              curve: Curves
+                                                  .easeInOut, // Choose any curve here
+                                            );
+
+                                            return FadeTransition(
+                                              opacity: curvedAnimation,
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(
+                                top: 10,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        'By continuing, you agree to Perfect match’s',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      Text(
+                                        'Terms of Service, Privacy Policy',
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: Colors.white,
+                                            decorationThickness: 1.5,
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

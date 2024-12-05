@@ -48,8 +48,7 @@ void main() async {
   // }
 
   // ignore: deprecated_member_use
-  CloudinaryContext.cloudinary =
-      Cloudinary.fromCloudName(cloudName: "devitg04d");
+
   runApp(const MyWidget());
 }
 
