@@ -12,7 +12,7 @@ class ImageCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Container(
+        child: SizedBox(
       width: double.infinity,
       height: 190, // Adjust height as needed
       child: CarouselSlider(

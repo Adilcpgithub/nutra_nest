@@ -4,6 +4,7 @@ import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
 import 'package:nutra_nest/screen/user/manage_address.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -91,25 +92,7 @@ class AccountScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  const ManageAddress(),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            var curvedAnimation = CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOut, // Choose any curve here
-                            );
-
-                            return FadeTransition(
-                              opacity: curvedAnimation,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
+                      customNavigationPush(context, const ManageAddress());
                     },
                     child: Container(
                       decoration: BoxDecoration(
