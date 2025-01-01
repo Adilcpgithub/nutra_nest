@@ -20,14 +20,16 @@ class Cycle {
       this.isFavorite = false});
   factory Cycle.fromMap(Map<String, dynamic> map) {
     return Cycle(
-        id: map['documentId'],
-        name: map['name'],
-        price: map['price'],
-        sellerId: map['seller_id'],
-        imageUrl: List<String>.from(map['image_url'] ?? []),
-        brand: map['brand'],
-        category: map['category'],
-        description: map['description']);
+      id: map['documentId'] ?? '',
+      name: map['name'] ?? '',
+      price: map['price'] ?? '',
+      sellerId: map['seller_id'] ?? '',
+      imageUrl:
+          map['image_url'] is List ? List<String>.from(map['image_url']) : [],
+      brand: map['brand'] ?? '',
+      category: map['category'] ?? '',
+      description: map['description'] ?? '',
+    );
   }
 
   @override

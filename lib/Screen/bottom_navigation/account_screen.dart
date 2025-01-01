@@ -92,7 +92,7 @@ class AccountScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: GestureDetector(
                     onTap: () {
-                      customNavigationPush(context, const ManageAddress());
+                      CustomNavigation.push(context, const ManageAddress());
                     },
                     child: Container(
                       decoration: BoxDecoration(

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
+import 'package:nutra_nest/screen/cycle_list_page.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/image_carousel.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -232,12 +234,21 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                 children: [
                   _cycleContainer('Mountain\n     Bikes', Icons.terrain, () {
                     print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-                    log('bottome pressed');
-                    context
-                        .read<CycleBloc>()
-                        .add(const LoadCycleByType('Hybrid'));
+                    log('button pressed');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          heading: 'Mountain Bike',
+                        ));
                   }),
-                  _cycleContainer('Road Bikes', Icons.directions_bike, () {}),
+                  _cycleContainer('Road Bikes', Icons.directions_bike, () {
+                    log('button pressed');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          heading: 'Rsoad Bike',
+                        ));
+                  }),
                   _cycleContainer('Hybrid Bikes', Icons.commute, () {}),
                 ],
               ),

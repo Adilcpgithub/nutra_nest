@@ -25,8 +25,7 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
       }).toList();
       log('cycles length is ${cycles.length}');
       log('cycles length is $cycles');
-      List<Cycle> newCycles = [];
-      cycles
+      List<Cycle> newCycles = cycles
           .map(
             (e) => Cycle.fromMap(e),
           )

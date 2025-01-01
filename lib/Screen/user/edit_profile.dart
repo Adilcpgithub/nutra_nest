@@ -1,24 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloudinary_url_gen/cloudinary.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloudinary_flutter/cloudinary_context.dart';
-import 'package:cloudinary_flutter/image/cld_image.dart';
-import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
 import 'package:nutra_nest/model/user_model.dart';
-import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/screen/user/delete_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
-import 'package:nutra_nest/widgets/model_text_form_feild.dart';
-import 'package:nutra_nest/widgets/small_text_buttom.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditProfile extends StatefulWidget {
@@ -29,8 +19,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  // final FirebaseStorage _storage = FirebaseStorage.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AuthService authService = AuthService();
   UserStatus userStatus = UserStatus();
   final TextEditingController _nameCountroller = TextEditingController();
@@ -71,7 +59,6 @@ class _EditProfileState extends State<EditProfile> {
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: SingleChildScrollView(
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 10),
                 _buildHeader(),
