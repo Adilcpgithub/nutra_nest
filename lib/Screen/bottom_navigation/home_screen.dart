@@ -233,23 +233,29 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _cycleContainer('Mountain\n     Bikes', Icons.terrain, () {
-                    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-                    log('button pressed');
+                    log('button pressed 1');
                     CustomNavigation.push(
                         context,
                         const CycleListPage(
-                          heading: 'Mountain Bike',
+                          cycleTypeNumber: 1,
                         ));
                   }),
                   _cycleContainer('Road Bikes', Icons.directions_bike, () {
-                    log('button pressed');
+                    log('button pressed 2');
                     CustomNavigation.push(
                         context,
                         const CycleListPage(
-                          heading: 'Rsoad Bike',
+                          cycleTypeNumber: 2,
                         ));
                   }),
-                  _cycleContainer('Hybrid Bikes', Icons.commute, () {}),
+                  _cycleContainer('Hybrid Bikes', Icons.commute, () {
+                    log('button pressed 3');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 3,
+                        ));
+                  }),
                 ],
               ),
             ),
@@ -258,9 +264,30 @@ Widget _buildCycleTypesGrid(BuildContext context) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _cycleContainer('Electric Bikes', Icons.electric_bike, () {}),
-                  _cycleContainer("Kids' Bikes", Icons.child_care, () {}),
-                  _cycleContainer('Folding Bikes', Icons.merge_type, () {}),
+                  _cycleContainer('Electric Bikes', Icons.electric_bike, () {
+                    log('button pressed 4');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 4,
+                        ));
+                  }),
+                  _cycleContainer("Kids' Bikes", Icons.child_care, () {
+                    log('button pressed 5');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 5,
+                        ));
+                  }),
+                  _cycleContainer('Folding Bikes', Icons.merge_type, () {
+                    log('button pressed 6');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 6,
+                        ));
+                  }),
                 ],
               ),
             )

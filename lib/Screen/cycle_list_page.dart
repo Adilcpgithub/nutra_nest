@@ -9,8 +9,8 @@ import 'package:nutra_nest/utity/card.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
 class CycleListPage extends StatefulWidget {
-  final String heading;
-  const CycleListPage({super.key, required this.heading});
+  final int cycleTypeNumber;
+  const CycleListPage({super.key, required this.cycleTypeNumber});
   @override
   State<CycleListPage> createState() => _CycleListPageState();
 }
@@ -18,7 +18,7 @@ class CycleListPage extends StatefulWidget {
 class _CycleListPageState extends State<CycleListPage> {
   @override
   void initState() {
-    context.read<CycleBloc>().add(LoadCycleByType(widget.heading));
+    context.read<CycleBloc>().add(LoadCycleByType(widget.cycleTypeNumber));
     super.initState();
   }
 
@@ -31,7 +31,9 @@ class _CycleListPageState extends State<CycleListPage> {
           child: Column(
             children: [
               const SizedBox(height: 10),
-              _buildHeader(context, widget.heading),
+              _buildHeader(
+                context,
+              ),
               _showCycleList(),
             ],
           ),
@@ -40,7 +42,10 @@ class _CycleListPageState extends State<CycleListPage> {
     );
   }
 
-  Widget _buildHeader(BuildContext context, String heading) {
+  Widget _buildHeader(
+    BuildContext context,
+  ) {
+    var event = LoadCycleByType(widget.cycleTypeNumber);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -63,7 +68,7 @@ class _CycleListPageState extends State<CycleListPage> {
         ),
         Expanded(
           child: Text(
-            heading,
+            event.type,
             textAlign: TextAlign.center,
             style: GoogleFonts.poppins(
               fontSize: 19,
