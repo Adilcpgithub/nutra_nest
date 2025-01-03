@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
@@ -30,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: BlocBuilder<LoginBloc, LoginState>(
@@ -46,18 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                // The country code picker
-                // state.isPickerVisible
-                //  _isPickerVisible
-                //  ? _showCountryCodePicker(context)
-                //  :
                 Form(
                   key: _formKey,
                   autovalidateMode: state.activateValidation
                       ? AutovalidateMode.onUserInteraction
                       : null,
                   child: Container(
-                    height: 420,
+                    height: 480,
                     width: deviceWidth > 400 ? 600 : deviceWidth,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 0, 0, 0),
@@ -70,135 +67,94 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Column(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 5, bottom: 5),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20, bottom: 5),
                             child: Flexible(
                               child: Text(
                                 'Log In',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 32),
+                                    color: Colors.white,
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.w700),
                               ),
                             ),
                           ),
                           ///////1
-                          Flexible(
-                            child: CustomTextFormField(
-                              controller: _emailorPhoneNumberController,
-                              labelText: state.isEmailVisible
-                                  ? ' Email'
-                                  : 'Phone Number',
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return state.isEmailVisible
-                                      ? 'Please enter Email'
-                                      : 'Please enter Number';
+                          CustomTextFormField(
+                            controller: _emailorPhoneNumberController,
+                            labelText: state.isEmailVisible
+                                ? ' Email'
+                                : 'Phone Number',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return state.isEmailVisible
+                                    ? 'Please enter Email'
+                                    : 'Please enter Number';
+                              }
+                              if (state.isEmailVisible) {
+                                final emailRegex =
+                                    RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                                if (!emailRegex.hasMatch(value)) {
+                                  return 'Please enter a valid email address';
                                 }
-                                if (state.isEmailVisible) {
-                                  final emailRegex =
-                                      RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                                  if (!emailRegex.hasMatch(value)) {
-                                    return 'Please enter a valid email address';
-                                  }
+                              }
+                              if (!state.isEmailVisible) {
+                                final mobileRegex = RegExp(r'^[0-9]{7,10}$');
+                                if (!mobileRegex.hasMatch(value)) {
+                                  return 'Please enter a valid mobile number (7 to 10 digits)';
                                 }
-                                if (!state.isEmailVisible) {
-                                  final mobileRegex = RegExp(r'^[0-9]{7,10}$');
-                                  if (!mobileRegex.hasMatch(value)) {
-                                    return 'Please enter a valid mobile number (7 to 10 digits)';
-                                  }
-                                }
+                              }
 
-                                return null;
-                              },
-                              keyboardType: state.isEmailVisible
-                                  ? TextInputType.text
-                                  : TextInputType.number,
-                              prefixIcon: state.isEmailVisible
-                                  ? null
-                                  : Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CountryCodePicker(
-                                            onChanged: (countryCode) {
-                                              selectedCountryCode =
-                                                  countryCode.dialCode!;
-                                              print(selectedCountryCode);
-                                              context
-                                                  .read<LoginBloc>()
-                                                  .add(ToggleEmailVisibility());
-                                            },
-                                            initialSelection: 'IN',
-                                            favorite: const ['+1', 'IN'],
-                                            showFlag: false,
-                                            showCountryOnly: false,
-                                            showOnlyCountryWhenClosed: false,
-                                            alignLeft: false,
-                                            textStyle: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                            ),
+                              return null;
+                            },
+                            keyboardType: state.isEmailVisible
+                                ? TextInputType.text
+                                : TextInputType.number,
+                            prefixIcon: state.isEmailVisible
+                                ? null
+                                : Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CountryCodePicker(
+                                          onChanged: (countryCode) {
+                                            selectedCountryCode =
+                                                countryCode.dialCode!;
+                                            print(selectedCountryCode);
+                                            context
+                                                .read<LoginBloc>()
+                                                .add(ToggleEmailVisibility());
+                                          },
+                                          initialSelection: 'IN',
+                                          favorite: const ['+1', 'IN'],
+                                          showFlag: false,
+                                          showCountryOnly: false,
+                                          showOnlyCountryWhenClosed: false,
+                                          alignLeft: false,
+                                          textStyle: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                              floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                            ),
+                                  ),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                           ),
 
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: deviceHeight * 0.01,
-                                bottom: deviceHeight * 0.01),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text(
-                                  //'or  '
-                                  '',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 13),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    // context
-                                    //     .read<LoginBloc>()
-                                    //     .add(ToggleEmailVisibility());
-                                    // _emailorPhoneNumberController.clear();
-                                  },
-                                  child: Text(
-                                    state.isEmailVisible
-                                        ? '' // 'Use Phone'
-                                        : '' //'Use Email',
-                                    ,
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: Colors.white,
-                                        decorationThickness: 2.0,
-                                        color: Colors.white,
-                                        fontSize: 13),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //////2
-                          Flexible(
-                            child: CustomTextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter password';
-                                }
-                                if (value.length < 6) {
-                                  return 'Password must be 6 or more numbers';
-                                }
-                                return null;
-                              },
-                              controller: _passwordController,
-                              labelText: ' Password  ',
-                            ),
+                          CustomTextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter password';
+                              }
+                              if (value.length < 6) {
+                                return 'Password must be 6 or more numbers';
+                              }
+                              return null;
+                            },
+                            controller: _passwordController,
+                            labelText: ' Password  ',
                           ),
 
                           Padding(

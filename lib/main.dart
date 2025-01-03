@@ -10,6 +10,8 @@ import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
+import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
+import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
@@ -48,8 +50,7 @@ void main() async {
   // }
 
   // ignore: deprecated_member_use
-  CloudinaryContext.cloudinary =
-      Cloudinary.fromCloudName(cloudName: "devitg04d");
+
   runApp(const MyWidget());
 }
 
@@ -87,6 +88,8 @@ class _MyWidgetState extends State<MyWidget> {
           BlocProvider(create: (context) => LoginBloc()),
           BlocProvider(create: (context) => SignUpBloc()),
           BlocProvider(create: (context) => ProfilBloc()),
+          BlocProvider(create: (context) => CycleBloc()),
+          BlocProvider(create: (context) => SearchBlocBloc()),
         ],
         child: MaterialApp(
           theme: ThemeData(

@@ -24,7 +24,7 @@ class CloudinaryUrlRetrieved extends ProfilState {
 class CloudinaryDeleted extends ProfilState {}
 
 class ShowDefaulImage extends ProfilState {
-  final DefaultImage = 'assets/image copy 15.png';
+  final defaultImage = 'assets/image copy 15.png';
 }
 
 class CloudinaryError extends ProfilState {

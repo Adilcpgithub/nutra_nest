@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
+import 'package:nutra_nest/screen/cycle_list_page.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/image_carousel.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                 _buildSearchBar(),
                 _buildFeaturedSection(),
                 _buildSparePartsSection(),
-                _buildCycleTypesGrid(),
+                _buildCycleTypesGrid(context),
               ],
             ),
           ),
@@ -52,7 +58,7 @@ Widget _buildHeader() {
               ),
             ),
             Text(
-              'Nutra-Nest',
+              'Rider-Spot',
               style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontSize: 24,
@@ -199,7 +205,7 @@ Widget _categoryContainer(
   );
 }
 
-Widget _buildCycleTypesGrid() {
+Widget _buildCycleTypesGrid(BuildContext context) {
   return Column(
     children: [
       const SizedBox(
@@ -229,9 +235,30 @@ Widget _buildCycleTypesGrid() {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _cycleContainer('Mountain\n     Bikes', Icons.terrain, () {}),
-                  _cycleContainer('Road Bikes', Icons.directions_bike, () {}),
-                  _cycleContainer('Hybrid Bikes', Icons.commute, () {}),
+                  _cycleContainer('Mountain\n     Bikes', Icons.terrain, () {
+                    log('button pressed 1');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 1,
+                        ));
+                  }),
+                  _cycleContainer('Road Bikes', Icons.directions_bike, () {
+                    log('button pressed 2');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 2,
+                        ));
+                  }),
+                  _cycleContainer('Hybrid Bikes', Icons.commute, () {
+                    log('button pressed 3');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 3,
+                        ));
+                  }),
                 ],
               ),
             ),
@@ -240,9 +267,30 @@ Widget _buildCycleTypesGrid() {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _cycleContainer('Electric Bikes', Icons.electric_bike, () {}),
-                  _cycleContainer("Kids' Bikes", Icons.child_care, () {}),
-                  _cycleContainer('Folding Bikes', Icons.merge_type, () {}),
+                  _cycleContainer('Electric Bikes', Icons.electric_bike, () {
+                    log('button pressed 4');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 4,
+                        ));
+                  }),
+                  _cycleContainer("Kids' Bikes", Icons.child_care, () {
+                    log('button pressed 5');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 5,
+                        ));
+                  }),
+                  _cycleContainer('Folding Bikes', Icons.merge_type, () {
+                    log('button pressed 6');
+                    CustomNavigation.push(
+                        context,
+                        const CycleListPage(
+                          cycleTypeNumber: 6,
+                        ));
+                  }),
                 ],
               ),
             )
@@ -258,7 +306,7 @@ Widget _buildCycleTypesGrid() {
 
 Widget _cycleContainer(String cycleName, IconData icon, VoidCallback function) {
   return GestureDetector(
-    onTap: () => function,
+    onTap: () => function(),
     child: Container(
       height: 90,
       width: 90,
