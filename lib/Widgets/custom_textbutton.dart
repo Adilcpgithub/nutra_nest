@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/utity/colors.dart';
 
 class CustomTextbutton extends StatelessWidget {
   final String buttomName;
@@ -8,7 +9,7 @@ class CustomTextbutton extends StatelessWidget {
       {super.key,
       required this.buttomName,
       required this.voidCallBack,
-      this.color = const Color.fromARGB(255, 92, 90, 90)});
+      this.color = CustomColors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,11 @@ class CustomTextbutton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           minimumSize: const Size(double.infinity, 57),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+              side: const BorderSide(width: 2, color: CustomColors.green),
+              borderRadius: BorderRadius.circular(
+                15,
+              )),
           backgroundColor: color,
         ),
         onPressed: voidCallBack,

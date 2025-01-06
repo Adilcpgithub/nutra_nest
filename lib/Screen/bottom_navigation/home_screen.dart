@@ -1,16 +1,12 @@
 import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
 import 'package:nutra_nest/screen/cycle_list_page.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/image_carousel.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,7 +18,10 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(
+                horizontal: isMobile(context)
+                    ? 20
+                    : MediaQuery.of(context).size.width / 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -38,6 +37,10 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+bool isMobile(BuildContext context) {
+  return MediaQuery.of(context).size.width <= 600;
 }
 
 Widget _buildHeader() {
@@ -77,12 +80,10 @@ Widget _buildHeader() {
               child: Stack(
                 children: [
                   Container(
-                    height: 41,
-                    width: 41,
+                    height: 39,
+                    width: 39,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 1.5, color: Color.fromARGB(54, 8, 208, 98)),
-                      color: const Color.fromARGB(148, 27, 94, 31),
+                      border: Border.all(width: 1.5, color: CustomColors.green),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Padding(
@@ -94,14 +95,17 @@ Widget _buildHeader() {
                     top: -1,
                     right: 5,
                     child: Container(
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: CustomColors.green,
+                          shape: BoxShape.circle,
+                          // borderRadius: BorderRadius.circular(8),
+                          border:
+                              Border.all(width: 1, color: CustomColors.green)),
                       padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: CustomColors.green,
-                        shape: BoxShape.circle,
-                      ),
                       child: const Text(
                         '1',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: CustomColors.white),
                       ),
                     ),
                   )

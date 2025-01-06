@@ -37,6 +37,10 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  bool isMobile() {
+    return MediaQuery.of(context).size.width <= 600;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +48,10 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: Container(
         color: Colors.transparent, // Background color for the bar
         child: Padding(
-          padding: const EdgeInsets.only(top: 6, left: 5, right: 5),
+          padding: EdgeInsets.only(
+              top: 6,
+              left: isMobile() ? 5 : MediaQuery.of(context).size.width / 4,
+              right: isMobile() ? 5 : MediaQuery.of(context).size.width / 4),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

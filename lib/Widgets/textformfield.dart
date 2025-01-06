@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/utity/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -32,7 +33,6 @@ class CustomTextFormField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[900],
           borderRadius: BorderRadius.circular(15),
         ),
         child: TextFormField(
@@ -44,28 +44,37 @@ class CustomTextFormField extends StatelessWidget {
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.never,
             labelText: labelText,
-            labelStyle: const TextStyle(fontSize: 18, color: Colors.grey),
+            labelStyle: const TextStyle(
+                fontSize: 18, color: Color.fromARGB(160, 255, 255, 255)),
             hintText: hintText,
             prefixIcon: prefixIcon,
 
             errorText: errorText, // Show error text here
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide.none,
+              borderSide:
+                  const BorderSide(width: 1.5, color: CustomColors.green),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(),
+              borderSide:
+                  const BorderSide(width: 1.5, color: CustomColors.green),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
+              borderSide:
+                  const BorderSide(width: 1.5, color: CustomColors.green),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
+              borderSide:
+                  const BorderSide(width: 1.5, color: CustomColors.green),
               // Keep color same as enabled
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
+              borderSide:
+                  const BorderSide(width: 1.5, color: CustomColors.green),
             ),
           ),
           validator: validator,

@@ -8,8 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
+import 'package:nutra_nest/screen/product_details.dart';
 import 'package:nutra_nest/utity/card.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/widgets/icons_widget.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
 
 class CycleListPage extends StatefulWidget {
@@ -59,29 +62,16 @@ class _CycleListPageState extends State<CycleListPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-            final searchBarBloc = context.read<SearchBlocBloc>();
-            if (searchBarBloc.state is SearchBarVisible) {
-              searchBarBloc.add(ToggleSearchBarEvent());
-            }
-          },
-          child: Container(
-            height: 39,
-            width: 39,
-            decoration: BoxDecoration(
-              color: CustomColors.black,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: CustomColors.green, width: 1.5),
-            ),
-            child: const Icon(
-              Icons.arrow_back,
-              size: 26,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        CustomIcon(
+            onTap: () {
+              Navigator.of(context).pop();
+              final searchBarBloc = context.read<SearchBlocBloc>();
+              if (searchBarBloc.state is SearchBarVisible) {
+                searchBarBloc.add(ToggleSearchBarEvent());
+              }
+            },
+            icon: Icons.arrow_back,
+            iconSize: 26),
         Expanded(
           child: Text(
             event.type,
@@ -93,36 +83,13 @@ class _CycleListPageState extends State<CycleListPage> {
             ),
           ),
         ),
-        Material(
-          color: Colors.transparent, // Keeps the background transparent
-          child: Ink(
-            decoration: BoxDecoration(
-              color: CustomColors.black,
-              borderRadius:
-                  BorderRadius.circular(10), // Match the rounded corners
-              border: Border.all(color: CustomColors.green, width: 1.5),
-            ),
-            child: InkWell(
-              borderRadius:
-                  BorderRadius.circular(10), // Match the border radius
-              splashColor: Colors.grey.withOpacity(0.3), // Splash effect
-              highlightColor: Colors.grey.withOpacity(0.1), // Highlight effect
-              onTap: () {
-                log('pressed');
-                context.read<SearchBlocBloc>().add(ToggleSearchBarEvent());
-              },
-              child: const SizedBox(
-                height: 39,
-                width: 39,
-                child: Icon(
-                  Icons.search,
-                  size: 29,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ),
+        CustomIcon(
+            onTap: () {
+              log('pressed');
+              context.read<SearchBlocBloc>().add(ToggleSearchBarEvent());
+            },
+            icon: Icons.search,
+            iconSize: 29)
       ],
     );
   }
@@ -188,7 +155,10 @@ class _CycleListPageState extends State<CycleListPage> {
                       context: context,
                       id: cycle.id,
                       imagUrl: cycle.imageUrl[0],
-                      funtion: () {},
+                      funtion: () {
+                        log('dddd');
+                        CustomNavigation.push(context, ProductDetails());
+                      },
                       cycleName: cycle.name,
                       price: cycle.price,
                     ),

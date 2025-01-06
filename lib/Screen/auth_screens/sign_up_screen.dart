@@ -48,7 +48,6 @@ class SignUpScreen extends StatelessWidget {
                         : null,
                     key: _formKey,
                     child: Container(
-                      height: 600,
                       decoration: const BoxDecoration(
                         color: Color.fromARGB(255, 0, 0, 0),
                         borderRadius: BorderRadius.only(
@@ -135,7 +134,7 @@ class SignUpScreen extends StatelessWidget {
                                               showOnlyCountryWhenClosed: false,
                                               alignLeft: false,
                                               textStyle: const TextStyle(
-                                                color: Colors.white,
+                                                color: Colors.grey,
                                                 fontSize: 18,
                                               ),
                                             ),
@@ -195,11 +194,14 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 20,
+                            ),
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: deviceHeight * 0.002),
                               child: CustomTextbutton(
-                                  buttomName: 'SING UP',
+                                  buttomName: 'SIGN UP',
                                   voidCallBack: () async {
                                     await _submittion(context);
                                   }),
@@ -283,6 +285,9 @@ class SignUpScreen extends StatelessWidget {
                                             fontSize: 12,
                                             fontWeight: FontWeight.w300),
                                       ),
+                                      SizedBox(
+                                        height: 15,
+                                      )
                                     ],
                                   ),
                                 ],

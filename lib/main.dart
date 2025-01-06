@@ -11,11 +11,12 @@ import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
 import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
+import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 
 void main() async {
   // await FirebaseAppCheck.instance.activate(
@@ -24,44 +25,49 @@ void main() async {
   //  appleProvider: AppleProvider.appAttest,
   //);
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await FirebaseAppCheck.instance.activate(
-    // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-    androidProvider: AndroidProvider.debug,
-    //  appleProvider: AppleProvider.appAttest,
-  );
-  // try {
-  //   if (kIsWeb) {
-  //     await Firebase.initializeApp(
-  //         options: const FirebaseOptions(
-  //             apiKey: "AIzaSyCPhgJ67PJp0-rEJPz82wFpAUVavdaV77M",
-  //             authDomain: "nutranest-a6417.firebaseapp.com",
-  //             projectId: "nutranest-a6417",
-  //             storageBucket: "nutranest-a6417.appspot.com",
-  //             messagingSenderId: "544605270040",
-  //             appId: "1:544605270040:web:ebe8021bc66785c5fc536d",
-  //             measurementId: "G-KEXM8FGNPN"));
-  //   } else {
-  await Firebase.initializeApp();
-  //   }
-  // } catch (e) {
-  //   // ignore: avoid_print
-  //   print("Firebase initialization error: $e");
-  // }
+  //await Firebase.initializeApp();
+  // await FirebaseAppCheck.instance.activate(
+  //   // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+  //   androidProvider: AndroidProvider.debug,
+  //   //  appleProvider: AppleProvider.appAttest,
+  // );
 
-  // ignore: deprecated_member_use
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyCPhgJ67PJp0-rEJPz82wFpAUVavdaV77M",
+            authDomain: "nutranest-a6417.firebaseapp.com",
+            projectId: "nutranest-a6417",
+            storageBucket: "nutranest-a6417.appspot.com",
+            messagingSenderId: "544605270040",
+            appId: "1:544605270040:web:ebe8021bc66785c5fc536d",
+            measurementId: "G-KEXM8FGNPN"));
+  } else {
+    await Firebase.initializeApp();
+  }
 
-  runApp(const MyWidget());
+  runApp(const MyApp());
 }
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+class ss extends StatelessWidget {
+  const ss({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(body: HomeScreen()),
+    );
+  }
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyApp> {
   bool status = false;
   @override
   void initState() {
@@ -90,6 +96,7 @@ class _MyWidgetState extends State<MyWidget> {
           BlocProvider(create: (context) => ProfilBloc()),
           BlocProvider(create: (context) => CycleBloc()),
           BlocProvider(create: (context) => SearchBlocBloc()),
+          BlocProvider(create: (context) => ImageBloc()),
         ],
         child: MaterialApp(
           theme: ThemeData(

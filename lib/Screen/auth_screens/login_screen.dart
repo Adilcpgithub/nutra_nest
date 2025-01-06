@@ -54,7 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? AutovalidateMode.onUserInteraction
                       : null,
                   child: Container(
-                    height: 480,
                     width: deviceWidth > 400 ? 600 : deviceWidth,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 0, 0, 0),
@@ -248,6 +247,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ],
                             ),
+                          ),
+                          Container(
+                            height: 100,
                           )
                         ],
                       ),
