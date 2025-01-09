@@ -13,6 +13,8 @@ class UploadImageEvent extends ProfilEvent {
   UploadImageEvent(
     this.userId,
   );
+  @override
+  List<Object> get props => [userId];
 }
 
 class DefaultImageEvent extends ProfilEvent {}
@@ -23,4 +25,7 @@ class DeleteImageEvent extends ProfilEvent {
   final String userId;
 
   DeleteImageEvent(this.userId);
+
+  @override
+  List<Object> get props => [userId];
 }

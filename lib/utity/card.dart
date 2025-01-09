@@ -3,17 +3,18 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
-import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
+import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
-Widget cycleProductCard({
-  required String imagUrl,
-  required VoidCallback funtion,
-  required String cycleName,
-  required String price,
-  required BuildContext context,
-  required String id,
-}) {
+Widget cycleProductCard(
+    {required String imagUrl,
+    required VoidCallback funtion,
+    required String cycleName,
+    required String price,
+    required BuildContext context,
+    required String id,
+    required Cycle cycle}) {
   return Card(
     elevation: 5,
     color: CustomColors.gray,

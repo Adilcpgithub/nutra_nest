@@ -6,8 +6,8 @@ import 'package:equatable/equatable.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/model/cycle.dart';
 
-part 'cycle_event.dart';
-part 'cycle_state.dart';
+part 'cycle_list_event.dart';
+part 'cycle_list_state.dart';
 
 class CycleBloc extends Bloc<CycleEvent, CycleState> {
   CycleBloc()

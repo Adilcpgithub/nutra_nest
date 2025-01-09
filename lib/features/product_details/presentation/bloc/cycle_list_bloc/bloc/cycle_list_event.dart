@@ -1,4 +1,4 @@
-part of 'cycle_bloc.dart';
+part of 'cycle_list_bloc.dart';
 
 sealed class CycleEvent extends Equatable {
   const CycleEvent();

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nutra_nest/screen/cycle_list_page.dart';
+import 'package:nutra_nest/features/product_details/presentation/pages/product_list_page.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/image_carousel.dart';

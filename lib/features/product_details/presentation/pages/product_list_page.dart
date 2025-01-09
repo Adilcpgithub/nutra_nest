@@ -6,9 +6,9 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nutra_nest/blocs/cycle_bloc/bloc/cycle_bloc.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
-import 'package:nutra_nest/screen/product_details.dart';
+import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/features/product_details/presentation/pages/product_details_page.dart';
 import 'package:nutra_nest/utity/card.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
@@ -152,12 +152,17 @@ class _CycleListPageState extends State<CycleListPage> {
                     height: 100,
                     width: double.infinity,
                     child: cycleProductCard(
+                      cycle: cycle,
                       context: context,
                       id: cycle.id,
                       imagUrl: cycle.imageUrl[0],
                       funtion: () {
                         log('dddd');
-                        CustomNavigation.push(context, ProductDetails());
+                        CustomNavigation.push(
+                            context,
+                            ProductDetails(
+                              cycle: cycle,
+                            ));
                       },
                       cycleName: cycle.name,
                       price: cycle.price,

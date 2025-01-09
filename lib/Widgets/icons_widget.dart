@@ -17,14 +17,17 @@ class CustomIcon extends StatelessWidget {
         decoration: BoxDecoration(
           color: CustomColors.black,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: CustomColors.green, width: 1.5),
+          //  border: Border.all(color: CustomColors.green, width: 1.5),
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(10), // Match the border radius
           splashColor: Colors.grey.withOpacity(0.3), // Splash effect
           highlightColor: Colors.grey.withOpacity(0.1),
           onTap: onTap,
-          child: SizedBox(
+          child: Container(
+            decoration: BoxDecoration(
+                color: CustomColors.green2,
+                borderRadius: BorderRadius.circular(10)),
             height: 39,
             width: 39,
             child: icon != null
