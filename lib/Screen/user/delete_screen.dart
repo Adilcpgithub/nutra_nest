@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
-import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
 
@@ -13,8 +10,6 @@ class DeleteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthService authService = AuthService();
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),

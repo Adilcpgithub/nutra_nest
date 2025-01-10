@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
-import 'package:nutra_nest/screen/sign_success.dart';
+import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -66,8 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20, bottom: 5),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 20, bottom: 5),
                             child: Flexible(
                               child: Text(
                                 'Log In',
@@ -269,33 +269,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
     AuthResponse response;
     if (_formKey.currentState?.validate() ?? false) {
-      // if (isEmailVisible) {
-      //   response = await authService.logInUserWithEmailAndPassword(
-      //       email: _emailorPhoneNumberController.text,
-      //       password: _passwordController.text);
-      //  } else {
-
       response = await authService.logInUserWithEmailAndPassword(
-          // phoneNumber:
-          //     selectedCountryCode + _emailorPhoneNumberController.text,
-          email: _emailorPhoneNumberController.text,
-          password: _passwordController.text);
-      // }
+          email: _emailorPhoneNumberController.text.trim(),
+          password: _passwordController.text.trim());
 
       if (response.success) {
         log('login  success');
-        // await Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-        //   return const SignSuccess();
-        // }));
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const SignSuccess(),
+                const MyHomePage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               var curvedAnimation = CurvedAnimation(
                 parent: animation,
-                curve: Curves.easeInOut, // Choose any curve here
+                curve: Curves.easeInOut,
               );
 
               return FadeTransition(

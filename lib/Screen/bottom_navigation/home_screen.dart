@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/features/product_details/presentation/pages/product_list_page.dart';
+import 'package:nutra_nest/presentation/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/image_carousel.dart';
@@ -14,7 +16,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -25,7 +26,7 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(),
+                _buildHeader(context),
                 _buildSearchBar(),
                 _buildFeaturedSection(),
                 _buildSparePartsSection(),
@@ -43,7 +44,7 @@ bool isMobile(BuildContext context) {
   return MediaQuery.of(context).size.width <= 600;
 }
 
-Widget _buildHeader() {
+Widget _buildHeader(BuildContext context) {
   return FadeInDown(
     duration: const Duration(milliseconds: 500),
     child: Row(
@@ -60,12 +61,17 @@ Widget _buildHeader() {
                 fontSize: 16,
               ),
             ),
-            Text(
-              'Rider-Spot',
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
+              child: Text(
+                'Rider-Spot',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -322,7 +328,7 @@ Widget _cycleContainer(String cycleName, IconData icon, VoidCallback function) {
           Icon(
             size: 30,
             icon,
-            color: CustomColors.green,
+            color: CustomColors.white,
           ),
           const SizedBox(
             height: 8,

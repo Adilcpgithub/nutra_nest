@@ -1,10 +1,8 @@
 import 'dart:developer';
-
-import 'package:cloudinary_flutter/cloudinary_context.dart';
-import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
@@ -14,9 +12,10 @@ import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
+import 'package:nutra_nest/presentation/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
-import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 
 void main() async {
   // await FirebaseAppCheck.instance.activate(
@@ -46,18 +45,12 @@ void main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(const MyApp());
-}
-
-class ss extends StatelessWidget {
-  const ss({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(body: HomeScreen()),
-    );
-  }
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatefulWidget {
@@ -81,7 +74,6 @@ class _MyWidgetState extends State<MyApp> {
     bool loggedInStatus = await userStatus.isUserLoggedIn();
     setState(() {
       status = loggedInStatus;
-      print(status);
     });
   }
 
@@ -97,26 +89,55 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => CycleBloc()),
           BlocProvider(create: (context) => SearchBlocBloc()),
           BlocProvider(create: (context) => ImageBloc()),
+          BlocProvider(create: (context) => ThemeCubit()),
         ],
-        child: MaterialApp(
-          theme: ThemeData(
-            scaffoldBackgroundColor: Colors.black,
-          ),
-          debugShowCheckedModeBanner: false,
-          home: //SplashScreen()
-              //SignSuccess(),
-              // OtpVerificationScreen()
-              //  OtpVerificationScreen()
-              //  MyHomePage()
-              // EditProfile(),
-              // const AddAddress(),
-              //SignUpScreen(),
-              // const ManageAddress(),
-              // const DeleteScreen()
-              // const SplashScreen()
+        child: BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return MaterialApp(
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: themeMode,
+              debugShowCheckedModeBanner: false,
+              home: //SplashScreen()
+                  //SignSuccess(),
+                  // OtpVerificationScreen()
+                  //  OtpVerificationScreen()
+                  //  MyHomePage()
+                  // EditProfile(),
+                  // const AddAddress(),
+                  //SignUpScreen(),
+                  // const ManageAddress(),
+                  // const DeleteScreen()
+                  // const SplashScreen()
 
-              // Dee(),
-              status ? const MyHomePage() : const LoginScreen(),
+                  // Dee(),
+                  status ? const MyHomePage() : const LoginScreen(),
+            );
+          },
         ));
   }
 }
+//  BlocBuilder<ThemeCubit, ThemeMode>(
+//           builder: (context, themeMode) {
+//             return MaterialApp(
+//               theme: ThemeData.light(),
+//               darkTheme: ThemeData.dark(),
+//               themeMode: themeMode,
+//               debugShowCheckedModeBanner: false,
+//               home: //SplashScreen()
+//                   //SignSuccess(),
+//                   // OtpVerificationScreen()
+//                   //  OtpVerificationScreen()
+//                   //  MyHomePage()
+//                   // EditProfile(),
+//                   // const AddAddress(),
+//                   //SignUpScreen(),
+//                   // const ManageAddress(),
+//                   // const DeleteScreen()
+//                   // const SplashScreen()
+
+//                   // Dee(),
+//                   status ? const MyHomePage() : const LoginScreen(),
+//             );
+//           },
+//         ));

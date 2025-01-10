@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/auth/cloudinary_service.dart';

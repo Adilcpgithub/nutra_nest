@@ -278,9 +278,6 @@ class AccountScreen extends StatelessWidget {
 }
 
 Widget _buildhead(BuildContext context) {
-  AuthService authService = AuthService();
-
-  UserStatus userStatus = UserStatus();
   return Column(
     children: [
       Row(
@@ -290,7 +287,8 @@ Widget _buildhead(BuildContext context) {
           ),
           const Expanded(
             child: Text(
-              'Hey! Nutra-Nest',
+              'Rider Spot',
+              textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 19,
                   fontWeight: FontWeight.w600,

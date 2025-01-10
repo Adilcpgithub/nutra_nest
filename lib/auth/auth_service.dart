@@ -186,6 +186,7 @@ class AuthService {
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage;
+      log(e.toString());
       // Handle specific FirebaseAuth errors
       switch (e.code) {
         case 'user-not-found':

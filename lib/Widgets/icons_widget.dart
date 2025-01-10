@@ -26,7 +26,7 @@ class CustomIcon extends StatelessWidget {
           onTap: onTap,
           child: Container(
             decoration: BoxDecoration(
-                color: CustomColors.green2,
+                color: CustomColors.green,
                 borderRadius: BorderRadius.circular(10)),
             height: 39,
             width: 39,

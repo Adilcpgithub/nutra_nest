@@ -330,7 +330,7 @@ class SignUpScreen extends StatelessWidget {
           name: _nameController.text.trim(),
           phoneNumber: selectedCountryCode + _phoneController.text.trim(),
           email: _emailController.text.trim(),
-          password: _passwordController.text,
+          password: _passwordController.text.trim(),
         );
 
         // Always close the dialog first

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/custom_textbutton.dart';
 
 class SignSuccess extends StatelessWidget {
@@ -22,7 +23,7 @@ class SignSuccess extends StatelessWidget {
               height: deviceHeight / 2,
               child: Center(
                 child: Image.asset(
-                  'assets/tick.png',
+                  'assets/image copy 19.png',
                   height: 90,
                 ),
               ),
@@ -41,20 +42,8 @@ class SignSuccess extends StatelessWidget {
                 color: Colors.black,
                 buttomName: 'START SHOPPING',
                 voidCallBack: () async {
-                  Navigator.of(context).pushReplacement(
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const MyHomePage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        // For example, a fade transition
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
+                  CustomNavigation.pushAndRemoveUntil(
+                      context, const MyHomePage());
                 }),
           ],
         ),
