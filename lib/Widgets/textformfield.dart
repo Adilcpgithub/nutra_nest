@@ -44,8 +44,10 @@ class CustomTextFormField extends StatelessWidget {
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.never,
             labelText: labelText,
-            labelStyle: const TextStyle(
-                fontSize: 18, color: Color.fromARGB(160, 255, 255, 255)),
+            labelStyle: TextStyle(
+              fontSize: 18,
+              color: Theme.of(context).textTheme.bodySmall!.color,
+            ),
             hintText: hintText,
             prefixIcon: prefixIcon,
 

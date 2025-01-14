@@ -79,7 +79,7 @@ class _CycleListPageState extends State<CycleListPage> {
             style: GoogleFonts.poppins(
               fontSize: 19,
               fontWeight: FontWeight.w600,
-              color: Colors.white,
+              color: Theme.of(context).textTheme.bodySmall!.color,
             ),
           ),
         ),
@@ -140,17 +140,20 @@ class _CycleListPageState extends State<CycleListPage> {
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 5,
+                  crossAxisSpacing: 6,
                   mainAxisSpacing: 5,
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.76,
                 ),
                 itemCount: state.cycles.length,
                 itemBuilder: (context, index) {
                   final cycle = state.cycles[index];
-
+                  // return Container(
+                  //   color: Colors.amber,
+                  //   height: 300,
+                  // );
                   return SizedBox(
-                    height: 100,
-                    width: double.infinity,
+                    height: 180,
+                    // width: double.infinity,
                     child: cycleProductCard(
                       cycle: cycle,
                       context: context,

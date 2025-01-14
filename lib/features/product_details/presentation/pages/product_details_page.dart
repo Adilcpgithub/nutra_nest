@@ -32,7 +32,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   final int rating = 4;
   bool isExpanded = false;
   String sampleData =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.Why do we use it?It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).Where does it come from?Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sy";
+      "LoreIpsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inIpsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inm y";
 
   //! here the for sample remove with actual data
   bool favorite = false;
@@ -92,9 +92,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                   customSizedBox(10),
                   buildHeader(context),
                   customSizedBox(30),
-                  buildCycleImages(_pageController, images),
+                  buildCycleImages(_pageController, images, widget.cycle),
                   customSizedBox(10),
-                  buildImageIconsAndFavorite(context, images, widget.cycle.id),
+                  buildImageIconsAndFavorite(
+                      context, images, widget.cycle.id, widget.cycle),
                   customSizedBox(20),
                   Column(
                     children: [
@@ -139,11 +140,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     splashColor: Colors.grey.withOpacity(0.3),
                                     highlightColor:
                                         Colors.grey.withOpacity(0.1),
-                                    child: const Center(
+                                    child: Center(
                                       child: Text(
                                         '-',
                                         style: TextStyle(
-                                          color: CustomColors.gray2,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .color,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -154,8 +158,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   child: Center(
                                     child: Text(
                                       '$data',
-                                      style: const TextStyle(
-                                        color: CustomColors.white,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .color,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -171,11 +178,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     splashColor: Colors.grey.withOpacity(0.3),
                                     highlightColor:
                                         Colors.grey.withOpacity(0.1),
-                                    child: const Center(
+                                    child: Center(
                                       child: Text(
                                         '+',
                                         style: TextStyle(
-                                          color: CustomColors.gray2,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .color,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -195,12 +205,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 height: 4,
                               ),
                               Text(
-                                'Brand : ${widget.cycle.name}',
+                                'Brand : ${widget.cycle.brand}',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                   fontSize: 19,
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.white,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
                                 ),
                               ),
                             ],
@@ -218,13 +231,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   width: 1, color: CustomColors.green2),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: const Padding(
-                              padding: EdgeInsets.only(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
                                   top: 1, bottom: 1, left: 2, right: 2),
                               child: Text(
                                 ' in stock ',
                                 style: TextStyle(
-                                  color: CustomColors.white,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
                                 ),
                               ),
                             ),
@@ -248,10 +264,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  const Text(
-                                    'rating ',
+                                  Text(
+                                    'Rating ',
                                     style: TextStyle(
-                                      color: CustomColors.white,
+                                      fontSize: 15,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .color,
                                     ),
                                   ),
                                   Row(
@@ -272,13 +292,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ],
                       ),
                       customSizedBox(3),
-                      const Row(
+                      Row(
                         children: [
                           Text(
                             'Weight : 25 Kg',
                             style: TextStyle(
-                              color: CustomColors.white,
-                              fontSize: 13,
+                              color:
+                                  Theme.of(context).textTheme.bodySmall!.color,
+                              fontSize: 15,
                             ),
                           ),
                         ],
@@ -289,22 +310,28 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Text(
                             textAlign: TextAlign.left,
                             '₹${widget.cycle.price}.00',
-                            style: const TextStyle(
-                                color: CustomColors.white,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .color,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       customSizedBox(5),
-                      const Row(
+                      Row(
                         children: [
                           Text(
                             'Description',
                             style: TextStyle(
-                              color: CustomColors.white,
-                              fontSize: 17,
-                            ),
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .color,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -312,20 +339,33 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Row(
                         children: [
                           Expanded(
-                            child: Text(
-                              maxLines: 40,
-                              sampleData,
-                              style: const TextStyle(
-                                color: CustomColors.white,
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 13,
+                            child: GestureDetector(
+                              onTap: () => print(sampleData.length),
+                              child: Text(
+                                widget.cycle.description,
+                                maxLines: 40,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 13,
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 120,
+                      )
                     ],
                   ),
+                  if (widget.cycle.description.length < 360)
+                    const SizedBox(
+                      height: 80,
+                    )
                 ],
               ),
             ),
@@ -337,59 +377,56 @@ class _ProductDetailsState extends State<ProductDetails> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (isAtBottom) {
-                            scrollController.animateTo(0,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut);
-                          } else {
-                            scrollController.animateTo(
-                                scrollController.position.maxScrollExtent,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              border: Border.all(
-                                  width: 1, color: CustomColors.green2),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 2, bottom: 2, left: 3, right: 3),
-                              child: Text(
-                                isAtBottom ? 'Show less' : 'Show more',
-                                style: const TextStyle(
-                                  color: CustomColors.white,
+                      if (widget.cycle.description.length > 60)
+                        GestureDetector(
+                          onTap: () {
+                            if (isAtBottom) {
+                              scrollController.animateTo(0,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
+                            } else {
+                              scrollController.animateTo(
+                                  scrollController.position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white ==
+                                        Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .color
+                                    ? Colors.black
+                                    : Colors.white,
+                                border: Border.all(
+                                  color: CustomColors.green,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 2, bottom: 2, left: 3, right: 3),
+                                child: Text(
+                                  isAtBottom ? 'Show less' : 'Show more',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .color),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Stack(alignment: Alignment.center, children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.green.withOpacity(0.5),
-                                blurRadius: 15,
-                                spreadRadius: 5,
-                              ),
-                            ],
-                          ),
-                        ),
-                        CustomTextbutton(
-                            color: CustomColors.green,
-                            buttomName: 'START SHOPPING',
-                            voidCallBack: () async {}),
-                      ]),
+                      CustomTextbutton(
+                          color: CustomColors.green,
+                          buttomName: 'ADD TO CART',
+                          voidCallBack: () async {}),
                     ],
                   ),
                 ))
@@ -416,12 +453,21 @@ Widget buildHeader(BuildContext context) {
           icon: Icons.arrow_back,
           iconSize: 26),
       const Expanded(child: SizedBox.shrink()),
-      CustomIcon(onTap: () {}, icon: Icons.search, iconSize: 29)
+      CustomIcon(
+          onTap: () {},
+          widget: Padding(
+            padding: const EdgeInsets.all(7.0),
+            child: Image.asset(Theme.of(context).brightness == Brightness.dark
+                ? 'assets/image copy 10.png'
+                : 'assets/image copy 9.png'),
+          ),
+          iconSize: 25)
     ],
   );
 }
 
-Widget buildCycleImages(PageController pageController, List<String> images) {
+Widget buildCycleImages(
+    PageController pageController, List<String> images, Cycle cycle) {
   return SizedBox(
     height: 230,
     child: Expanded(
@@ -441,33 +487,63 @@ Widget buildCycleImages(PageController pageController, List<String> images) {
               context.read<ImageBloc>().add(PageChangedEvent(index));
             },
             controller: pageController,
-            itemCount: images.length,
+            itemCount: cycle.imageUrl.length,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  elevation: 3, shadowColor: Colors.white,
+              return Card(
+                elevation: 3, shadowColor: Colors.white,
 
-                  shape: RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                //  elevation: 7,
+                //   shadowColor: Colors.red,
+                //   color: Colors.white,
+                //   shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  height: 230,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    //border: Border.all(color: CustomColors.green, width: 2),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  //  elevation: 7,
-                  //   shadowColor: Colors.red,
-                  //   color: Colors.white,
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(15),
-                  child: Container(
-                    height: 230,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      //border: Border.all(color: CustomColors.green, width: 2),
-                      borderRadius: BorderRadius.circular(15),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          images[index],
-                        ),
-                        fit: BoxFit.cover,
-                      ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    child: Image.network(
+                      cycle.imageUrl[index],
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return ClipRRect(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                  height: double.maxFinite,
+                                  width: double.maxFinite,
+                                  child: Image.asset(
+                                    'assets/NutraNestPo.png',
+                                    fit: BoxFit.cover,
+                                  )),
+                              const CircularProgressIndicator(
+                                color: CustomColors.green,
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const SizedBox(
+                          height: double.maxFinite,
+                          width: double.maxFinite,
+                          child: Center(
+                              child: Icon(
+                            size: 50,
+                            Icons.image_not_supported,
+                            color: Colors.grey,
+                          )),
+                        );
+                      },
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -479,49 +555,77 @@ Widget buildCycleImages(PageController pageController, List<String> images) {
 }
 
 Widget buildImageIconsAndFavorite(
-    BuildContext contex, List<String> images, String id) {
+    BuildContext contex, List<String> images, String id, Cycle cycle) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Expanded(
       child: BlocBuilder<ImageBloc, ImageState>(builder: (context, state) {
         int currentIdex = 0;
+
         if (state is ImageIndexUpdated) {
           currentIdex = state.currentIndex;
         }
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            images.length,
-            (index) => GestureDetector(
-              onTap: () {
-                context.read<ImageBloc>().add(PageChangedEvent(index));
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                margin: const EdgeInsets.symmetric(horizontal: 6),
-                width: 18,
-                height: 18,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 1.5,
-                      color: currentIdex == index
-                          ? CustomColors.white
-                          : CustomColors.black),
-                  color: CustomColors.black,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    width: 9,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+        return Center(
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: cycle.imageUrl.length > 1
+                  ? List.generate(cycle.imageUrl.length, (index) {
+                      return Stack(
+                        children: [
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     context
+                          //         .read<ImageBloc>()
+                          //         .add(PageChangedEvent(index));
+                          //   },
+                          //   child: Container(
+                          //     height: 20,
+                          //     width: 20,
+                          //     color: Colors.amber,
+                          //   ),
+                          //   // child: AnimatedContainer(
+                          //   //   duration: const Duration(milliseconds: 300),
+                          //   //   margin: const EdgeInsets.symmetric(horizontal: 6),
+                          //   //   width: index == currentIdex ? 18 : 9,
+                          //   //   height: index == currentIdex ? 18 : 9,
+                          //   //   decoration: BoxDecoration(
+                          //   //       color: index == currentIdex
+                          //   //           ? Theme.of(context)
+                          //   //               .textTheme
+                          //   //               .bodySmall!
+                          //   //               .color
+                          //   //           : Theme.of(context)
+                          //   //               .textTheme
+                          //   //               .displaySmall!
+                          //   //               .color,
+                          //   //       borderRadius: BorderRadius.circular(15)),
+                          //   // ),
+                          // ),
+                          GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<ImageBloc>()
+                                  .add(PageChangedEvent(index));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 100),
+                                width: index == currentIdex ? 18 : 11,
+                                height: index == currentIdex ? 18 : 11,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    })
+                  : []),
         );
       }),
     ),

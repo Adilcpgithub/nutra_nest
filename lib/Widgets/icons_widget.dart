@@ -34,7 +34,7 @@ class CustomIcon extends StatelessWidget {
                 ? Icon(
                     icon,
                     size: iconSize ?? 26,
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.bodySmall!.color,
                   )
                 : widget ?? const SizedBox.shrink(),
           ),

@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
             duration: const Duration(milliseconds: 250),
             height: 68, // Adjust height to cover full bottom area
             decoration: BoxDecoration(
-              color: isSelected ? CustomColors.green : Colors.white,
+              color: isSelected ? CustomColors.green : CustomColors.lightWhite,
               borderRadius: BorderRadius.circular(15),
             ),
             padding: const EdgeInsets.symmetric(vertical: 8),

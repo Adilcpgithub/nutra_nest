@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/presentation/network/cubit/network_cubit.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/edit_profile.dart';
 import 'package:nutra_nest/screen/user/manage_address.dart';
@@ -16,314 +20,176 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildhead(context),
-                const SizedBox(
-                  height: 70,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  const EditProfile(),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            var curvedAnimation = CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOut, // Choose any curve here
-                            );
+        child: BlocBuilder<NetworkCubit, bool>(
+          builder: (context, isConnected) {
+            if (isConnected) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildhead(context),
+                      const SizedBox(
+                        height: 70,
+                      ),
+                      buildNameContainer(
+                        context: context,
+                        containerName: 'Edit Profile',
+                        iconImage: 'assets/image.png',
+                        function: () {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      const EditProfile(),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                var curvedAnimation = CurvedAnimation(
+                                  parent: animation,
+                                  curve:
+                                      Curves.easeInOut, // Choose any curve here
+                                );
 
-                            return FadeTransition(
-                              opacity: curvedAnimation,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      width: double.maxFinite,
-                      height: 60,
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 19,
-                          ),
-                          Image.asset(
-                            'assets/image.png',
-                            height: 25,
-                          ),
-                          const SizedBox(
-                              width: 59), // Space between icon and text
-                          const Expanded(
-                            child: Text(
-                              'Edit Profile', // Example with longer text
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                              overflow: TextOverflow
-                                  .ellipsis, // Ellipsis if text is too long
+                                return FadeTransition(
+                                  opacity: curvedAnimation,
+                                  child: child,
+                                );
+                              },
                             ),
-                          ),
-                          const SizedBox(
-                              width: 16), // Space between text and arrow
-                          Image.asset(
-                            'assets/image copy 2.png',
-                            height: 13,
-                          ),
-                          const SizedBox(
-                            width: 22,
-                          ),
-                        ],
+                          );
+                          CustomNavigation.push(context, const EditProfile());
+                        },
                       ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: GestureDetector(
-                    onTap: () {
-                      CustomNavigation.push(context, const ManageAddress());
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      width: double.maxFinite,
-                      height: 60,
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 19,
-                          ),
-                          Image.asset(
-                            'assets/image copy.png',
-                            height: 24,
-                          ),
-                          const SizedBox(
-                              width: 59), // Space between icon and text
-                          const Expanded(
-                            child: Text(
-                              'Update Address', // Example with longer text
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black),
-                              overflow: TextOverflow
-                                  .ellipsis, // Ellipsis if text is too long
-                            ),
-                          ),
-                          const SizedBox(
-                              width: 16), // Space between text and arrow
-                          Image.asset(
-                            'assets/image copy 2.png',
-                            height: 13,
-                          ),
-                          const SizedBox(
-                            width: 22,
-                          ),
-                        ],
+                      buildNameContainer(
+                        context: context,
+                        containerName: 'Update Address',
+                        iconImage: 'assets/image copy.png',
+                        function: () {
+                          CustomNavigation.push(context, const ManageAddress());
+                        },
                       ),
-                    ),
+                      buildNameContainer(
+                        context: context,
+                        containerName: 'Purchase History',
+                        iconImage: 'assets/image copy 3.png',
+                        function: () {},
+                      ),
+                      buildNameContainer(
+                        context: context,
+                        containerName: 'Frequently Asked Questions',
+                        iconImage: 'assets/image copy 4.png',
+                        function: () {},
+                      ),
+                      buildNameContainer(
+                        context: context,
+                        containerName: 'Help and Support',
+                        iconImage: 'assets/image copy 5.png',
+                        function: () {},
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    width: double.maxFinite,
-                    height: 60,
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 19,
-                        ),
-                        Image.asset(
-                          'assets/image copy 3.png',
-                          height: 21,
-                        ),
-                        const SizedBox(
-                            width: 59), // Space between icon and text
-                        const Expanded(
-                          child: Text(
-                            'Purchase History', // Example with longer text
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                            overflow: TextOverflow
-                                .ellipsis, // Ellipsis if text is too long
-                          ),
-                        ),
-                        const SizedBox(
-                            width: 16), // Space between text and arrow
-                        Image.asset(
-                          'assets/image copy 2.png',
-                          height: 13,
-                        ),
-                        const SizedBox(
-                          width: 22,
-                        ),
-                      ],
+              );
+            } else {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/Animation - 1736755470091.json',
+                      height: 110),
+                  Text(
+                    'No internet connection!',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.bodySmall!.color,
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    width: double.maxFinite,
-                    height: 60,
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 19,
-                        ),
-                        Image.asset(
-                          'assets/image copy 4.png',
-                          height: 21,
-                        ),
-                        const SizedBox(
-                            width: 59), // Space between icon and text
-                        const Expanded(
-                          child: Text(
-                            'Frequently Asked Questions', // Example with longer text
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                            overflow: TextOverflow
-                                .ellipsis, // Ellipsis if text is too long
-                          ),
-                        ),
-                        const SizedBox(
-                            width: 16), // Space between text and arrow
-                        Image.asset(
-                          'assets/image copy 2.png',
-                          height: 13,
-                        ),
-                        const SizedBox(
-                          width: 22,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    width: double.maxFinite,
-                    height: 60,
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 19,
-                        ),
-                        Image.asset(
-                          'assets/image copy 5.png',
-                          height: 21,
-                        ),
-                        const SizedBox(
-                            width: 59), // Space between icon and text
-                        const Expanded(
-                          child: Text(
-                            'Help and Support', // Example with longer text
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                            overflow: TextOverflow
-                                .ellipsis, // Ellipsis if text is too long
-                          ),
-                        ),
-                        const SizedBox(
-                            width: 16), // Space between text and arrow
-                        Image.asset(
-                          'assets/image copy 2.png',
-                          height: 13,
-                        ),
-                        const SizedBox(
-                          width: 22,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                  )
+                ],
+              ));
+            }
+          },
         ),
       ),
     );
   }
 }
 
+Widget buildNameContainer(
+    {required VoidCallback function,
+    required BuildContext context,
+    required String iconImage,
+    required String containerName}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10),
+    child: GestureDetector(
+      onTap: function,
+      child: Container(
+        decoration: BoxDecoration(
+            color:
+                isDark(context) ? CustomColors.white : CustomColors.lightWhite,
+            borderRadius: BorderRadius.circular(10)),
+        width: double.maxFinite,
+        height: 60,
+        child: Row(
+          children: [
+            const SizedBox(
+              width: 19,
+            ),
+            Image.asset(
+              iconImage,
+              height: 21,
+            ),
+            const SizedBox(width: 59), // Space between icon and text
+            Expanded(
+              child: Text(
+                containerName, // Example with longer text
+                style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: CustomColors.black),
+                overflow: TextOverflow.ellipsis, // Ellipsis if text is too long
+              ),
+            ),
+            const SizedBox(width: 16), // Space between text and arrow
+            Image.asset(
+              'assets/image copy 2.png',
+              height: 13,
+            ),
+            const SizedBox(
+              width: 22,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 Widget _buildhead(BuildContext context) {
   return Column(
     children: [
       Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const SizedBox(
-            width: 90,
-          ),
-          const Expanded(
-            child: Text(
-              'Rider Spot',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
+          // const Expanded(
+          //   child: Text(
+          //     'Rider Spot',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(
+          //         fontSize: 19,
+          //         fontWeight: FontWeight.w600,
+          //         color: Colors.white),
+          //   ),
+          // ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: CustomIcon(
+              onTap: () {
+                customShowDialog(context);
+              },
+              icon: Icons.logout_sharp,
             ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(
-                height: 17,
-              ),
-              CustomIcon(
-                onTap: () {
-                  customShowDialog(context);
-                },
-                widget: Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Image.asset(
-                    'assets/image copy 6.png',
-                    width: 20.0,
-                  ),
-                ),
-              ),
-              const Text(
-                'Log out',
-                style: TextStyle(
-                    color: CustomColors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500),
-              )
-            ],
           ),
         ],
       ),

@@ -28,7 +28,9 @@ class CustomTextbutton extends StatelessWidget {
         onPressed: voidCallBack,
         child: Text(
           buttomName,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
+          style: TextStyle(
+              color: Theme.of(context).textTheme.bodySmall!.color,
+              fontSize: 18),
         ),
       ),
     );

@@ -12,6 +12,7 @@ import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/presentation/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/presentation/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
@@ -89,7 +90,8 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => CycleBloc()),
           BlocProvider(create: (context) => SearchBlocBloc()),
           BlocProvider(create: (context) => ImageBloc()),
-          BlocProvider(create: (context) => ThemeCubit()),
+          BlocProvider(create: (context) => ThemeCubit()..isDartMode()),
+          BlocProvider(create: (context) => NetworkCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {

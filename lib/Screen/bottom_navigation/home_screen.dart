@@ -1,9 +1,13 @@
 import 'dart:developer';
+import 'dart:ui';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/features/product_details/presentation/pages/product_list_page.dart';
+import 'package:nutra_nest/presentation/network/cubit/network_cubit.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/presentation/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
@@ -17,23 +21,47 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: isMobile(context)
-                    ? 20
-                    : MediaQuery.of(context).size.width / 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildHeader(context),
-                _buildSearchBar(),
-                _buildFeaturedSection(),
-                _buildSparePartsSection(),
-                _buildCycleTypesGrid(context),
-              ],
-            ),
-          ),
+        child: BlocBuilder<NetworkCubit, bool>(
+          builder: (context, isConnected) {
+            log('is connected is $isConnected');
+            if (isConnected) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: isMobile(context)
+                          ? 20
+                          : MediaQuery.of(context).size.width / 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(context),
+                      _buildSearchBar(context),
+                      _buildFeaturedSection(context),
+                      _buildSparePartsSection(context),
+                      _buildCycleTypesGrid(context),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/Animation - 1736755470091.json',
+                      height: 110),
+                  Text(
+                    'No internet connection!',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.bodySmall!.color,
+                    ),
+                  )
+                ],
+              ));
+            }
+          },
         ),
       ),
     );
@@ -57,66 +85,99 @@ Widget _buildHeader(BuildContext context) {
             Text(
               'Welcome to',
               style: GoogleFonts.poppins(
-                color: Colors.grey[400],
+                color: Colors.grey[600],
                 fontSize: 16,
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                context.read<ThemeCubit>().toggleTheme();
-              },
-              child: Text(
-                'Rider-Spot',
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              'Rider-Spot',
+              style: GoogleFonts.poppins(
+                color: Theme.of(context).textTheme.bodySmall!.color,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
         ),
+        const SizedBox(width: 90),
         const SizedBox(width: 20),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+        Row(
           children: [
-            const SizedBox(height: 17),
-            GestureDetector(
-              onTap: () async {},
-              child: Stack(
-                children: [
-                  Container(
-                    height: 39,
-                    width: 39,
+            Column(
+              children: [
+                const SizedBox(height: 17),
+                GestureDetector(
+                  onTap: () => context.read<ThemeCubit>().toggleTheme(),
+                  child: Container(
+                    height: 42,
+                    width: 42,
                     decoration: BoxDecoration(
-                      border: Border.all(width: 1.5, color: CustomColors.green),
-                      borderRadius: BorderRadius.circular(10),
+                      shape: BoxShape.circle,
+                      color: isDark(context)
+                          ? Colors.grey[800]
+                          : CustomColors.lightWhite,
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(7.0),
-                      child: Icon(Icons.notifications, color: Colors.white),
+                    child: Icon(
+                      isDark(context) ? Icons.wb_sunny : Icons.nightlight_round,
+                      size: 26,
+                      color: isDark(context) ? Colors.amber[400] : Colors.grey,
                     ),
                   ),
-                  Positioned(
-                    top: -1,
-                    right: 5,
-                    child: Container(
-                      height: 30,
-                      decoration: BoxDecoration(
-                          color: CustomColors.green,
-                          shape: BoxShape.circle,
-                          // borderRadius: BorderRadius.circular(8),
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const SizedBox(height: 17),
+                GestureDetector(
+                  onTap: () async {},
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 39,
+                        width: 39,
+                        decoration: BoxDecoration(
                           border:
-                              Border.all(width: 1, color: CustomColors.green)),
-                      padding: const EdgeInsets.all(4),
-                      child: const Text(
-                        '1',
-                        style: TextStyle(color: CustomColors.white),
+                              Border.all(width: 1.5, color: CustomColors.green),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(7.0),
+                          child: Icon(
+                            Icons.notifications,
+                            color: Theme.of(context).textTheme.bodySmall!.color,
+                          ),
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
+                      Positioned(
+                        top: -1,
+                        right: 5,
+                        child: Container(
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: CustomColors.green,
+                              shape: BoxShape.circle,
+                              // borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                  width: 1, color: CustomColors.green)),
+                          padding: const EdgeInsets.all(4),
+                          child: Text(
+                            '1',
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodySmall!.color,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -126,8 +187,8 @@ Widget _buildHeader(BuildContext context) {
 }
 
 //adfashskdflasdhf
-Widget _buildSearchBar() {
-  final TextEditingController _searchCountroller = TextEditingController();
+Widget _buildSearchBar(BuildContext context) {
+  final TextEditingController searchCountroller = TextEditingController();
   return FadeInDown(
     child: Column(
       children: [
@@ -136,15 +197,15 @@ Widget _buildSearchBar() {
           child: SizedBox(
             height: 68,
             child: CustomTextFormField(
-              prefixIcon: const Padding(
-                padding: EdgeInsets.only(left: 20, right: 23),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 23),
                 child: Icon(
                   Icons.search,
                   size: 30,
-                  color: Colors.white,
+                  color: Theme.of(context).textTheme.bodySmall!.color,
                 ),
               ),
-              controller: _searchCountroller,
+              controller: searchCountroller,
               labelText: 'Search',
             ),
           ),
@@ -157,7 +218,7 @@ Widget _buildSearchBar() {
   );
 }
 
-Widget _buildFeaturedSection() {
+Widget _buildFeaturedSection(BuildContext context) {
   return FadeInUp(
     child: Column(
       children: [
@@ -168,49 +229,29 @@ Widget _buildFeaturedSection() {
               child: Text(
                 'Featured',
                 style: GoogleFonts.nunito(
-                    color: CustomColors.white,
+                    color: Theme.of(context).textTheme.bodySmall!.color,
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
               ),
             ),
           ],
         ),
-        ImageCarousel(),
+        // BackdropFilter(
+        //     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        //     child:
+
+        Stack(children: [
+          // Container(
+          //   color: const Color.fromARGB(8, 0, 0, 0).withOpacity(0.2),
+          //   width: 200,
+          //   height: 190,
+          // ),
+          ImageCarousel()
+        ]),
         const SizedBox(
           height: 10,
         )
       ],
-    ),
-  );
-}
-
-Widget _categoryContainer(
-    String categoryName, IconData icon, VoidCallback function) {
-  return GestureDetector(
-    onTap: () => function,
-    child: Container(
-      height: 90,
-      width: 90,
-      decoration: BoxDecoration(
-          color: Colors.grey[900], borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            size: 30,
-            icon,
-            color: CustomColors.green,
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(categoryName,
-              style: GoogleFonts.lato(
-                  color: CustomColors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 11))
-        ],
-      ),
     ),
   );
 }
@@ -228,7 +269,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
             child: Text(
               'Type of Cycles',
               style: GoogleFonts.nunito(
-                  color: CustomColors.white,
+                  color: Theme.of(context).textTheme.bodySmall!.color,
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
             ),
@@ -252,7 +293,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                         const CycleListPage(
                           cycleTypeNumber: 1,
                         ));
-                  }),
+                  }, context),
                   _cycleContainer('Road Bikes', Icons.directions_bike, () {
                     log('button pressed 2');
                     CustomNavigation.push(
@@ -260,7 +301,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                         const CycleListPage(
                           cycleTypeNumber: 2,
                         ));
-                  }),
+                  }, context),
                   _cycleContainer('Hybrid Bikes', Icons.commute, () {
                     log('button pressed 3');
                     CustomNavigation.push(
@@ -268,7 +309,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                         const CycleListPage(
                           cycleTypeNumber: 3,
                         ));
-                  }),
+                  }, context),
                 ],
               ),
             ),
@@ -284,7 +325,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                         const CycleListPage(
                           cycleTypeNumber: 4,
                         ));
-                  }),
+                  }, context),
                   _cycleContainer("Kids' Bikes", Icons.child_care, () {
                     log('button pressed 5');
                     CustomNavigation.push(
@@ -292,7 +333,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                         const CycleListPage(
                           cycleTypeNumber: 5,
                         ));
-                  }),
+                  }, context),
                   _cycleContainer('Folding Bikes', Icons.merge_type, () {
                     log('button pressed 6');
                     CustomNavigation.push(
@@ -300,7 +341,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                         const CycleListPage(
                           cycleTypeNumber: 6,
                         ));
-                  }),
+                  }, context),
                 ],
               ),
             )
@@ -314,28 +355,36 @@ Widget _buildCycleTypesGrid(BuildContext context) {
   );
 }
 
-Widget _cycleContainer(String cycleName, IconData icon, VoidCallback function) {
+Widget _cycleContainer(String cycleName, IconData icon, VoidCallback function,
+    BuildContext context) {
   return GestureDetector(
     onTap: () => function(),
     child: Container(
       height: 90,
       width: 90,
       decoration: BoxDecoration(
-          color: Colors.grey[900], borderRadius: BorderRadius.circular(10)),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.grey[800]
+              : CustomColors.lightWhite,
+          borderRadius: BorderRadius.circular(10)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             size: 30,
             icon,
-            color: CustomColors.white,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
           ),
           const SizedBox(
             height: 8,
           ),
           Text(cycleName,
               style: GoogleFonts.lato(
-                  color: CustomColors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 11))
         ],
@@ -344,7 +393,7 @@ Widget _cycleContainer(String cycleName, IconData icon, VoidCallback function) {
   );
 }
 
-Widget _buildSparePartsSection() {
+Widget _buildSparePartsSection(BuildContext context) {
   return FadeInUp(
     duration: const Duration(milliseconds: 500),
     child: Column(
@@ -355,7 +404,7 @@ Widget _buildSparePartsSection() {
           child: Text(
             'Spare Parts',
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: Theme.of(context).textTheme.bodySmall!.color,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -444,11 +493,12 @@ class SparePartCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 16),
         decoration: BoxDecoration(
           color: const Color(0xFF1E1E1E),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(17),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 10,
+              blurStyle: BlurStyle.outer,
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
               spreadRadius: 1,
             ),
           ],
