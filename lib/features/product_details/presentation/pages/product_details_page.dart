@@ -7,10 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
+import 'package:nutra_nest/features/product_details/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
 import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/model/cycle.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
+import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
 
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/custom_textbutton.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 
@@ -24,11 +29,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   late PageController _pageController;
-  final List<String> images = [
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ97LQR6VpYTM9B2O-xR5TeoQ11BjnHOVQeDZPLL_vrhcebI5FbmpMwxzv7k5MIpKYQF7I&usqp=CAU',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZnPSfjT2pxqBnDiFMoI5NjIoalAgmkOqwTg&s',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxJvN-EDXpF4r34NX2iErtZUyk3ejpzm9avg&s',
-  ];
+
   final int rating = 4;
   bool isExpanded = false;
   String sampleData =
@@ -41,26 +42,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   int data = 1;
 
   //!-----------------------------------------
-  void scrollerListner() {
-    if (scrollController.offset >= scrollController.position.minScrollExtent &&
-        !scrollController.position.outOfRange) {
-      // User reached the bottom
-      setState(() {
-        isAtBottom = true;
-      });
-    } else {
-      // User hasn't reached the bottom
-      setState(() {
-        isAtBottom = false;
-      });
-    }
-    //User reached the bottom
-    if (scrollController.position.pixels == 0) {
-      setState(() {
-        isAtBottom = false;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -81,132 +62,32 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Stack(children: [
-            SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                children: [
-                  customSizedBox(10),
-                  buildHeader(context),
-                  customSizedBox(30),
-                  buildCycleImages(_pageController, images, widget.cycle),
-                  customSizedBox(10),
-                  buildImageIconsAndFavorite(
-                      context, images, widget.cycle.id, widget.cycle),
-                  customSizedBox(20),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.cycle.name,
-                              textAlign: TextAlign.left,
-                              style: GoogleFonts.poppins(
-                                fontSize: 19,
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .color,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 30,
-                            width: 75,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: CustomColors.green2,
-                              ),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (data >= 2) {
-                                        setState(() {
-                                          data = data - 1;
-                                        });
-                                      }
-                                      print('Minus tapped');
-                                    },
-                                    splashColor: Colors.grey.withOpacity(0.3),
-                                    highlightColor:
-                                        Colors.grey.withOpacity(0.1),
-                                    child: Center(
-                                      child: Text(
-                                        '-',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .color,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Center(
-                                    child: Text(
-                                      '$data',
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .color,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        data = data + 1;
-                                      });
-                                    },
-                                    splashColor: Colors.grey.withOpacity(0.3),
-                                    highlightColor:
-                                        Colors.grey.withOpacity(0.1),
-                                    child: Center(
-                                      child: Text(
-                                        '+',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .color,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text(
-                                'Brand : ${widget.cycle.brand}',
-                                textAlign: TextAlign.center,
+      body: BlocProvider(
+        create: (context) => ProductCartCubit(),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Stack(children: [
+              SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    customSizedBox(10),
+                    buildHeader(context),
+                    customSizedBox(30),
+                    buildCycleImages(_pageController, widget.cycle),
+                    customSizedBox(10),
+                    buildImageIconsAndFavorite(
+                        context, widget.cycle.id, widget.cycle),
+                    customSizedBox(20),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.cycle.name,
+                                textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
                                   fontSize: 19,
                                   fontWeight: FontWeight.w600,
@@ -216,224 +97,365 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       .color,
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1, color: CustomColors.green2),
-                              borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 1, bottom: 1, left: 2, right: 2),
-                              child: Text(
-                                ' in stock ',
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .color,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      //!------------------------------
-                      Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 1, bottom: 1, left: 2, right: 2),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Rating ',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .color,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: List.generate(5, (index) {
-                                      return Icon(
-                                        Icons.star,
-                                        color: index < rating
-                                            ? Colors.yellow
-                                            : Colors.grey,
-                                        size: 21,
-                                      );
-                                    }),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      customSizedBox(3),
-                      Row(
-                        children: [
-                          Text(
-                            'Weight : 25 Kg',
-                            style: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.bodySmall!.color,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                      customSizedBox(3),
-                      Row(
-                        children: [
-                          Text(
-                            textAlign: TextAlign.left,
-                            '₹${widget.cycle.price}.00',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .color,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      customSizedBox(5),
-                      Row(
-                        children: [
-                          Text(
-                            'Description',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .color,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      customSizedBox(3),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => print(sampleData.length),
-                              child: Text(
-                                widget.cycle.description,
-                                maxLines: 40,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .color,
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 120,
-                      )
-                    ],
-                  ),
-                  if (widget.cycle.description.length < 360)
-                    const SizedBox(
-                      height: 80,
-                    )
-                ],
-              ),
-            ),
-            Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Column(
-                    children: [
-                      if (widget.cycle.description.length > 60)
-                        GestureDetector(
-                          onTap: () {
-                            if (isAtBottom) {
-                              scrollController.animateTo(0,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut);
-                            } else {
-                              scrollController.animateTo(
-                                  scrollController.position.maxScrollExtent,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Container(
+                            Container(
+                              height: 30,
+                              width: 75,
                               decoration: BoxDecoration(
-                                color: Colors.white ==
-                                        Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .color
-                                    ? Colors.black
-                                    : Colors.white,
                                 border: Border.all(
-                                  color: CustomColors.green,
                                   width: 1,
+                                  color: CustomColors.green2,
                                 ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: BlocBuilder<ProductCartCubit,
+                                  ProductCartState>(
+                                builder: (context, state) {
+                                  var cubit = context.read<ProductCartCubit>();
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            cubit.decreaseCount();
+                                          },
+                                          splashColor:
+                                              Colors.grey.withOpacity(0.3),
+                                          highlightColor:
+                                              Colors.grey.withOpacity(0.1),
+                                          child: Center(
+                                            child: Text(
+                                              '-',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .color,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Center(
+                                          child: Text(
+                                            '${state.productCount}',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .color,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            cubit.increaseCount();
+                                          },
+                                          splashColor:
+                                              Colors.grey.withOpacity(0.3),
+                                          highlightColor:
+                                              Colors.grey.withOpacity(0.1),
+                                          child: Center(
+                                            child: Text(
+                                              '+',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .color,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              children: [
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  'Brand : ${widget.cycle.brand}',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w600,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .color,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1, color: CustomColors.green2),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 2, bottom: 2, left: 3, right: 3),
+                                    top: 1, bottom: 1, left: 2, right: 2),
                                 child: Text(
-                                  isAtBottom ? 'Show less' : 'Show more',
+                                  ' ${widget.cycle.stock} in stock ',
                                   style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .color),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .color,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        //!------------------------------
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 1, bottom: 1, left: 2, right: 2),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      'Rating ',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .color,
+                                      ),
+                                    ),
+                                    Row(
+                                      children: List.generate(5, (index) {
+                                        return Icon(
+                                          Icons.star,
+                                          color: index < rating
+                                              ? Colors.yellow
+                                              : Colors.grey,
+                                          size: 21,
+                                        );
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        customSizedBox(3),
+                        Row(
+                          children: [
+                            Text(
+                              'Weight : ${widget.cycle.weight} Kg',
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .color,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        customSizedBox(3),
+                        Row(
+                          children: [
+                            Text(
+                              textAlign: TextAlign.left,
+                              '₹${widget.cycle.price}.00',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        customSizedBox(5),
+                        Row(
+                          children: [
+                            Text(
+                              'Description',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        customSizedBox(3),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => print(sampleData.length),
+                                child: Text(
+                                  widget.cycle.description,
+                                  maxLines: 40,
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .color,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 120,
+                        )
+                      ],
+                    ),
+                    if (widget.cycle.description.length < 360)
+                      const SizedBox(
+                        height: 80,
+                      )
+                  ],
+                ),
+              ),
+              Positioned(
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Column(
+                      children: [
+                        if (widget.cycle.description.length > 60)
+                          GestureDetector(
+                            onTap: () {
+                              if (isAtBottom) {
+                                scrollController.animateTo(0,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut);
+                              } else {
+                                scrollController.animateTo(
+                                    scrollController.position.maxScrollExtent,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white ==
+                                          Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .color
+                                      ? Colors.black
+                                      : Colors.white,
+                                  border: Border.all(
+                                    color: CustomColors.green,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 2, bottom: 2, left: 3, right: 3),
+                                  child: Text(
+                                    isAtBottom ? 'Show less' : 'Show more',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .color),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                        BlocBuilder<ProductCartCubit, ProductCartState>(
+                          builder: (context, state) {
+                            var cubit = context.read<ProductCartCubit>();
+
+                            return CustomTextbutton(
+                                color: CustomColors.green,
+                                buttomName: state.isAddedToCart
+                                    ? 'SHOW CART'
+                                    : 'ADD TO CART',
+                                voidCallBack: () {
+                                  if (state.isAddedToCart) {
+                                    cubit.removeFromCart(widget.cycle.id);
+                                  } else {
+                                    cubit.addToCart(widget.cycle.id);
+                                  }
+                                });
+                          },
                         ),
-                      CustomTextbutton(
-                          color: CustomColors.green,
-                          buttomName: 'ADD TO CART',
-                          voidCallBack: () async {}),
-                    ],
-                  ),
-                ))
-          ]),
+                      ],
+                    ),
+                  ))
+            ]),
+          ),
         ),
       ),
     );
+  }
+
+  void scrollerListner() {
+    if (scrollController.offset >= scrollController.position.minScrollExtent &&
+        !scrollController.position.outOfRange) {
+      // User reached the bottom
+      setState(() {
+        isAtBottom = true;
+      });
+    } else {
+      // User hasn't reached the bottom
+      setState(() {
+        isAtBottom = false;
+      });
+    }
+    //User reached the bottom
+    if (scrollController.position.pixels == 0) {
+      setState(() {
+        isAtBottom = false;
+      });
+    }
   }
 }
 
@@ -454,10 +476,16 @@ Widget buildHeader(BuildContext context) {
           iconSize: 26),
       const Expanded(child: SizedBox.shrink()),
       CustomIcon(
-          onTap: () {},
+          onTap: () {
+            CustomNavigation.push(
+                context,
+                const MyHomePage(
+                  setIndex: 1,
+                ));
+          },
           widget: Padding(
             padding: const EdgeInsets.all(7.0),
-            child: Image.asset(Theme.of(context).brightness == Brightness.dark
+            child: Image.asset(isDark(context)
                 ? 'assets/image copy 10.png'
                 : 'assets/image copy 9.png'),
           ),
@@ -466,8 +494,7 @@ Widget buildHeader(BuildContext context) {
   );
 }
 
-Widget buildCycleImages(
-    PageController pageController, List<String> images, Cycle cycle) {
+Widget buildCycleImages(PageController pageController, Cycle cycle) {
   return SizedBox(
     height: 230,
     child: Expanded(
@@ -554,8 +581,7 @@ Widget buildCycleImages(
   );
 }
 
-Widget buildImageIconsAndFavorite(
-    BuildContext contex, List<String> images, String id, Cycle cycle) {
+Widget buildImageIconsAndFavorite(BuildContext contex, String id, Cycle cycle) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Expanded(
       child: BlocBuilder<ImageBloc, ImageState>(builder: (context, state) {

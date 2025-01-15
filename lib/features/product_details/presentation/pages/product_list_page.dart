@@ -6,9 +6,11 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
 import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/features/product_details/presentation/pages/product_details_page.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/utity/card.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
@@ -108,12 +110,12 @@ class _CycleListPageState extends State<CycleListPage> {
                   child: SizedBox(
                     height: 68,
                     child: CustomTextFormField(
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.only(left: 20, right: 23),
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 23),
                         child: Icon(
                           Icons.search,
                           size: 30,
-                          color: Colors.white,
+                          color: customTextTheme(context),
                         ),
                       ),
                       controller: searchCountroller,
@@ -176,23 +178,33 @@ class _CycleListPageState extends State<CycleListPage> {
             );
           } else {
             return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: CustomColors.green, width: 2),
+              height: deviceHeight(context) / 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 90,
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/No Data Found.jpg',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
+                  Lottie.asset('assets/Animation - 1736829505158.json',
+                      height: deviceHeight(context) / 4),
+                ],
               ),
             );
+
+            // Center(
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       SizedBox(
+            //         height: 150,
+            //         child: Center(
+            //           child: LottieBuilder.asset(
+            //               'assets/Animation - 1736829505158.json'),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // );
           }
         } else if (state is CycleLoadingState) {
           return SizedBox(

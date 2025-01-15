@@ -99,8 +99,6 @@ Widget _buildHeader(BuildContext context) {
             ),
           ],
         ),
-        const SizedBox(width: 90),
-        const SizedBox(width: 20),
         Row(
           children: [
             Column(

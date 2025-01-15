@@ -5,8 +5,10 @@ import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
+import 'package:nutra_nest/utity/colors.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -22,7 +24,6 @@ class SignUpScreen extends StatelessWidget {
     double deviceHeight = MediaQuery.of(context).size.height;
     // double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: BlocBuilder<SignUpBloc, SignUpState>(
         builder: (context, state) {
           final signUpBloc = context.read<SignUpBloc>();
@@ -48,9 +49,10 @@ class SignUpScreen extends StatelessWidget {
                         : null,
                     key: _formKey,
                     child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: CustomColors.green),
+                        color: isDark(context) ? Colors.black : Colors.white,
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
                         ),
@@ -59,12 +61,13 @@ class SignUpScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 35),
                         child: Column(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(top: 20, bottom: 20),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20, bottom: 20),
                               child: Text(
                                 'Sign Up',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: customTextTheme(context),
                                     fontSize: 34,
                                     fontWeight: FontWeight.w700),
                               ),
@@ -113,34 +116,36 @@ class SignUpScreen extends StatelessWidget {
                                       keyboardType: TextInputType.number,
                                       onChanged: (phone) =>
                                           signUpBloc.add(PhoneChanged(phone)),
-                                      prefixIcon: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CountryCodePicker(
-                                              onChanged: (countryCode) {
-                                                selectedCountryCode =
-                                                    countryCode.dialCode!;
-                                                print(selectedCountryCode);
-                                                context.read<SignUpBloc>().add(
-                                                    TogglePickerVisibility());
-                                              },
-                                              initialSelection: 'IN',
-                                              favorite: const ['+1', 'IN'],
-                                              showFlag: false,
-                                              showCountryOnly: false,
-                                              showOnlyCountryWhenClosed: false,
-                                              alignLeft: false,
-                                              textStyle: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      // prefixIcon: Padding(
+                                      //   padding:
+                                      //       const EdgeInsets.only(right: 8.0),
+                                      //   child: Row(
+                                      //     mainAxisSize: MainAxisSize.min,
+                                      //     children: [
+                                      //       // CountryCodePicker(
+                                      //       //   onChanged: (countryCode) {
+                                      //       //     selectedCountryCode =
+                                      //       //         countryCode.dialCode!;
+                                      //       //     print(selectedCountryCode);
+                                      //       //     context.read<SignUpBloc>().add(
+                                      //       //         TogglePickerVisibility());
+                                      //       //   },
+                                      //       //   backgroundColor: Colors.amber,
+                                      //       //   initialSelection: 'IN',
+                                      //       //   favorite: const ['+1', 'IN'],
+                                      //       //   showFlag: false,
+                                      //       //   showCountryOnly: false,
+                                      //       //   showOnlyCountryWhenClosed: false,
+                                      //       //   alignLeft: false,
+                                      //       //   textStyle: TextStyle(
+                                      //       //     color: Colors
+                                      //       //         .blue, // Change the selected country's name color
+                                      //       //     fontSize: 18,
+                                      //       //   ),
+                                      //       // ),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                     ),
@@ -201,10 +206,14 @@ class SignUpScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   vertical: deviceHeight * 0.002),
                               child: CustomTextbutton(
-                                  buttomName: 'SIGN UP',
-                                  voidCallBack: () async {
-                                    await _submittion(context);
-                                  }),
+                                buttomName: 'SIGN UP',
+                                voidCallBack: () async {
+                                  await _submittion(context);
+                                },
+                                color: isDark(context)
+                                    ? CustomColors.black
+                                    : CustomColors.white,
+                              ),
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
@@ -215,17 +224,18 @@ class SignUpScreen extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical: deviceHeight * 0.02),
-                                    child: const Text(
+                                    child: Text(
                                       'Already having an account?   ',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 11),
+                                          color: customTextTheme(context),
+                                          fontSize: 11),
                                     ),
                                   ),
                                   GestureDetector(
-                                    child: const Text(
+                                    child: Text(
                                       'Login',
                                       style: TextStyle(
-                                          color: Colors.white,
+                                          color: customTextTheme(context),
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -258,8 +268,8 @@ class SignUpScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(
+                            Padding(
+                              padding: const EdgeInsets.only(
                                 top: 10,
                               ),
                               child: Row(
@@ -270,7 +280,7 @@ class SignUpScreen extends StatelessWidget {
                                       Text(
                                         'By continuing, you agree to Perfect match’s',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: customTextTheme(context),
                                             fontSize: 11,
                                             fontWeight: FontWeight.w300),
                                       ),
@@ -279,13 +289,14 @@ class SignUpScreen extends StatelessWidget {
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.underline,
-                                            decorationColor: Colors.white,
+                                            decorationColor:
+                                                customTextTheme(context),
                                             decorationThickness: 1.5,
-                                            color: Colors.white,
+                                            color: customTextTheme(context),
                                             fontSize: 12,
                                             fontWeight: FontWeight.w300),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 15,
                                       )
                                     ],

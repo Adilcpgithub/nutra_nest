@@ -26,3 +26,17 @@ Color customTextTheme(BuildContext context) {
       ? CustomColors.white
       : CustomColors.black;
 }
+
+Color appTheme(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? CustomColors.black
+      : CustomColors.white;
+}
+
+double deviceHeight(BuildContext context) {
+  return MediaQuery.of(context).size.height;
+}
+
+double deviceWidth(BuildContext context) {
+  return MediaQuery.of(context).size.width;
+}

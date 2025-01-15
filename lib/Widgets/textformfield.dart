@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -40,10 +41,11 @@ class CustomTextFormField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText,
-          style: const TextStyle(fontSize: 18, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: customTextTheme(context)),
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.never,
             labelText: labelText,
+
             labelStyle: TextStyle(
               fontSize: 18,
               color: Theme.of(context).textTheme.bodySmall!.color,

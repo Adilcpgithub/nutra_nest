@@ -8,8 +8,10 @@ import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/utity/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: BlocBuilder<LoginBloc, LoginState>(
@@ -55,9 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       : null,
                   child: Container(
                     width: deviceWidth > 400 ? 600 : deviceWidth,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: CustomColors.green),
+                      color: appTheme(context),
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
@@ -66,13 +68,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Column(
                         children: [
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 5),
                             child: Flexible(
                               child: Text(
                                 'Log In',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: customTextTheme(context),
                                     fontSize: 34,
                                     fontWeight: FontWeight.w700),
                               ),
@@ -172,12 +174,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
 
-                          CustomTextbutton(
-                              buttomName: 'LOG IN',
-                              voidCallBack: () async {
-                                await _submittion(
-                                    context, state.isEmailVisible);
-                              }),
+                          BlocBuilder<LoginBloc, LoginState>(
+                            builder: (context, state) {
+                              bool data = true;
+                              return CustomTextbutton(
+                                showButtonName: data,
+                                buttomName: 'LOG IN',
+                                voidCallBack: () async {
+                                  data = false;
+                                  await _submittion(
+                                      context, state.isEmailVisible);
+                                },
+                                color: appTheme(context),
+                              );
+                            },
+                          ),
                           Padding(
                             padding: EdgeInsets.only(
                                 top: deviceHeight * 0.019,
@@ -185,16 +196,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
+                                Text(
                                   'Don’t have an account?  ',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 13),
+                                      color: customTextTheme(context),
+                                      fontSize: 13),
                                 ),
                                 GestureDetector(
-                                  child: const Text(
+                                  child: Text(
                                     'Sign Up',
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: customTextTheme(context),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -230,16 +242,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
+                                Text(
                                   'Login as',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
+                                      color: customTextTheme(context),
+                                      fontSize: 12),
                                 ),
                                 GestureDetector(
-                                  child: const Text(
+                                  child: Text(
                                     ' Guest',
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: customTextTheme(context),
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
                                   ),

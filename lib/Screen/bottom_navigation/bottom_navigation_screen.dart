@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 250),
-            height: 68, // Adjust height to cover full bottom area
+            height: 68,
             decoration: BoxDecoration(
               color: isSelected ? CustomColors.green : CustomColors.lightWhite,
               borderRadius: BorderRadius.circular(15),

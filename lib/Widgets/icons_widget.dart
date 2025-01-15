@@ -15,7 +15,7 @@ class CustomIcon extends StatelessWidget {
       color: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
-          color: CustomColors.black,
+          // color: CustomColors.black,
           borderRadius: BorderRadius.circular(10),
           //  border: Border.all(color: CustomColors.green, width: 1.5),
         ),
@@ -26,7 +26,8 @@ class CustomIcon extends StatelessWidget {
           onTap: onTap,
           child: Container(
             decoration: BoxDecoration(
-                color: CustomColors.green,
+                border: Border.all(width: 2, color: CustomColors.green),
+                // color: CustomColors.green,
                 borderRadius: BorderRadius.circular(10)),
             height: 39,
             width: 39,

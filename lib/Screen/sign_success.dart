@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/custom_textbutton.dart';
@@ -8,8 +10,6 @@ class SignSuccess extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double deviceHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -20,13 +20,10 @@ class SignSuccess extends StatelessWidget {
               height: 160,
             ),
             SizedBox(
-              height: deviceHeight / 2,
+              height: deviceWidth(context) / 2,
               child: Center(
-                child: Image.asset(
-                  'assets/image copy 19.png',
-                  height: 90,
-                ),
-              ),
+                  child: LottieBuilder.asset(
+                      'assets/Animation - 1736831368600.json')),
             ),
             const Text(
               ' Successful!',
