@@ -7,13 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
-import 'package:nutra_nest/features/product_details/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
-import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/model/cycle.dart';
-import 'package:nutra_nest/presentation/theme/app_theme.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
-import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
-
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/custom_textbutton.dart';
@@ -416,13 +414,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                             return CustomTextbutton(
                                 color: CustomColors.green,
                                 buttomName: state.isAddedToCart
-                                    ? 'SHOW CART'
+                                    ? 'Remove From CART'
                                     : 'ADD TO CART',
                                 voidCallBack: () {
                                   if (state.isAddedToCart) {
                                     cubit.removeFromCart(widget.cycle.id);
                                   } else {
-                                    cubit.addToCart(widget.cycle.id);
+                                    cubit.addToCart(
+                                        widget.cycle.id, widget.cycle);
                                   }
                                 });
                           },
@@ -517,25 +516,19 @@ Widget buildCycleImages(PageController pageController, Cycle cycle) {
             itemCount: cycle.imageUrl.length,
             itemBuilder: (context, index) {
               return Card(
-                elevation: 3, shadowColor: Colors.white,
-
+                elevation: 3,
+                shadowColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                //  elevation: 7,
-                //   shadowColor: Colors.red,
-                //   color: Colors.white,
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(15),
                 child: Container(
                   height: 230,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    //border: Border.all(color: CustomColors.green, width: 2),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
                     child: Image.network(
                       cycle.imageUrl[index],
                       loadingBuilder: (context, child, loadingProgress) {

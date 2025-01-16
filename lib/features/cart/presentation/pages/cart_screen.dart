@@ -1,0 +1,332 @@
+import 'dart:developer';
+
+import 'package:animate_do/animate_do.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
+import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
+import 'package:nutra_nest/features/cart/presentation/bloc/cubit/cart_cubit.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
+import 'package:nutra_nest/utity/colors.dart';
+
+class CartScreen extends StatefulWidget {
+  final bool fromBottomNav;
+  const CartScreen({super.key, required this.fromBottomNav});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    context.read<CartBloc>().add(LoadCart());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(child: BlocBuilder<NetworkCubit, bool>(
+        builder: (context, isConnected) {
+          if (isConnected) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Expanded(
+                child: Column(
+                  children: [
+                    sizedBoxHeight(10),
+                    buildHeader(context),
+                    sizedBoxHeight(20),
+                    buildCartContainer(),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset('assets/Animation - 1736755470091.json',
+                    height: 110),
+                Text(
+                  'No internet connection!',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: customTextTheme(context),
+                  ),
+                )
+              ],
+            ));
+          }
+        },
+      )),
+    );
+  }
+}
+
+Widget sizedBoxHeight(double height) {
+  return SizedBox(height: height);
+}
+
+Widget buildHeader(
+  BuildContext context,
+) {
+  return Text(
+    'My Cart',
+    textAlign: TextAlign.center,
+    style: GoogleFonts.poppins(
+      fontSize: 19,
+      fontWeight: FontWeight.w600,
+      color: Theme.of(context).textTheme.bodySmall!.color,
+    ),
+  );
+}
+
+Widget buildCartContainer() {
+  return BlocBuilder<CartBloc, CartState>(
+    builder: (context, state) {
+      if (state.items.isNotEmpty) {
+        //log('${state.products.length}');
+        return Expanded(
+          child: FadeInUp(
+            duration: const Duration(milliseconds: 600),
+            child: ListView.builder(
+                itemCount: state.items.length,
+                itemBuilder: (context, index) {
+                  final item = state.items[index];
+                  return Padding(
+                    key: ValueKey(item.id),
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Stack(children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: isDark(context)
+                                ? CustomColors.white
+                                : CustomColors.lightWhite,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Align content vertically
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12)),
+                                height: 130,
+                                width: 130,
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                  child: Stack(children: [
+                                    Image.network(
+                                      item.imageUrl,
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null)
+                                          return child;
+                                        return ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(12),
+                                            topRight: Radius.circular(12),
+                                          ),
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              SizedBox(
+                                                  height: double.infinity,
+                                                  width: double.maxFinite,
+                                                  child: Image.asset(
+                                                    'assets/NutraNestPo.png',
+                                                    fit: BoxFit.cover,
+                                                  )),
+                                              const CircularProgressIndicator(
+                                                color: CustomColors.green,
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return const SizedBox(
+                                          height: double.maxFinite,
+                                          width: double.maxFinite,
+                                          child: Center(
+                                              child: Icon(
+                                            size: 50,
+                                            Icons.image_not_supported,
+                                            color: Colors.grey,
+                                          )),
+                                        );
+                                      },
+                                    ),
+                                  ]),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    item.name,
+                                    style: const TextStyle(
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.w600,
+                                        color: CustomColors.black),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    item.brand,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w300,
+                                        color: CustomColors.black),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    '₹${item.price}.00',
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: CustomColors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Container(
+                          height: 33,
+                          width: 33,
+                          decoration: const BoxDecoration(
+                              color: Color.fromARGB(231, 204, 199, 199),
+                              shape: BoxShape.circle),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Icon(
+                                Icons.close,
+                                size: 19,
+                                color: customTextTheme(context),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 15,
+                        bottom: 15,
+                        child: BlocBuilder<CartBloc, CartState>(
+                            builder: (context, state) {
+                          return Container(
+                            key: ValueKey(item.id),
+                            height: 30,
+                            width: 75,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Color.fromARGB(231, 33, 30, 30)),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (item.productCount > 1) {
+                                        // context
+                                        //     .read<CartBloc>()
+                                        //     .add(UpdateCartItemCount(
+                                        //       productId: item.id,
+                                        //       count: item.productCount - 1,
+                                        //     ));
+                                      }
+                                    },
+                                    splashColor: Colors.grey.withOpacity(0.3),
+                                    highlightColor:
+                                        Colors.grey.withOpacity(0.1),
+                                    child: const Center(
+                                      child: Text(
+                                        '-',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      '${state.items[index].productCount}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      // context.read<CartBloc>().add(
+                                      //     UpdateCartItemCount(
+                                      //         productId: item.id,
+                                      //         count: item.productCount + 1));
+                                    },
+                                    splashColor: Colors.grey.withOpacity(0.3),
+                                    highlightColor:
+                                        Colors.grey.withOpacity(0.1),
+                                    child: const Center(
+                                      child: Text(
+                                        '+',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      )
+                    ]),
+                  );
+                }),
+          ),
+        );
+      } else {
+        // log('${state.products.length}');
+        return Container(
+          color: Colors.green,
+          height: 100,
+          width: 100,
+        );
+      }
+    },
+  );
+}

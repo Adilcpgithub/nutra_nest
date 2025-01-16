@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
-import 'package:nutra_nest/screen/bottom_navigation/cart_screen.dart';
-import 'package:nutra_nest/screen/bottom_navigation/home_screen.dart';
+import 'package:nutra_nest/features/cart/presentation/pages/cart_screen.dart';
+import 'package:nutra_nest/features/home/presentation/pages/home_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/whish_list_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
@@ -18,7 +18,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const CartScreen(),
+    const CartScreen(
+      fromBottomNav: true,
+    ),
     const WhishListScreen(),
     const AccountScreen(),
   ]; // List of screens to switch between
@@ -71,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               _buildNavItem(
                 icon: Icons.notifications,
-                label: 'Whish list',
+                label: 'Wish list',
                 index: 2,
                 blackImag: 'assets/image copy 11.png',
                 whiteImg: 'assets/image copy 12.png',

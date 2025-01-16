@@ -11,10 +11,13 @@ import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dar
 import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
-import 'package:nutra_nest/features/product_details/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
-import 'package:nutra_nest/presentation/network/cubit/network_cubit.dart';
-import 'package:nutra_nest/presentation/theme/app_theme.dart';
-import 'package:nutra_nest/presentation/theme/cubit/theme_cubit.dart';
+import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
+import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
+import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
+import 'package:nutra_nest/features/cart/presentation/bloc/cubit/cart_cubit.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 
@@ -92,6 +95,8 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => ImageBloc()),
           BlocProvider(create: (context) => ThemeCubit()..isDartMode()),
           BlocProvider(create: (context) => NetworkCubit()),
+          BlocProvider(create: (context) => CartBloc()),
+          BlocProvider(create: (context) => ProductCartCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
@@ -119,27 +124,3 @@ class _MyWidgetState extends State<MyApp> {
         ));
   }
 }
-//  BlocBuilder<ThemeCubit, ThemeMode>(
-//           builder: (context, themeMode) {
-//             return MaterialApp(
-//               theme: ThemeData.light(),
-//               darkTheme: ThemeData.dark(),
-//               themeMode: themeMode,
-//               debugShowCheckedModeBanner: false,
-//               home: //SplashScreen()
-//                   //SignSuccess(),
-//                   // OtpVerificationScreen()
-//                   //  OtpVerificationScreen()
-//                   //  MyHomePage()
-//                   // EditProfile(),
-//                   // const AddAddress(),
-//                   //SignUpScreen(),
-//                   // const ManageAddress(),
-//                   // const DeleteScreen()
-//                   // const SplashScreen()
-
-//                   // Dee(),
-//                   status ? const MyHomePage() : const LoginScreen(),
-//             );
-//           },
-//         ));

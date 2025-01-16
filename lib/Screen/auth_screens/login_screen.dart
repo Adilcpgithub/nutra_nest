@@ -8,10 +8,11 @@ import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
-import 'package:nutra_nest/presentation/theme/app_theme.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -57,7 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     width: deviceWidth > 400 ? 600 : deviceWidth,
                     decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: CustomColors.green),
+                      border: const Border(
+                          top: BorderSide(width: 5, color: CustomColors.green)),
                       color: appTheme(context),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
@@ -288,24 +290,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.success) {
         log('login  success');
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const MyHomePage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              var curvedAnimation = CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeInOut,
-              );
-
-              return FadeTransition(
-                opacity: curvedAnimation,
-                child: child,
-              );
-            },
-          ),
-        );
+        CustomNavigation.pushAndRemoveUntil(context, const MyHomePage());
 
         _emailorPhoneNumberController.clear();
         _passwordController.clear();

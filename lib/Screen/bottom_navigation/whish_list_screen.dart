@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:nutra_nest/presentation/network/cubit/network_cubit.dart';
+import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 
 class WhishListScreen extends StatelessWidget {
   const WhishListScreen({super.key});

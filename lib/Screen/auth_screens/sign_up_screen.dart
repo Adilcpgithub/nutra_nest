@@ -1,15 +1,16 @@
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
-import 'package:nutra_nest/presentation/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
+import '../../core/theme/app_theme.dart';
 
+// ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
   final AuthService authService = AuthService();
@@ -30,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
@@ -50,7 +51,9 @@ class SignUpScreen extends StatelessWidget {
                     key: _formKey,
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: CustomColors.green),
+                        border: const Border(
+                            top: BorderSide(
+                                width: 5, color: CustomColors.green)),
                         color: isDark(context) ? Colors.black : Colors.white,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
@@ -116,36 +119,6 @@ class SignUpScreen extends StatelessWidget {
                                       keyboardType: TextInputType.number,
                                       onChanged: (phone) =>
                                           signUpBloc.add(PhoneChanged(phone)),
-                                      // prefixIcon: Padding(
-                                      //   padding:
-                                      //       const EdgeInsets.only(right: 8.0),
-                                      //   child: Row(
-                                      //     mainAxisSize: MainAxisSize.min,
-                                      //     children: [
-                                      //       // CountryCodePicker(
-                                      //       //   onChanged: (countryCode) {
-                                      //       //     selectedCountryCode =
-                                      //       //         countryCode.dialCode!;
-                                      //       //     print(selectedCountryCode);
-                                      //       //     context.read<SignUpBloc>().add(
-                                      //       //         TogglePickerVisibility());
-                                      //       //   },
-                                      //       //   backgroundColor: Colors.amber,
-                                      //       //   initialSelection: 'IN',
-                                      //       //   favorite: const ['+1', 'IN'],
-                                      //       //   showFlag: false,
-                                      //       //   showCountryOnly: false,
-                                      //       //   showOnlyCountryWhenClosed: false,
-                                      //       //   alignLeft: false,
-                                      //       //   textStyle: TextStyle(
-                                      //       //     color: Colors
-                                      //       //         .blue, // Change the selected country's name color
-                                      //       //     fontSize: 18,
-                                      //       //   ),
-                                      //       // ),
-                                      //     ],
-                                      //   ),
-                                      // ),
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.never,
                                     ),
@@ -355,20 +328,7 @@ class SignUpScreen extends StatelessWidget {
 
           // Navigate to success screen
           if (context.mounted) {
-            Navigator.of(context).pushReplacement(
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    const SignSuccess(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  // For example, a fade transition
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-              ),
-            );
+            CustomNavigation.pushAndRemoveUntil(context, const SignSuccess());
           }
         } else if (context.mounted) {
           // Show error message if registration failed

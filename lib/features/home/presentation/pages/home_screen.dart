@@ -1,14 +1,14 @@
 import 'dart:developer';
-import 'dart:ui';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:nutra_nest/features/product_details/presentation/pages/product_list_page.dart';
-import 'package:nutra_nest/presentation/network/cubit/network_cubit.dart';
-import 'package:nutra_nest/presentation/theme/app_theme.dart';
-import 'package:nutra_nest/presentation/theme/cubit/theme_cubit.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
+import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
+import 'package:nutra_nest/features/home/presentation/pages/product_list_page.dart';
+import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/image_carousel.dart';
@@ -490,16 +490,8 @@ class SparePartCard extends StatelessWidget {
         width: 160,
         margin: const EdgeInsets.only(right: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E1E1E),
+          color: isDark(context) ? Colors.grey[800] : CustomColors.lightWhite,
           borderRadius: BorderRadius.circular(17),
-          boxShadow: [
-            BoxShadow(
-              blurStyle: BlurStyle.outer,
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              spreadRadius: 1,
-            ),
-          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,8 +504,8 @@ class SparePartCard extends StatelessWidget {
                 height: 100,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(116, 8, 208, 98),
-                ),
+                    //  color: Color.fromARGB(116, 8, 208, 98),
+                    ),
                 child: ClipRRect(
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(16)),
@@ -532,7 +524,7 @@ class SparePartCard extends StatelessWidget {
                   Text(
                     title,
                     style: GoogleFonts.poppins(
-                      color: Colors.white,
+                      color: customTextTheme(context),
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -540,9 +532,9 @@ class SparePartCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text(
-                        '\$${price.toStringAsFixed(2)}',
-                        style: GoogleFonts.poppins(
+                      const Text(
+                        '₹ 200',
+                        style: TextStyle(
                           color: CustomColors.green,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -558,7 +550,7 @@ class SparePartCard extends StatelessWidget {
                       Text(
                         rating.toString(),
                         style: GoogleFonts.poppins(
-                          color: Colors.grey[400],
+                          color: customTextTheme(context),
                           fontSize: 12,
                         ),
                       ),

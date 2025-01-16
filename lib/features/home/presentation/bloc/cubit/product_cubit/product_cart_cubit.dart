@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/model/cycle.dart';
 
 part 'product_cart_cubit_state.dart';
 
@@ -21,7 +22,7 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     }
   }
 
-  void addToCart(String productId) async {
+  void addToCart(String productId, Cycle cycle) async {
     emit(state.copyWith(isAddedToCart: true));
 
     try {
@@ -33,15 +34,21 @@ class ProductCartCubit extends Cubit<ProductCartState> {
       log('message 2');
       if (snapshot.exists) {
         List<Map<String, dynamic>> cartData =
-            List<Map<String, dynamic>>.from(snapshot.data()?['cart'] ?? {});
+            List<Map<String, dynamic>>.from(snapshot.data()?['cart'] ?? []);
         log('message 3');
         int index =
             cartData.indexWhere((item) => item['productId'] == productId);
 
         if (index == -1) {
           log('message 4');
-          cartData.add(
-              {'productId': productId, 'productCount': state.productCount});
+          cartData.add({
+            'productId': productId,
+            'productCount': state.productCount,
+            'name': cycle.name,
+            'brand': cycle.brand,
+            'price': cycle.price,
+            'imageUrl': cycle.imageUrl[0]
+          });
           log('product id added to cart collection1');
           await _firestore
               .collection('cartCollection')
@@ -52,10 +59,9 @@ class ProductCartCubit extends Cubit<ProductCartState> {
           if (cartData[index]['productCount'] != state.productCount) {
             cartData[index]['productCount'] = state.productCount;
             try {
-              await _firestore
-                  .collection('cartCollection')
-                  .doc(userId)
-                  .set({'cart': cartData});
+              await _firestore.collection('cartCollection').doc(userId).set({
+                'cart': cartData,
+              });
             } catch (e) {
               log('log from after checking $e');
             }
@@ -65,7 +71,6 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     } catch (e) {
       log('message 6');
       log(e.toString());
-      // emit((state.copyWith(isAddedToCart: false)));
     }
   }
 
@@ -101,7 +106,6 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     } catch (e) {
       log('message 6');
       log(e.toString());
-      // emit((state.copyWith(isAddedToCart: false)));
     }
   }
 }
