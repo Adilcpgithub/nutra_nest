@@ -74,12 +74,12 @@ class AccountScreen extends StatelessWidget {
                         iconImage: 'assets/image copy 3.png',
                         function: () {},
                       ),
-                      buildNameContainer(
-                        context: context,
-                        containerName: 'Frequently Asked Questions',
-                        iconImage: 'assets/image copy 4.png',
-                        function: () {},
-                      ),
+                      // buildNameContainer(
+                      //   context: context,
+                      //   containerName: 'Frequently Asked Questions',
+                      //   iconImage: 'assets/image copy 4.png',
+                      //   function: () {},
+                      // ),
                       buildNameContainer(
                         context: context,
                         containerName: 'Help and Support',
@@ -204,6 +204,7 @@ customShowDialog(BuildContext context) {
       builder: (BuildContext context) {
         return Center(
           child: Container(
+            width: deviceWidth(context) - deviceWidth(context) / 3,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.black87,
@@ -214,7 +215,7 @@ customShowDialog(BuildContext context) {
               children: [
                 const SizedBox(height: 30),
                 Text(
-                  'Are You Sure ?',
+                  'You Want Log Out?',
                   style: GoogleFonts.radioCanada(
                     color: Colors.white,
                     fontSize: 20,
@@ -229,27 +230,9 @@ customShowDialog(BuildContext context) {
                     children: [
                       Flexible(
                         child: SmallTextbutton(
-                          buttomColor: CustomColors.green,
-                          textColor: CustomColors.white,
-                          buttomName: 'LOG OUT',
-                          voidCallBack: () async {
-                            await authService.signOut();
-
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) => const LoginScreen()),
-                                (Route<dynamic> route) => false);
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Flexible(
-                        child: SmallTextbutton(
+                          width: 1,
                           buttomColor: CustomColors.black,
-                          textColor: CustomColors.green,
+                          textColor: CustomColors.white,
                           buttomName: 'CANCEL',
                           voidCallBack: () {
                             Navigator.of(context).pop(
@@ -274,7 +257,28 @@ customShowDialog(BuildContext context) {
                             );
                           },
                         ),
-                      )
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Flexible(
+                        child: SmallTextbutton(
+                          width: 1,
+                          buttomColor: CustomColors.black,
+                          textColor: CustomColors.white,
+                          buttomName: 'LOG OUT',
+                          voidCallBack: () async {
+                            await authService.signOut();
+
+                            Navigator.pushAndRemoveUntil(
+                                // ignore: use_build_context_synchronously
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) => const LoginScreen()),
+                                (Route<dynamic> route) => false);
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),

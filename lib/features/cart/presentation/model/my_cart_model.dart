@@ -14,9 +14,20 @@ class MyCartModel extends Equatable {
       required this.imageUrl,
       required this.brand,
       required this.productCount});
+  Map<String, dynamic> toMap() {
+    return {
+      'product': id,
+      'name': name,
+      'price': price,
+      'imageUrl': imageUrl,
+      'brand': brand,
+      'productCount': productCount,
+    };
+  }
+
   factory MyCartModel.fromMap(Map<String, dynamic> map) {
     return MyCartModel(
-        id: map['product'] ?? '',
+        id: map['productId'] ?? '',
         name: map['name'] ?? '',
         price: map['price'] ?? '',
         imageUrl: map['imageUrl'] ?? '',

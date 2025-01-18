@@ -20,15 +20,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
         final snapshot =
             await firestore.collection('cartCollection').doc(userId).get();
+        log('is calling 2 ');
         if (snapshot.exists) {
           List<Map<String, dynamic>> cartData =
               List<Map<String, dynamic>>.from(snapshot.data()?['cart'] ?? []);
+          log('is calling  4');
           log('cartData length is ${cartData.length}');
           List<MyCartModel> mycartDats =
-              cartData.map((data){}
+              cartData.map((data) => MyCartModel.fromMap(data)).toList();
           log('mycartDats length is ${mycartDats.length}');
           log(mycartDats.toString());
-          emit(CartState(items: {}));
+          emit(CartState(items: mycartDats));
         }
       } catch (e) {
         log(e.toString());
@@ -38,11 +40,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<UpdateCartItemCount>((event, emit) {
       final updatedItems = state.items.map((item) {
         if (item.id == event.productId) {
+          log('id found ');
+          log(event.productId.toString());
+
           return item.copyWith(productCount: event.count);
+        } else {
+          log('id not found  ');
         }
+
         return item;
       }).toList();
-      emit(state.copyWith(items: updatedItems));
+      emit(CartState(items: updatedItems));
     });
   }
 }

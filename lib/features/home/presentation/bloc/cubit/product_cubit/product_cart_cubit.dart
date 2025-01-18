@@ -32,45 +32,54 @@ class ProductCartCubit extends Cubit<ProductCartState> {
       final snapshot =
           await _firestore.collection('cartCollection').doc(userId).get();
       log('message 2');
-      if (snapshot.exists) {
-        List<Map<String, dynamic>> cartData =
-            List<Map<String, dynamic>>.from(snapshot.data()?['cart'] ?? []);
+      List<Map<String, dynamic>> cartData = [];
+      if (snapshot.exists &&
+          snapshot.data() != null &&
+          snapshot.data()!['cart'] != null) {
+        log('existes ');
+        cartData = List<Map<String, dynamic>>.from(snapshot.data()!['cart']);
         log('message 3');
         int index =
             cartData.indexWhere((item) => item['productId'] == productId);
 
         if (index == -1) {
           log('message 4');
-          cartData.add({
-            'productId': productId,
-            'productCount': state.productCount,
-            'name': cycle.name,
-            'brand': cycle.brand,
-            'price': cycle.price,
-            'imageUrl': cycle.imageUrl[0]
-          });
+          cartData.add(
+            {
+              'productId': productId,
+              'productCount': state.productCount,
+              'name': cycle.name,
+              'imageUrl': cycle.imageUrl[0],
+              'brand': cycle.brand,
+              'price': cycle.price
+            },
+          );
           log('product id added to cart collection1');
-          await _firestore
-              .collection('cartCollection')
-              .doc(userId)
-              .set({'cart': cartData});
+
           log('message 5');
         } else {
           if (cartData[index]['productCount'] != state.productCount) {
             cartData[index]['productCount'] = state.productCount;
-            try {
-              await _firestore.collection('cartCollection').doc(userId).set({
-                'cart': cartData,
-              });
-            } catch (e) {
-              log('log from after checking $e');
-            }
           }
         }
+      } else {
+        cartData.add({
+          'productId': productId,
+          'productCount': state.productCount,
+          'name': cycle.name,
+          'imageUrl': cycle.imageUrl[0],
+          'brand': cycle.brand,
+          'price': cycle.price
+        });
       }
+      await _firestore
+          .collection('cartCollection')
+          .doc(userId)
+          .set({'cart': cartData});
     } catch (e) {
       log('message 6');
       log(e.toString());
+      // emit((state.copyWith(isAddedToCart: false)));
     }
   }
 

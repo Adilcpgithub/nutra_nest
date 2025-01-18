@@ -14,6 +14,24 @@ class CycleCartModel {
       required this.category,
       required this.shippingAmount,
       required this.productCount});
+  CycleCartModel copytWith(
+    String? id,
+    String? name,
+    String? price,
+    String? imageUrl,
+    String? category,
+    String? shippingAmount,
+    String? productCount,
+  ) {
+    return CycleCartModel(
+        id: id ?? '',
+        name: name ?? '',
+        price: price ?? '',
+        imageUrl: imageUrl ?? '',
+        category: category ?? '',
+        shippingAmount: shippingAmount ?? '',
+        productCount: productCount ?? '');
+  }
 
   factory CycleCartModel.fromMap(Map<String, dynamic> map) {
     return CycleCartModel(

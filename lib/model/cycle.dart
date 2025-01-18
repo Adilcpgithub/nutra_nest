@@ -24,6 +24,36 @@ class Cycle {
       required this.stock,
       required this.shippingAmount,
       this.isFavorite = false});
+  Cycle copytWith(
+    String? id,
+    String? name,
+    String? price,
+    List<String>? imageUrl,
+    String? brand,
+    String? category,
+    String? description,
+    String? sellerId,
+    String? weight,
+    String? stock,
+    String? shippingAmount,
+    bool? isFavorite,
+  ) {
+    return Cycle(
+      id: id ?? '',
+      name: name ?? '',
+      price: price ?? '',
+      imageUrl: imageUrl ?? [],
+      brand: brand ?? '',
+      category: category ?? '',
+      description: description ?? '',
+      sellerId: sellerId ?? '',
+      weight: weight ?? '',
+      stock: stock ?? '',
+      shippingAmount: shippingAmount ?? '',
+      isFavorite: isFavorite ?? false,
+    );
+  }
+
   factory Cycle.fromMap(Map<String, dynamic> map) {
     return Cycle(
         id: map['documentId'] ?? '',

@@ -15,11 +15,11 @@ import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
-import 'package:nutra_nest/features/cart/presentation/bloc/cubit/cart_cubit.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/screen/user/re_auth/cubit/auth_cubit.dart';
 
 void main() async {
   // await FirebaseAppCheck.instance.activate(
@@ -69,14 +69,15 @@ class _MyWidgetState extends State<MyApp> {
   @override
   void initState() {
     log('intitstate calling ');
-    super.initState();
     _checkUserStatus();
+    super.initState();
   }
 
   Future<void> _checkUserStatus() async {
     UserStatus userStatus = UserStatus();
     bool loggedInStatus = await userStatus.isUserLoggedIn();
     setState(() {
+      log('aaaaaaaaa $loggedInStatus');
       status = loggedInStatus;
     });
   }
@@ -97,6 +98,7 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => NetworkCubit()),
           BlocProvider(create: (context) => CartBloc()),
           BlocProvider(create: (context) => ProductCartCubit()),
+          BlocProvider(create: (context) => AuthCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {

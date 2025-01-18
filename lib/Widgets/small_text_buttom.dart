@@ -6,13 +6,17 @@ class SmallTextbutton extends StatelessWidget {
   final Color buttomColor;
   final Color textColor;
   final Color borderColor;
+  final double width;
+  final double fontweight;
   const SmallTextbutton(
       {super.key,
       this.borderColor = Colors.green,
       required this.buttomName,
       required this.voidCallBack,
       this.buttomColor = Colors.black,
-      this.textColor = Colors.white});
+      this.textColor = Colors.white,
+      this.width = 0,
+      this.fontweight = 12});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class SmallTextbutton extends StatelessWidget {
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: buttomColor,
-        border: Border.all(width: 0, color: borderColor),
+        border: Border.all(width: width, color: borderColor),
         borderRadius: BorderRadius.circular(9),
       ),
       height: 41,
@@ -34,11 +38,12 @@ class SmallTextbutton extends StatelessWidget {
         onPressed: voidCallBack,
         child: Text(
           buttomName,
+          textAlign: TextAlign.center,
           style: TextStyle(
-              color: textColor,
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.1),
+            color: textColor,
+            fontSize: fontweight,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );

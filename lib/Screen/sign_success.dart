@@ -13,37 +13,43 @@ class SignSuccess extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 160,
+        child: Stack(children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: deviceWidth(context) / 2,
+                  child: Center(
+                      child: LottieBuilder.asset(
+                          'assets/Animation - 1736831368600.json')),
+                ),
+                const Text(
+                  ' Successful!',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 120,
+                ),
+              ],
             ),
-            SizedBox(
-              height: deviceWidth(context) / 2,
-              child: Center(
-                  child: LottieBuilder.asset(
-                      'assets/Animation - 1736831368600.json')),
-            ),
-            const Text(
-              ' Successful!',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 27,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 120,
-            ),
-            CustomTextbutton(
-                color: Colors.black,
+          ),
+          Positioned(
+            bottom: 55,
+            left: 5,
+            right: 5,
+            child: CustomTextbutton(
+                color: Colors.white,
                 buttomName: 'START SHOPPING',
                 voidCallBack: () async {
                   CustomNavigation.pushAndRemoveUntil(
                       context, const MyHomePage());
                 }),
-          ],
-        ),
+          )
+        ]),
       ),
     );
   }

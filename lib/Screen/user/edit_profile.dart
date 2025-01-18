@@ -1,15 +1,15 @@
 import 'dart:developer';
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/model/user_model.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/screen/user/delete_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nutra_nest/widgets/icons_widget.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -25,8 +25,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _mobileNumberCountroller =
       TextEditingController();
   final TextEditingController _emailCountroller = TextEditingController();
-  File? _selectedImage;
-  Image? _defaulImage;
+
   String? imagePath;
   UserModel? userModel;
 
@@ -35,7 +34,6 @@ class _EditProfileState extends State<EditProfile> {
     log('init state calling');
     _fetUserData();
     context.read<ProfilBloc>().add(GetImageUrlEvent());
-    _defaulImage = Image.asset('assets/image copy 15.png');
 
     super.initState();
   }
@@ -53,7 +51,6 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -79,25 +76,15 @@ class _EditProfileState extends State<EditProfile> {
   Widget _buildHeader() {
     return Row(
       children: [
-        GestureDetector(
-          onTap: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const MyHomePage(setIndex: 3)),
-          ),
-          child: Container(
-            height: 39,
-            width: 39,
-            decoration: BoxDecoration(
-              color: CustomColors.black,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: CustomColors.green, width: 1.5),
-            ),
-            child: const Icon(
-              Icons.arrow_back,
-              size: 26,
-              color: Colors.white,
-            ),
-          ),
-        ),
+        CustomIcon(
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (_) => const MyHomePage(setIndex: 3)),
+              );
+            },
+            icon: Icons.arrow_back,
+            iconSize: 26),
         const SizedBox(width: 92.5),
         Expanded(
           child: Text(
@@ -132,15 +119,11 @@ class _EditProfileState extends State<EditProfile> {
               height: 160,
               width: 160,
               decoration: BoxDecoration(
-                color: CustomColors.green.withOpacity(0.1),
-                border: Border.all(
-                  color: CustomColors.green.withOpacity(0.3),
-                  width: 1.8,
-                ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: CustomColors.green.withOpacity(0.1),
+                    color: const Color.fromARGB(255, 179, 188, 183)
+                        .withOpacity(0.3),
                     blurRadius: 10,
                     spreadRadius: 2,
                   ),
@@ -159,9 +142,12 @@ class _EditProfileState extends State<EditProfile> {
                           ? const CircularProgressIndicator(
                               color: CustomColors.green,
                             )
-                          : Image.asset(
-                              state.defaultImage,
-                              fit: BoxFit.cover,
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.asset(
+                                'assets/default_profil_image.jpg',
+                                fit: BoxFit.fill,
+                              ),
                             ),
                     ),
             );
@@ -178,7 +164,7 @@ class _EditProfileState extends State<EditProfile> {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: CustomColors.green,
+                color: const Color.fromARGB(201, 8, 208, 98),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -238,14 +224,14 @@ class _EditProfileState extends State<EditProfile> {
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Colors.grey[400],
+            color: customTextTheme(context),
           ),
         ),
         const SizedBox(height: 8),
         Container(
           height: 50,
           decoration: BoxDecoration(
-            color: const Color(0xFF1E1E1E),
+            color: appTheme(context),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: CustomColors.green.withOpacity(0.3),
@@ -256,11 +242,12 @@ class _EditProfileState extends State<EditProfile> {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
+                  style: TextStyle(color: customTextTheme(context)),
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    hintStyle: TextStyle(color: Colors.grey[600]),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    hintStyle:
+                        TextStyle(color: Color.fromARGB(255, 148, 58, 58)),
                   ),
                 ),
               ),
@@ -299,36 +286,6 @@ class _EditProfileState extends State<EditProfile> {
                         );
                       },
                     );
-
-                    try {
-                      await Future.delayed(const Duration(seconds: 1));
-                      await authService.updateName(controller.text);
-
-                      if (mounted) {
-                        Navigator.pop(context);
-                      }
-
-                      // Show success notification
-                      _showUpdateNotification(
-                        context,
-                        'Name updated successfully!',
-                      );
-                    } catch (e) {
-                      // Close loading dialog
-                      Navigator.pop(context);
-
-                      // Show error notification
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Failed to update name: ${e.toString()}',
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          backgroundColor: Colors.red,
-                          behavior: SnackBarBehavior.floating,
-                        ),
-                      );
-                    }
                   }
                 },
                 child: Container(
@@ -369,23 +326,24 @@ class _EditProfileState extends State<EditProfile> {
           style: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Colors.grey[400],
+            color: customTextTheme(context),
           ),
         ),
         const SizedBox(height: 8),
         Container(
           height: 50,
           decoration: BoxDecoration(
-            color: const Color(0xFF1E1E1E),
+            color: appTheme(context),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
+              width: 2,
               color: CustomColors.green.withOpacity(0.3),
             ),
           ),
           child: TextField(
             controller: controller,
             keyboardType: keyboardType,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: customTextTheme(context)),
             readOnly: true,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -401,28 +359,6 @@ class _EditProfileState extends State<EditProfile> {
   Widget _buildActionButtons() {
     return Column(
       children: [
-        ElevatedButton(
-          onPressed: () {
-            authService.updateName(_nameCountroller.text);
-            authService.updatephoneNumber(_mobileNumberCountroller.text);
-            authService.updateEmail(_emailCountroller.text);
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: CustomColors.green,
-            minimumSize: const Size(double.infinity, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          child: Text(
-            'SAVE CHANGES',
-            style: GoogleFonts.lato(
-              color: CustomColors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         const SizedBox(height: 16),
         OutlinedButton(
           onPressed: () {
@@ -451,7 +387,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  void _showUpdateNotification(BuildContext context, String message) {
+  void showUpdateNotification(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(

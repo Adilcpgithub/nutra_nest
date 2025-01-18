@@ -1,7 +1,7 @@
 part of 'profil_bloc.dart';
 
 sealed class ProfilState extends Equatable {
-  final defaultImage = 'assets/image copy 15.png';
+  final defaultImage = 'assets/default_profil_image.jpg';
 
   const ProfilState();
 
@@ -24,7 +24,7 @@ class CloudinaryUrlRetrieved extends ProfilState {
 class CloudinaryDeleted extends ProfilState {}
 
 class ShowDefaulImage extends ProfilState {
-  final defaultImage = 'assets/image copy 15.png';
+  final defaultImage = '';
 }
 
 class CloudinaryError extends ProfilState {

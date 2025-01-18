@@ -167,6 +167,7 @@ class _CycleListPageState extends State<CycleListPage> {
                             context,
                             ProductDetails(
                               cycle: cycle,
+                              fromCart: false,
                             ));
                       },
                       cycleName: cycle.name,

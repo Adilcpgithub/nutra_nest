@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,9 +9,10 @@ import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
-import 'package:nutra_nest/features/cart/presentation/bloc/cubit/cart_cubit.dart';
-import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
+import 'package:nutra_nest/features/home/presentation/pages/product_details_page.dart';
+import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 
 class CartScreen extends StatefulWidget {
   final bool fromBottomNav;
@@ -23,6 +25,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
+    log('hhhhhhhhhhhhh11');
     context.read<CartBloc>().add(LoadCart());
     super.initState();
   }
@@ -47,22 +50,24 @@ class _CartScreenState extends State<CartScreen> {
               ),
             );
           } else {
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset('assets/Animation - 1736755470091.json',
-                    height: 110),
-                Text(
-                  'No internet connection!',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: customTextTheme(context),
-                  ),
-                )
-              ],
-            ));
+            return Expanded(
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset('assets/Animation - 1736755470091.json',
+                      height: 110),
+                  Text(
+                    'No internet connection!',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: customTextTheme(context),
+                    ),
+                  )
+                ],
+              )),
+            );
           }
         },
       )),
@@ -114,63 +119,82 @@ Widget buildCartContainer() {
                           crossAxisAlignment: CrossAxisAlignment
                               .start, // Align content vertically
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12)),
-                                height: 130,
-                                width: 130,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(12)),
-                                  child: Stack(children: [
-                                    Image.network(
-                                      item.imageUrl,
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                        if (loadingProgress == null)
-                                          return child;
-                                        return ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(12),
-                                            topRight: Radius.circular(12),
-                                          ),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              SizedBox(
-                                                  height: double.infinity,
-                                                  width: double.maxFinite,
-                                                  child: Image.asset(
-                                                    'assets/NutraNestPo.png',
-                                                    fit: BoxFit.cover,
-                                                  )),
-                                              const CircularProgressIndicator(
-                                                color: CustomColors.green,
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return const SizedBox(
-                                          height: double.maxFinite,
-                                          width: double.maxFinite,
-                                          child: Center(
-                                              child: Icon(
-                                            size: 50,
-                                            Icons.image_not_supported,
-                                            color: Colors.grey,
-                                          )),
-                                        );
-                                      },
-                                    ),
-                                  ]),
+                            GestureDetector(
+                              onTap: () async {
+                                Cycle? cycle = await getProductById(item.id);
+                                if (cycle != null) {
+                                  CustomNavigation.push(
+                                      // ignore: use_build_context_synchronously
+                                      context,
+                                      ProductDetails(
+                                        cycle: cycle,
+                                        fromCart: true,
+                                        cycleFromCart: cycle,
+                                      ));
+                                } else {
+                                  log('false');
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  height: 130,
+                                  width: 130,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12)),
+                                    child: Stack(children: [
+                                      Image.network(
+                                        item.imageUrl,
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12),
+                                            ),
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                    height: double.infinity,
+                                                    width: double.maxFinite,
+                                                    child: Image.asset(
+                                                      'assets/NutraNestPo.png',
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                                const CircularProgressIndicator(
+                                                  color: CustomColors.green,
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const SizedBox(
+                                            height: double.maxFinite,
+                                            width: double.maxFinite,
+                                            child: Center(
+                                                child: Icon(
+                                              size: 50,
+                                              Icons.image_not_supported,
+                                              color: Colors.grey,
+                                            )),
+                                          );
+                                        },
+                                      ),
+                                    ]),
+                                  ),
                                 ),
                               ),
                             ),
@@ -247,7 +271,7 @@ Widget buildCartContainer() {
                             width: 75,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                color: Color.fromARGB(231, 33, 30, 30)),
+                                color: const Color.fromARGB(231, 33, 30, 30)),
                             child: Row(
                               children: [
                                 Expanded(
@@ -279,7 +303,7 @@ Widget buildCartContainer() {
                                 Expanded(
                                   child: Center(
                                     child: Text(
-                                      '${state.items[index].productCount}',
+                                      '${item.productCount}',
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -321,12 +345,56 @@ Widget buildCartContainer() {
         );
       } else {
         // log('${state.products.length}');
-        return Container(
-          color: Colors.green,
-          height: 100,
-          width: 100,
+        return Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  'assets/Animation - 1737089245188 (1).json',
+                ),
+                Text(
+                  'Cart is empty',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: customTextTheme(context),
+                  ),
+                )
+              ],
+            ),
+          ),
         );
       }
     },
   );
+}
+
+Future<Cycle?> getProductById(String productId) async {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  log('calling');
+  log('product id is $productId');
+  try {
+    // Reference to the specific document in the 'products' collection
+    var docSnapshot = await firestore.collection('cycles').doc(productId).get();
+
+    // Fetch the document
+
+    log('sssssssss');
+    // Check if the document exists
+    if (docSnapshot.exists) {
+      log(' existing');
+      print(docSnapshot.data());
+      // Convert the document data to a Cycle object
+      Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+      return Cycle.fromMap(data);
+    } else {
+      log('not existiong ');
+      print('Product with ID $productId does not exist.');
+      return null;
+    }
+  } catch (e) {
+    log('Error fetching product: $e');
+    return null;
+  }
 }

@@ -225,7 +225,7 @@ class AuthService {
     }
   }
 
-  Future<void> deleteUserAccount(String email, String password) async {
+  Future<String> deleteUserAccount(String email, String password) async {
     try {
       log('sssssssss');
       if (_auth.currentUser != null) {
@@ -236,23 +236,27 @@ class AuthService {
         await _auth.currentUser!.reauthenticateWithCredential(credential);
 
         await _auth.currentUser!.delete();
-
-        print('User account deleted successfully');
-      } else {
-        log('currnt user is null');
+        return 'User account deleted successfully';
+        // print('User account deleted successfully');
       }
+      // else {
+      //   return '';
+      //   log('currnt user is null');
+      // }
 
       await _firestore
           .collection('users')
           .doc(await userStatus.getUserId())
           .delete();
     } catch (e) {
-      print("Failed to delete user account: $e");
+      return 'Failed to delete user account: $e';
+      // print("Failed to delete user account: $e");
     }
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_id');
     await prefs.setBool('is_logged_in', false);
+    return 'Verification failed try again';
   }
 
   Future<void> updateName(String name) async {
@@ -288,8 +292,26 @@ class UserStatus {
   }
 
   Future<bool> isUserLoggedIn() async {
+    log('1');
+    bool checkWeather;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('is_logged_in') ?? false;
+    log('2');
+    checkWeather = prefs.getBool('is_logged_in') ?? false;
+    log('3');
+
+    //!here will listen User changes
+
+    User? user = await FirebaseAuth.instance.authStateChanges().first;
+    log('4');
+    log('checking User State changes');
+    if (user == null) {
+      log('5');
+      log('no user Data note found');
+      checkWeather = false;
+      log('6');
+    }
+    log('7');
+    return checkWeather;
   }
 
   Future<String> getUserId() async {

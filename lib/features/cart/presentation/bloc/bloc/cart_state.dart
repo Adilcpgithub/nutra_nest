@@ -1,10 +1,10 @@
 part of 'cart_bloc.dart';
 
 class CartState extends Equatable {
-  final Map<String, MyCartModel> items;
-  const CartState({this.items = const {}});
+  final List<MyCartModel> items;
+  const CartState({this.items = const []});
 
-  CartState copyWith({Map<String, MyCartModel>? items}) {
+  CartState copyWith({List<MyCartModel>? items}) {
     return CartState(
       items: items ?? this.items,
     );
