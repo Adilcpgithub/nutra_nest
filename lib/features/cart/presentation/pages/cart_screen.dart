@@ -130,6 +130,7 @@ Widget buildCartContainer() {
                                         cycle: cycle,
                                         fromCart: true,
                                         cycleFromCart: cycle,
+                                        productId: item.id,
                                       ));
                                 } else {
                                   log('false');

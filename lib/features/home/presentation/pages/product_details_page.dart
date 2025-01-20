@@ -19,15 +19,19 @@ import 'package:nutra_nest/widgets/custom_textbutton.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 
 class ProductDetails extends StatefulWidget {
+  double? count;
   final Cycle cycle;
   final bool fromCart;
   Cycle? cycleFromCart;
+  String? productId;
 
   ProductDetails(
       {super.key,
       required this.cycle,
       required this.fromCart,
-      this.cycleFromCart});
+      this.cycleFromCart,
+      this.productId,
+      this.count});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -55,12 +59,11 @@ class _ProductDetailsState extends State<ProductDetails> {
     if (widget.fromCart) {
       if (widget.cycleFromCart != null) {
         currentCycle = widget.cycleFromCart!;
-      } else {
-        currentCycle = widget.cycle;
       }
     } else {
       currentCycle = widget.cycle;
     }
+    log('product id is 1111111 ${widget.productId}');
     // context.read<ProductCartCubit>().add(ProductCartState(productCount: c, isAddedToCart: isAddedToCart));
     _pageController = PageController();
     scrollController = ScrollController();
@@ -93,7 +96,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     showUpdateNotification(
                       context: context,
                       message: 'Product added to cart',
-                      color: const Color.fromARGB(200, 8, 208, 98),
+                      color: const Color.fromARGB(255, 133, 177, 116),
                     );
                   },
                   child: Column(
@@ -124,88 +127,89 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                height: 30,
-                                width: 75,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 1,
-                                    color: CustomColors.green2,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: BlocBuilder<ProductCartCubit,
-                                    ProductCartState>(
-                                  builder: (context, state) {
-                                    var cubit =
-                                        context.read<ProductCartCubit>();
-                                    return Row(
-                                      children: [
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              cubit.decreaseCount();
-                                            },
-                                            splashColor:
-                                                Colors.grey.withOpacity(0.3),
-                                            highlightColor:
-                                                Colors.grey.withOpacity(0.1),
-                                            child: Center(
-                                              child: Text(
-                                                '-',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall!
-                                                      .color,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Center(
-                                            child: Text(
-                                              '${state.productCount}',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall!
-                                                    .color,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () {
-                                              cubit.increaseCount();
-                                            },
-                                            splashColor:
-                                                Colors.grey.withOpacity(0.3),
-                                            highlightColor:
-                                                Colors.grey.withOpacity(0.1),
-                                            child: Center(
-                                              child: Text(
-                                                '+',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodySmall!
-                                                      .color,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              )
+                              // Container(
+                              //   height: 30,
+                              //   width: 75,
+                              //   decoration: BoxDecoration(
+                              //     border: Border.all(
+                              //       width: 1,
+                              //       color: CustomColors.green2,
+                              //     ),
+                              //     borderRadius: BorderRadius.circular(5),
+                              //   ),
+                              //   child: BlocBuilder<ProductCartCubit,
+                              //       ProductCartState>(
+                              //     builder: (context, state) {
+                              //       if (widget.count != null) {}
+                              //       var cubit =
+                              //           context.read<ProductCartCubit>();
+                              //       return Row(
+                              //         children: [
+                              //           Expanded(
+                              //             child: InkWell(
+                              //               onTap: () {
+                              //                 cubit.decreaseCount();
+                              //               },
+                              //               splashColor:
+                              //                   Colors.grey.withOpacity(0.3),
+                              //               highlightColor:
+                              //                   Colors.grey.withOpacity(0.1),
+                              //               child: Center(
+                              //                 child: Text(
+                              //                   '-',
+                              //                   style: TextStyle(
+                              //                     color: Theme.of(context)
+                              //                         .textTheme
+                              //                         .bodySmall!
+                              //                         .color,
+                              //                     fontWeight: FontWeight.bold,
+                              //                   ),
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //           Expanded(
+                              //             child: Center(
+                              //               child: Text(
+                              //                 '${state.productCount}',
+                              //                 style: TextStyle(
+                              //                   color: Theme.of(context)
+                              //                       .textTheme
+                              //                       .bodySmall!
+                              //                       .color,
+                              //                   fontWeight: FontWeight.bold,
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //           Expanded(
+                              //             child: InkWell(
+                              //               onTap: () {
+                              //                 cubit.increaseCount();
+                              //               },
+                              //               splashColor:
+                              //                   Colors.grey.withOpacity(0.3),
+                              //               highlightColor:
+                              //                   Colors.grey.withOpacity(0.1),
+                              //               child: Center(
+                              //                 child: Text(
+                              //                   '+',
+                              //                   style: TextStyle(
+                              //                     color: Theme.of(context)
+                              //                         .textTheme
+                              //                         .bodySmall!
+                              //                         .color,
+                              //                     fontWeight: FontWeight.bold,
+                              //                   ),
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       );
+                              //     },
+                              //   ),
+                              // )
                             ],
                           ),
                           Row(
@@ -448,10 +452,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     : 'ADD TO CART',
                                 voidCallBack: () {
                                   if (state.isAddedToCart) {
-                                    cubit.removeFromCart(currentCycle.id);
+                                    if (widget.productId != null) {
+                                      cubit.addToCart(
+                                          widget.productId!, currentCycle);
+                                    } else {
+                                      cubit.removeFromCart(currentCycle.id);
+                                    }
                                   } else {
-                                    cubit.addToCart(
-                                        currentCycle.id, currentCycle);
+                                    if (widget.productId != null) {
+                                      cubit.addToCart(
+                                          widget.productId!, currentCycle);
+                                    } else {
+                                      cubit.addToCart(
+                                          currentCycle.id, currentCycle);
+                                    }
                                   }
                                 });
                           },
