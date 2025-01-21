@@ -1,6 +1,6 @@
 part of 'cart_bloc.dart';
 
-sealed class CartEvent extends Equatable {
+class CartEvent extends Equatable {
   const CartEvent();
 
   @override
@@ -9,11 +9,23 @@ sealed class CartEvent extends Equatable {
 
 class LoadCart extends CartEvent {}
 
-class UpdateCartItemCount extends CartEvent {
-  final String productId;
-  final int count;
-
-  const UpdateCartItemCount({required this.productId, required this.count});
+class AddProductToCart extends CartEvent {
+  final MyCartModel product;
+  const AddProductToCart(this.product);
   @override
-  List<Object> get props => [productId, count];
+  List<Object> get props => [product];
+}
+
+class IncreaseProductCount extends CartEvent {
+  final String productId;
+  const IncreaseProductCount(this.productId);
+  @override
+  List<Object> get props => [productId];
+}
+
+class DecreaseProductCount extends CartEvent {
+  final String productId;
+  const DecreaseProductCount(this.productId);
+  @override
+  List<Object> get props => [productId];
 }

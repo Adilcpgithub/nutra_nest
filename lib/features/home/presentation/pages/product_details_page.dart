@@ -23,15 +23,17 @@ class ProductDetails extends StatefulWidget {
   final Cycle cycle;
   final bool fromCart;
   Cycle? cycleFromCart;
-  String? productId;
+  String productId;
+  bool iscartAdded;
 
   ProductDetails(
       {super.key,
       required this.cycle,
       required this.fromCart,
       this.cycleFromCart,
-      this.productId,
-      this.count});
+      required this.productId,
+      this.count,
+      this.iscartAdded = false});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -56,6 +58,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   @override
   void initState() {
+    log('ssss ${widget.iscartAdded}');
     if (widget.fromCart) {
       if (widget.cycleFromCart != null) {
         currentCycle = widget.cycleFromCart!;
@@ -441,34 +444,53 @@ class _ProductDetailsState extends State<ProductDetails> {
                               ),
                             ),
                           ),
-                        BlocBuilder<ProductCartCubit, ProductCartState>(
-                          builder: (context, state) {
-                            var cubit = context.read<ProductCartCubit>();
-
-                            return CustomTextbutton(
-                                color: CustomColors.green,
-                                buttomName: state.isAddedToCart
-                                    ? 'Remove From CART'
-                                    : 'ADD TO CART',
-                                voidCallBack: () {
-                                  if (state.isAddedToCart) {
-                                    if (widget.productId != null) {
-                                      cubit.addToCart(
-                                          widget.productId!, currentCycle);
-                                    } else {
-                                      cubit.removeFromCart(currentCycle.id);
-                                    }
-                                  } else {
-                                    if (widget.productId != null) {
-                                      cubit.addToCart(
-                                          widget.productId!, currentCycle);
-                                    } else {
-                                      cubit.addToCart(
-                                          currentCycle.id, currentCycle);
-                                    }
-                                  }
-                                });
-                          },
+                        BlocProvider(
+                          create: (context) => ProductCartCubit()
+                            ..isCartAdded(widget.iscartAdded),
+                          child:
+                              BlocListener<ProductCartCubit, ProductCartState>(
+                            listener: (context, state) {
+                              log('Listener triggered: isAddedToCart = ${state.isAddedToCart}');
+                            },
+                            child:
+                                BlocBuilder<ProductCartCubit, ProductCartState>(
+                              builder: (context, state) {
+                                return CustomTextbutton(
+                                    color: CustomColors.green,
+                                    buttomName: state.isAddedToCart
+                                        ? 'Remove From CART'
+                                        : 'ADD TO CART',
+                                    voidCallBack: () {
+                                      if (state.isAddedToCart) {
+                                        context
+                                            .read<ProductCartCubit>()
+                                            .removeFromCart(widget.productId!);
+                                      } else {
+                                        context
+                                            .read<ProductCartCubit>()
+                                            .addToCart(widget.productId!,
+                                                currentCycle);
+                                      }
+                                      // if (state.isAddedToCart) {
+                                      //   if (widget.productId != null) {
+                                      //     cubit.addToCart(
+                                      //         widget.productId!, currentCycle);
+                                      //   } else {
+                                      //     cubit.removeFromCart(currentCycle.id);
+                                      //   }
+                                      // } else {
+                                      //   if (widget.productId != null) {
+                                      //     cubit.addToCart(
+                                      //         widget.productId!, currentCycle);
+                                      //   } else {
+                                      //     cubit.addToCart(
+                                      //         currentCycle.id, currentCycle);
+                                      //   }
+                                      // }
+                                    });
+                              },
+                            ),
+                          ),
                         ),
                       ],
                     ),

@@ -96,15 +96,16 @@ Widget buildHeader(
 Widget buildCartContainer() {
   return BlocBuilder<CartBloc, CartState>(
     builder: (context, state) {
-      if (state.items.isNotEmpty) {
+      final cartItems = state.cartItems;
+      if (cartItems.isNotEmpty) {
         //log('${state.products.length}');
         return Expanded(
           child: FadeInUp(
             duration: const Duration(milliseconds: 600),
             child: ListView.builder(
-                itemCount: state.items.length,
+                itemCount: cartItems.length,
                 itemBuilder: (context, index) {
-                  final item = state.items[index];
+                  final item = cartItems[index];
                   return Padding(
                     key: ValueKey(item.id),
                     padding: const EdgeInsets.only(bottom: 20),
@@ -131,6 +132,7 @@ Widget buildCartContainer() {
                                         fromCart: true,
                                         cycleFromCart: cycle,
                                         productId: item.id,
+                                        iscartAdded: true,
                                       ));
                                 } else {
                                   log('false');
@@ -262,11 +264,9 @@ Widget buildCartContainer() {
                         ),
                       ),
                       Positioned(
-                        right: 15,
-                        bottom: 15,
-                        child: BlocBuilder<CartBloc, CartState>(
-                            builder: (context, state) {
-                          return Container(
+                          right: 15,
+                          bottom: 15,
+                          child: Container(
                             key: ValueKey(item.id),
                             height: 30,
                             width: 75,
@@ -278,14 +278,9 @@ Widget buildCartContainer() {
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
-                                      if (item.productCount > 1) {
-                                        // context
-                                        //     .read<CartBloc>()
-                                        //     .add(UpdateCartItemCount(
-                                        //       productId: item.id,
-                                        //       count: item.productCount - 1,
-                                        //     ));
-                                      }
+                                      context
+                                          .read<CartBloc>()
+                                          .add(DecreaseProductCount(item.id));
                                     },
                                     splashColor: Colors.grey.withOpacity(0.3),
                                     highlightColor:
@@ -315,10 +310,9 @@ Widget buildCartContainer() {
                                 Expanded(
                                   child: InkWell(
                                     onTap: () {
-                                      // context.read<CartBloc>().add(
-                                      //     UpdateCartItemCount(
-                                      //         productId: item.id,
-                                      //         count: item.productCount + 1));
+                                      context
+                                          .read<CartBloc>()
+                                          .add(IncreaseProductCount(item.id));
                                     },
                                     splashColor: Colors.grey.withOpacity(0.3),
                                     highlightColor:
@@ -336,9 +330,7 @@ Widget buildCartContainer() {
                                 ),
                               ],
                             ),
-                          );
-                        }),
-                      )
+                          ))
                     ]),
                   );
                 }),

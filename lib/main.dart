@@ -97,7 +97,7 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => ThemeCubit()..isDartMode()),
           BlocProvider(create: (context) => NetworkCubit()),
           BlocProvider(create: (context) => CartBloc()),
-          BlocProvider(create: (context) => ProductCartCubit()),
+          // BlocProvider(create: (context) => ProductCartCubit()),
           BlocProvider(create: (context) => AuthCubit()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
