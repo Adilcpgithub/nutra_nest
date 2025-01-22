@@ -21,3 +21,8 @@ class CartLoaded extends CartState {
 class CartLoading extends CartState {
   const CartLoading({required super.cartItems});
 }
+
+class ProductTotal extends CartState {
+  final double total;
+  const ProductTotal({required super.cartItems, required this.total});
+}

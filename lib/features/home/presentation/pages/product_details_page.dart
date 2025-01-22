@@ -109,8 +109,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                       customSizedBox(30),
                       buildCycleImages(_pageController, currentCycle),
                       customSizedBox(10),
-                      buildImageIconsAndFavorite(
-                          context, currentCycle.id, currentCycle),
+                      buildImageIconsAndFavorite(context, currentCycle.id,
+                          currentCycle, widget.productId),
                       customSizedBox(20),
                       Column(
                         children: [
@@ -253,7 +253,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   padding: const EdgeInsets.only(
                                       top: 1, bottom: 1, left: 2, right: 2),
                                   child: Text(
-                                    ' ${currentCycle.stock} in stock ',
+                                    ' ${currentCycle.stock} In stock ',
                                     style: TextStyle(
                                       color: Theme.of(context)
                                           .textTheme
@@ -456,38 +456,39 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 BlocBuilder<ProductCartCubit, ProductCartState>(
                               builder: (context, state) {
                                 return CustomTextbutton(
-                                    color: CustomColors.green,
-                                    buttomName: state.isAddedToCart
-                                        ? 'Remove From CART'
-                                        : 'ADD TO CART',
-                                    voidCallBack: () {
-                                      if (state.isAddedToCart) {
-                                        context
-                                            .read<ProductCartCubit>()
-                                            .removeFromCart(widget.productId!);
-                                      } else {
-                                        context
-                                            .read<ProductCartCubit>()
-                                            .addToCart(widget.productId!,
-                                                currentCycle);
-                                      }
-                                      // if (state.isAddedToCart) {
-                                      //   if (widget.productId != null) {
-                                      //     cubit.addToCart(
-                                      //         widget.productId!, currentCycle);
-                                      //   } else {
-                                      //     cubit.removeFromCart(currentCycle.id);
-                                      //   }
-                                      // } else {
-                                      //   if (widget.productId != null) {
-                                      //     cubit.addToCart(
-                                      //         widget.productId!, currentCycle);
-                                      //   } else {
-                                      //     cubit.addToCart(
-                                      //         currentCycle.id, currentCycle);
-                                      //   }
-                                      // }
-                                    });
+                                  color: CustomColors.green,
+                                  buttomName: state.isAddedToCart
+                                      ? 'Remove From CART'
+                                      : 'ADD TO CART',
+                                  voidCallBack: () {
+                                    if (state.isAddedToCart) {
+                                      context
+                                          .read<ProductCartCubit>()
+                                          .removeFromCart(widget.productId);
+                                    } else {
+                                      context
+                                          .read<ProductCartCubit>()
+                                          .addToCart(
+                                              widget.productId, currentCycle);
+                                    }
+                                    // if (state.isAddedToCart) {
+                                    //   if (widget.productId != null) {
+                                    //     cubit.addToCart(
+                                    //         widget.productId!, currentCycle);
+                                    //   } else {
+                                    //     cubit.removeFromCart(currentCycle.id);
+                                    //   }
+                                    // } else {
+                                    //   if (widget.productId != null) {
+                                    //     cubit.addToCart(
+                                    //         widget.productId!, currentCycle);
+                                    //   } else {
+                                    //     cubit.addToCart(
+                                    //         currentCycle.id, currentCycle);
+                                    //   }
+                                    // }
+                                  },
+                                );
                               },
                             ),
                           ),
@@ -640,7 +641,8 @@ Widget buildCycleImages(PageController pageController, Cycle cycle) {
   );
 }
 
-Widget buildImageIconsAndFavorite(BuildContext contex, String id, Cycle cycle) {
+Widget buildImageIconsAndFavorite(
+    BuildContext contex, String id, Cycle cycle, String productid) {
   return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
     Expanded(
       child: BlocBuilder<ImageBloc, ImageState>(builder: (context, state) {
@@ -718,7 +720,7 @@ Widget buildImageIconsAndFavorite(BuildContext contex, String id, Cycle cycle) {
       builder: (context, state) {
         bool favorite = false;
         if (state is CycleLoadedState) {
-          favorite = state.favorites.contains(id);
+          favorite = state.favorites.contains(productid);
         }
 
         return InkWell(
@@ -727,7 +729,9 @@ Widget buildImageIconsAndFavorite(BuildContext contex, String id, Cycle cycle) {
             var userStatus = await UserStatus().getUserId();
 
             // ignore: use_build_context_synchronously
-            context.read<CycleBloc>().add(ToggleFavoriteEvent(id, userStatus));
+            context
+                .read<CycleBloc>()
+                .add(ToggleFavoriteEvent(productid, userStatus));
           },
           splashColor: Colors.transparent,
           highlightColor: Colors.green.withOpacity(0.4),

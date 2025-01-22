@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
 import 'package:nutra_nest/features/cart/presentation/pages/cart_screen.dart';
 import 'package:nutra_nest/features/home/presentation/pages/home_screen.dart';
-import 'package:nutra_nest/screen/bottom_navigation/whish_list_screen.dart';
+import 'package:nutra_nest/features/wishlist/presentation/pages/wish_list_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
 class MyHomePage extends StatefulWidget {

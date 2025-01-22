@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -97,7 +95,7 @@ class _CycleListPageState extends State<CycleListPage> {
   }
 
   Widget buildSearchBar() {
-    final TextEditingController searchCountroller = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
     return BlocBuilder<SearchBlocBloc, SearchBlocState>(
       builder: (context, state) {
         if (state is SearchBarVisible) {
@@ -107,22 +105,31 @@ class _CycleListPageState extends State<CycleListPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: SizedBox(
-                    height: 68,
-                    child: CustomTextFormField(
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 23),
-                        child: Icon(
-                          Icons.search,
-                          size: 30,
-                          color: customTextTheme(context),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 68,
+                          child: CustomTextFormField(
+                            prefixIcon: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 23),
+                              child: Icon(
+                                Icons.search,
+                                size: 30,
+                                color: customTextTheme(context),
+                              ),
+                            ),
+                            controller: searchController,
+                            labelText: 'Search',
+                          ),
                         ),
                       ),
-                      controller: searchCountroller,
-                      labelText: 'Search',
-                    ),
+                      const SizedBox(width: 10),
+                    ],
                   ),
                 ),
+                _buildActiveFilters(context),
               ],
             ),
           );
@@ -130,6 +137,92 @@ class _CycleListPageState extends State<CycleListPage> {
           return const SizedBox.shrink();
         }
       },
+    );
+  }
+
+  Widget _buildActiveFilters(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _filterChip('Under - ₹10k', onTap: () {}),
+          _filterChip('₹10k - ₹20k', onTap: () {}),
+          _filterChip('Above - ₹30k ', onTap: () {}),
+        ],
+      ),
+    );
+  }
+
+  Widget _filterChip(String label, {required VoidCallback onTap}) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: CustomColors.green.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: CustomColors.green),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  color: CustomColors.green,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(width: 4),
+              const Icon(
+                Icons.close,
+                size: 16,
+                color: CustomColors.green,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterSection(String title, List<String> options) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: customTextTheme(context)),
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: options.map((option) {
+            return FilterChip(
+              label: Text(option),
+              selected: false, // Manage selection state
+              onSelected: (selected) {
+                // Handle selection
+              },
+              backgroundColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: const BorderSide(color: CustomColors.green),
+              ),
+              labelStyle: const TextStyle(color: CustomColors.green),
+              selectedColor: CustomColors.green.withOpacity(0.1),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 

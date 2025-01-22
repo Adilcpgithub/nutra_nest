@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/features/cart/presentation/model/my_cart_model.dart';
-
 part 'cart_event.dart';
 part 'cart_state.dart';
 
@@ -20,17 +18,24 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
         final snapshot =
             await firestore.collection('cartCollection').doc(userId).get();
-        log('is calling 2 ');
+
         if (snapshot.exists) {
           List<Map<String, dynamic>> cartData =
               List<Map<String, dynamic>>.from(snapshot.data()?['cart'] ?? []);
-          log('is calling  4');
+
           log('cartData length is ${cartData.length}');
           List<MyCartModel> mycartDats =
               cartData.map((data) => MyCartModel.fromMap(data)).toList();
           log('mycartDats length is ${mycartDats.length}');
           log(mycartDats.toString());
           emit(CartLoaded(cartItems: mycartDats));
+          List<double> totalSumList =
+              mycartDats.map((e) => e.subtotal).toList();
+          double totalSum = 0;
+          for (var i in totalSumList) {
+            totalSum += i;
+          }
+          emit(ProductTotal(cartItems: state.cartItems, total: totalSum));
         }
       } catch (e) {
         log(e.toString());
@@ -57,6 +62,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           event.product.copyWith(productCount: 1),
         ]));
       }
+      List<double> totalSumList =
+          state.cartItems.map((e) => e.subtotal).toList();
+      double totalSum = 0;
+      for (var i in totalSumList) {
+        totalSum += i;
+      }
+      emit(ProductTotal(cartItems: state.cartItems, total: totalSum));
+
       await firestore
           .collection('cartCollection')
           .doc(userId)
@@ -74,6 +87,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         }).toList();
 
         emit(state.copyWith(cartItems: updatedCartItems));
+        List<double> totalSumList =
+            updatedCartItems.map((e) => e.subtotal).toList();
+        double totalSum = 0;
+        for (var i in totalSumList) {
+          totalSum += i;
+        }
+        emit(ProductTotal(cartItems: state.cartItems, total: totalSum));
 
         final userId = await UserStatus().getUserId();
 
@@ -81,19 +101,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .collection('cartCollection')
             .doc(userId)
             .set({'cart': updatedCartItems.map((e) => e.toMap()).toList()});
-
-        // List<Map<String, dynamic>> cartData = [];
-        // if (snapshot.exists &&
-        //     snapshot.data() != null &&
-        //     snapshot.data()!['cart'] != null) {
-        //   log('existes ');
-        //   cartData = List<Map<String, dynamic>>.from(snapshot.data()!['cart']);
-        //   log('message 3');
-        //   List<MyCartModel> currentData =
-        //       cartData.map((e) => MyCartModel.fromMap(e)).toList();
-        //       int index=currentData.indexWhere((item)=>item.id==event.productId)
-        //       updatatedCart
-        // }
       } catch (e) {
         log(e.toString());
       }
@@ -111,6 +118,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .toList();
 
         emit(state.copyWith(cartItems: updatedCartItems));
+        List<double> totalSumList =
+            state.cartItems.map((e) => e.subtotal).toList();
+        double totalSum = 0;
+        for (var i in totalSumList) {
+          totalSum += i;
+        }
+        emit(ProductTotal(cartItems: state.cartItems, total: totalSum));
+
         final userId = await UserStatus().getUserId();
 
         await firestore
@@ -121,21 +136,26 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         log(e.toString());
       }
     });
-    // on<UpdateCartItemCount>((event, emit) {
-    //   final updatedItems = state.items.map((item) {
-    //     if (item.id == event.productId) {
-    //       log('id found ');
-    //       log(event.productId.toString());
+    on<RemoveFromCart>((event, emit) async {
+      final userId = await UserStatus().getUserId();
+      final existingIndex =
+          state.cartItems.indexWhere((item) => item.id == event.productId);
+      List<MyCartModel> updatedCartItems = [];
+      if (existingIndex != -1) {
+        updatedCartItems = List<MyCartModel>.from(state.cartItems);
+        updatedCartItems.removeAt(existingIndex);
+        emit(state.copyWith(cartItems: updatedCartItems));
+        List<double> totalSumList =
+            state.cartItems.map((e) => e.subtotal).toList();
+        double totalSum = 0;
+        for (var i in totalSumList) {
+          totalSum += i;
+        }
+        emit(ProductTotal(cartItems: state.cartItems, total: totalSum));
 
-    //       return item.copyWith(productCount: event.count);
-    //     } else {
-    //       log('id not found  ');
-    //     }
-
-    //     return item;
-    //   }).toList();
-    //   emit(CartState(items: updatedItems));
-    // }
-    // );
+        await firestore.collection('cartCollection').doc(userId).set(
+            {'cart': updatedCartItems.map((item) => item.toMap()).toList()});
+      }
+    });
   }
 }

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
@@ -13,6 +14,8 @@ import 'package:nutra_nest/features/home/presentation/pages/product_details_page
 import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/utity/number_format.dart';
+import 'package:nutra_nest/widgets/custom_textbutton.dart';
 
 class CartScreen extends StatefulWidget {
   final bool fromBottomNav;
@@ -36,19 +39,23 @@ class _CartScreenState extends State<CartScreen> {
       body: SafeArea(child: BlocBuilder<NetworkCubit, bool>(
         builder: (context, isConnected) {
           if (isConnected) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Expanded(
-                child: Column(
-                  children: [
-                    sizedBoxHeight(10),
-                    buildHeader(context),
-                    sizedBoxHeight(20),
-                    buildCartContainer(),
-                  ],
-                ),
+            return Stack(children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Stack(children: [
+                  Column(
+                    children: [
+                      sizedBoxHeight(10),
+                      buildHeader(context),
+                      sizedBoxHeight(20),
+                      buildCartContainer(),
+                      buildTotalContainer(context)
+                    ],
+                  ),
+                  buildCheckOutButton(),
+                ]),
               ),
-            );
+            ]);
           } else {
             return Expanded(
               child: Center(
@@ -99,8 +106,9 @@ Widget buildCartContainer() {
       final cartItems = state.cartItems;
       if (cartItems.isNotEmpty) {
         //log('${state.products.length}');
-        return Expanded(
-          child: FadeInUp(
+        return SizedBox(
+          height: deviceHeight(context) / 2.4,
+          child: FadeInDown(
             duration: const Duration(milliseconds: 600),
             child: ListView.builder(
                 itemCount: cartItems.length,
@@ -245,19 +253,24 @@ Widget buildCartContainer() {
                       Positioned(
                         top: 10,
                         right: 10,
-                        child: Container(
-                          height: 33,
-                          width: 33,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(231, 204, 199, 199),
-                              shape: BoxShape.circle),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Icon(
-                                Icons.close,
-                                size: 19,
-                                color: customTextTheme(context),
+                        child: GestureDetector(
+                          onTap: () => context
+                              .read<CartBloc>()
+                              .add(RemoveFromCart(item.id)),
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                                color: Color.fromARGB(231, 204, 199, 199),
+                                shape: BoxShape.circle),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Icon(
+                                  Icons.close,
+                                  size: 16,
+                                  color: customTextTheme(context),
+                                ),
                               ),
                             ),
                           ),
@@ -363,6 +376,77 @@ Widget buildCartContainer() {
   );
 }
 
+buildTotalContainer(BuildContext context) {
+  return BlocBuilder<CartBloc, CartState>(
+    builder: (context, state) {
+      if (state.cartItems.isNotEmpty) {
+        return FadeInUp(
+          duration: const Duration(milliseconds: 500),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    cartText(context, 'Subtotal'),
+                    BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        if (state is ProductTotal) {
+                          return cartText(
+                              context, '${formate().format(state.total)}.00');
+                        } else {
+                          return cartText(context, '0');
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    cartText(context, 'Shipping'),
+                    cartText(context, '560.00'),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    cartText(context, 'Total'),
+                    BlocBuilder<CartBloc, CartState>(
+                      builder: (context, state) {
+                        if (state is ProductTotal) {
+                          //! set the Shipping amount
+                          return cartText(context,
+                              '${formate().format(state.total + 560)}.00');
+                        } else {
+                          return cartText(context, '0.00');
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      } else {
+        return SizedBox.fromSize();
+      }
+    },
+  );
+}
+
 Future<Cycle?> getProductById(String productId) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   log('calling');
@@ -390,4 +474,37 @@ Future<Cycle?> getProductById(String productId) async {
     log('Error fetching product: $e');
     return null;
   }
+}
+
+Widget cartText(BuildContext context, String data) {
+  return Text(
+    data,
+    style: TextStyle(
+        color: customTextTheme(context),
+        fontSize: 20,
+        fontWeight: FontWeight.bold),
+  );
+}
+
+buildCheckOutButton() {
+  return BlocBuilder<CartBloc, CartState>(
+    builder: (context, state) {
+      if (state.cartItems.isNotEmpty) {
+        return Positioned(
+          bottom: 16,
+          left: 20,
+          right: 20,
+          child: FadeInUp(
+            child: CustomTextbutton(
+              color: CustomColors.green,
+              buttomName: 'PROCEED TO CHECKOUT',
+              voidCallBack: () {},
+            ),
+          ),
+        );
+      } else {
+        return const SizedBox.shrink();
+      }
+    },
+  );
 }
