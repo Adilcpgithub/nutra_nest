@@ -7,11 +7,19 @@ class WishEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class Loadwish extends WishEvent {}
+class LoadwishList extends WishEvent {}
 
 class AddWishToCart extends WishEvent {
-  final WishModel product;
-  const AddWishToCart(this.product);
+  final WishModel wishModel;
+  final String productId;
+  const AddWishToCart(this.productId, this.wishModel);
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [productId, wishModel];
+}
+
+class RemoveFromWish extends WishEvent {
+  final String productId;
+  const RemoveFromWish(this.productId);
+  @override
+  List<Object> get props => [productId];
 }

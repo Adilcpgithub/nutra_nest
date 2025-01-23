@@ -22,7 +22,7 @@ class ProductCartCubit extends Cubit<ProductCartState> {
 
       final snapshot =
           await _firestore.collection('cartCollection').doc(userId).get();
-      log('message 2');
+
       List<Map<String, dynamic>> cartData = [];
       if (snapshot.exists &&
           snapshot.data() != null &&
@@ -30,11 +30,10 @@ class ProductCartCubit extends Cubit<ProductCartState> {
         log('existes ');
         cartData = List<Map<String, dynamic>>.from(snapshot.data()!['cart']);
       }
-      log('message 3');
+
       int index = cartData.indexWhere((item) => item['productId'] == productId);
 
       if (index == -1) {
-        log('message 4');
         MyCartModel myCart = MyCartModel(
             id: productId,
             productCount: 1,
@@ -51,13 +50,6 @@ class ProductCartCubit extends Cubit<ProductCartState> {
         log('Product already exists in cart, no action taken');
       }
 
-      // cartData.add({
-      //   'productId': productId,
-      //   'productCount': state.productCount,
-      //   'name': cycle.name,
-      //   'imageUrl': cycle.imageUrl[0],
-      //   'brand': cycle.brand,
-      //   'price': cycle.price
       // });
 
       await _firestore

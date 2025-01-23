@@ -7,7 +7,6 @@ class WishModel extends Equatable {
   final String imageUrl;
   final String brand;
   final int productCount;
-
   const WishModel(
       {required this.id,
       required this.name,
@@ -27,11 +26,12 @@ class WishModel extends Equatable {
   }
 
   factory WishModel.fromMap(Map<String, dynamic> map) {
+    List<dynamic> imageUrlList = map["image_url"] ?? [];
     return WishModel(
-        id: map['productId'] ?? '',
+        id: map['documentId'] ?? '',
         name: map['name'] ?? '',
         price: map['price'] ?? '',
-        imageUrl: map['imageUrl'] ?? '',
+        imageUrl: imageUrlList.first.toString(),
         brand: map['brand'] ?? '',
         productCount: map['productCount'] ?? 1);
   }

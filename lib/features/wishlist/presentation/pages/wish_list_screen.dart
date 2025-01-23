@@ -1,13 +1,30 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
+import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
+import 'package:nutra_nest/features/wishlist/presentation/model/wish_model.dart';
+import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/number_format.dart';
 
-class WhishListScreen extends StatelessWidget {
+class WhishListScreen extends StatefulWidget {
   const WhishListScreen({super.key});
+
+  @override
+  State<WhishListScreen> createState() => _WhishListScreenState();
+}
+
+class _WhishListScreenState extends State<WhishListScreen> {
+  @override
+  void initState() {
+    context.read<WishBloc>().add(LoadwishList());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +36,8 @@ class WhishListScreen extends StatelessWidget {
               child: Column(
                 children: [
                   sizedBoxHeight(10),
-                  Center(child: buildHeader(context)),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return wishContainer(context);
-                      },
-                    ),
-                  )
+                  buildHeader(context),
+                  builWishList(context)
                 ],
               ));
         } else {
@@ -73,163 +83,273 @@ Widget buildHeader(
             color: customTextTheme(context),
           ),
         ),
-        Text(
-          '5 Items', // Make this dynamic based on your list length
-          style: GoogleFonts.poppins(
-            fontSize: 14,
-            color: Colors.grey[600],
-          ),
+        BlocBuilder<WishBloc, WishState>(
+          builder: (context, state) {
+            int count;
+            if (state.wishItems.isNotEmpty) {
+              count = state.wishItems.length;
+            } else {
+              count = 0;
+            }
+            return Text(
+              '$count Items', // Make this dynamic based on your list length
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            );
+          },
         ),
       ],
     ),
   );
 }
 
-Widget wishContainer(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: SingleChildScrollView(
-      child: Stack(children: [
-        Container(
-          height: 160,
-          decoration: BoxDecoration(
-            color: CustomColors.lightWhite,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 5,
-              ),
-              // Product Image
-              Container(
-                width: deviceWidth(context) / 3.0,
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: const DecorationImage(
-                    image: AssetImage('assets/NutraNest.png'), // Add your image
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              // Product Details
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Product Name and Remove Button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+Widget builWishList(BuildContext context) {
+  return BlocBuilder<WishBloc, WishState>(
+    builder: (context, state) {
+      if (state.wishItems.isNotEmpty) {
+        return Expanded(
+          child: ListView.builder(
+            itemCount: state.wishItems.length,
+            itemBuilder: (context, index) {
+              final wishModelData = state.wishItems[index];
+              final price = int.tryParse(wishModelData.price);
+              final formatedPrice = formate().format(price);
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: SingleChildScrollView(
+                  child: Stack(children: [
+                    Container(
+                      height: 160,
+                      decoration: BoxDecoration(
+                        color: CustomColors.lightWhite,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
                         children: [
-                          Expanded(
-                            child: Text(
-                              'Mountain Bike X-Series',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          // Product Image
+
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12)),
+                              height: 130,
+                              width: 130,
+                              child: ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(12)),
+                                child: Stack(children: [
+                                  Image.network(
+                                    wishModelData.imageUrl,
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+                                      return ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          topRight: Radius.circular(12),
+                                        ),
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            SizedBox(
+                                                height: double.infinity,
+                                                width: double.maxFinite,
+                                                child: Image.asset(
+                                                  applogo,
+                                                  fit: BoxFit.cover,
+                                                )),
+                                            const CircularProgressIndicator(
+                                              color: CustomColors.green,
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const SizedBox(
+                                        height: double.maxFinite,
+                                        width: double.maxFinite,
+                                        child: Center(
+                                            child: Icon(
+                                          size: 50,
+                                          Icons.image_not_supported,
+                                          color: Colors.grey,
+                                        )),
+                                      );
+                                    },
+                                  ),
+                                ]),
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          // Product Details
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // Product Name and Remove Button
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          wishModelData.name,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black87,
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  // Product Details
+                                  Text(
+                                    'Brand : ${wishModelData.brand}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 13,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  // Price and Add to Cart
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      // Product Details
-                      Text(
-                        'Color: Metallic Blue',
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          color: Colors.grey[600],
+                    ),
+                    Positioned(
+                      right: 15,
+                      bottom: 15,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          //   return cartText(context,
+                          //   '${formate().format(state.total + 560)}.00');
+
+                          Text(
+                            '₹${formatedPrice.toString()}.00',
+                            style: GoogleFonts.aBeeZee(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: CustomColors.green,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.read<WishBloc>().add(AddWishToCart(
+                                  wishModelData.id, wishModelData));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: CustomColors.green,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 6,
+                              ),
+                            ),
+                            child: Text(
+                              'Add to Cart',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: GestureDetector(
+                        onTap: () {
+                          context
+                              .read<WishBloc>()
+                              .add(RemoveFromWish(wishModelData.id));
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: const BoxDecoration(
+                              color: Color.fromARGB(231, 204, 199, 199),
+                              shape: BoxShape.circle),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Icon(
+                                Icons.close,
+                                size: 16,
+                                color: customTextTheme(context),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      // Price and Add to Cart
-                    ],
-                  ),
+                    ),
+                  ]),
                 ),
-              ),
-            ],
+              );
+            },
           ),
-        ),
-        Positioned(
-          right: 15,
-          bottom: 15,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '₹24,999',
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: CustomColors.green,
+        );
+      } else {
+        return Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  'assets/Animation - 1737606612185.json',
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Add to cart logic
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.green,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 6,
-                    vertical: 6,
-                  ),
-                ),
-                child: Text(
-                  'Add to Cart',
-                  style: GoogleFonts.poppins(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 10,
-          right: 10,
-          child: GestureDetector(
-            child: Container(
-              height: 30,
-              width: 30,
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(231, 204, 199, 199),
-                  shape: BoxShape.circle),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Icon(
-                    Icons.close,
-                    size: 16,
+                Text(
+                  'Wishlist is empty',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                     color: customTextTheme(context),
                   ),
-                ),
-              ),
+                )
+              ],
             ),
           ),
-        ),
-      ]),
-    ),
+        );
+      }
+    },
   );
 }

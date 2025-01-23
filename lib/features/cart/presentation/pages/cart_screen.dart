@@ -28,7 +28,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
-    log('hhhhhhhhhhhhh11');
     context.read<CartBloc>().add(LoadCart());
     super.initState();
   }
@@ -93,9 +92,9 @@ Widget buildHeader(
     'My Cart',
     textAlign: TextAlign.center,
     style: GoogleFonts.poppins(
-      fontSize: 19,
+      fontSize: 24,
       fontWeight: FontWeight.w600,
-      color: Theme.of(context).textTheme.bodySmall!.color,
+      color: customTextTheme(context),
     ),
   );
 }
@@ -111,13 +110,14 @@ Widget buildCartContainer() {
           child: FadeInDown(
             duration: const Duration(milliseconds: 600),
             child: ListView.builder(
-                itemCount: cartItems.length,
-                itemBuilder: (context, index) {
-                  final item = cartItems[index];
-                  return Padding(
-                    key: ValueKey(item.id),
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Stack(children: [
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                final item = cartItems[index];
+                return Padding(
+                  key: ValueKey(item.id),
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Stack(
+                    children: [
                       Container(
                         decoration: BoxDecoration(
                             color: isDark(context)
@@ -277,76 +277,77 @@ Widget buildCartContainer() {
                         ),
                       ),
                       Positioned(
-                          right: 15,
-                          bottom: 15,
-                          child: Container(
-                            key: ValueKey(item.id),
-                            height: 30,
-                            width: 75,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: const Color.fromARGB(231, 33, 30, 30)),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      context
-                                          .read<CartBloc>()
-                                          .add(DecreaseProductCount(item.id));
-                                    },
-                                    splashColor: Colors.grey.withOpacity(0.3),
-                                    highlightColor:
-                                        Colors.grey.withOpacity(0.1),
-                                    child: const Center(
-                                      child: Text(
-                                        '-',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Center(
+                        right: 15,
+                        bottom: 15,
+                        child: Container(
+                          key: ValueKey(item.id),
+                          height: 30,
+                          width: 75,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color.fromARGB(231, 33, 30, 30)),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    context
+                                        .read<CartBloc>()
+                                        .add(DecreaseProductCount(item.id));
+                                  },
+                                  splashColor: Colors.grey.withOpacity(0.3),
+                                  highlightColor: Colors.grey.withOpacity(0.1),
+                                  child: const Center(
                                     child: Text(
-                                      '${item.productCount}',
-                                      style: const TextStyle(
+                                      '-',
+                                      style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      context
-                                          .read<CartBloc>()
-                                          .add(IncreaseProductCount(item.id));
-                                    },
-                                    splashColor: Colors.grey.withOpacity(0.3),
-                                    highlightColor:
-                                        Colors.grey.withOpacity(0.1),
-                                    child: const Center(
-                                      child: Text(
-                                        '+',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    '${item.productCount}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    context
+                                        .read<CartBloc>()
+                                        .add(IncreaseProductCount(item.id));
+                                  },
+                                  splashColor: Colors.grey.withOpacity(0.3),
+                                  highlightColor: Colors.grey.withOpacity(0.1),
+                                  child: const Center(
+                                    child: Text(
+                                      '+',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ))
-                    ]),
-                  );
-                }),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         );
       } else {

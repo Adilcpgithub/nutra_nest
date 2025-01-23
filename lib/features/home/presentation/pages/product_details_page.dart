@@ -130,89 +130,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ),
                                 ),
                               ),
-                              // Container(
-                              //   height: 30,
-                              //   width: 75,
-                              //   decoration: BoxDecoration(
-                              //     border: Border.all(
-                              //       width: 1,
-                              //       color: CustomColors.green2,
-                              //     ),
-                              //     borderRadius: BorderRadius.circular(5),
-                              //   ),
-                              //   child: BlocBuilder<ProductCartCubit,
-                              //       ProductCartState>(
-                              //     builder: (context, state) {
-                              //       if (widget.count != null) {}
-                              //       var cubit =
-                              //           context.read<ProductCartCubit>();
-                              //       return Row(
-                              //         children: [
-                              //           Expanded(
-                              //             child: InkWell(
-                              //               onTap: () {
-                              //                 cubit.decreaseCount();
-                              //               },
-                              //               splashColor:
-                              //                   Colors.grey.withOpacity(0.3),
-                              //               highlightColor:
-                              //                   Colors.grey.withOpacity(0.1),
-                              //               child: Center(
-                              //                 child: Text(
-                              //                   '-',
-                              //                   style: TextStyle(
-                              //                     color: Theme.of(context)
-                              //                         .textTheme
-                              //                         .bodySmall!
-                              //                         .color,
-                              //                     fontWeight: FontWeight.bold,
-                              //                   ),
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //           Expanded(
-                              //             child: Center(
-                              //               child: Text(
-                              //                 '${state.productCount}',
-                              //                 style: TextStyle(
-                              //                   color: Theme.of(context)
-                              //                       .textTheme
-                              //                       .bodySmall!
-                              //                       .color,
-                              //                   fontWeight: FontWeight.bold,
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //           Expanded(
-                              //             child: InkWell(
-                              //               onTap: () {
-                              //                 cubit.increaseCount();
-                              //               },
-                              //               splashColor:
-                              //                   Colors.grey.withOpacity(0.3),
-                              //               highlightColor:
-                              //                   Colors.grey.withOpacity(0.1),
-                              //               child: Center(
-                              //                 child: Text(
-                              //                   '+',
-                              //                   style: TextStyle(
-                              //                     color: Theme.of(context)
-                              //                         .textTheme
-                              //                         .bodySmall!
-                              //                         .color,
-                              //                     fontWeight: FontWeight.bold,
-                              //                   ),
-                              //                 ),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //         ],
-                              //       );
-                              //     },
-                              //   ),
-                              // )
                             ],
                           ),
                           Row(
@@ -471,22 +388,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           .addToCart(
                                               widget.productId, currentCycle);
                                     }
-                                    // if (state.isAddedToCart) {
-                                    //   if (widget.productId != null) {
-                                    //     cubit.addToCart(
-                                    //         widget.productId!, currentCycle);
-                                    //   } else {
-                                    //     cubit.removeFromCart(currentCycle.id);
-                                    //   }
-                                    // } else {
-                                    //   if (widget.productId != null) {
-                                    //     cubit.addToCart(
-                                    //         widget.productId!, currentCycle);
-                                    //   } else {
-                                    //     cubit.addToCart(
-                                    //         currentCycle.id, currentCycle);
-                                    //   }
-                                    // }
                                   },
                                 );
                               },

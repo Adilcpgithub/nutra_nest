@@ -305,7 +305,6 @@ class UserStatus {
     log('4');
     log('checking User State changes');
     if (user == null) {
-      log('5');
       log('no user Data note found');
       checkWeather = false;
       log('6');
