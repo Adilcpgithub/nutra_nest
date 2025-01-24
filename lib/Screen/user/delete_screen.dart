@@ -9,6 +9,7 @@ import 'package:nutra_nest/screen/user/edit_profile.dart';
 import 'package:nutra_nest/screen/user/re_auth/cubit/auth_cubit.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
@@ -19,161 +20,163 @@ class DeleteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: SingleChildScrollView(
-          child: BlocListener<AuthCubit, AuthState>(
-            listenWhen: (previous, current) {
-              return current is AuthFailure || current is AuthSuccess;
-            },
-            listener: (context, state) {
-              if (state is AuthFailure) {
-                showUpdateNotification(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: SingleChildScrollView(
+            child: BlocListener<AuthCubit, AuthState>(
+              listenWhen: (previous, current) {
+                return current is AuthFailure || current is AuthSuccess;
+              },
+              listener: (context, state) {
+                if (state is AuthFailure) {
+                  showUpdateNotification(
+                      context: context,
+                      message: 'Account deletion failed ',
+                      color: Colors.red,
+                      icon: Icons.error_outline);
+                } else if (state is AuthSuccess) {
+                  showUpdateNotification(
                     context: context,
-                    message: 'Account deletion failed ',
-                    color: Colors.red,
-                    icon: Icons.error_outline);
-              } else if (state is AuthSuccess) {
-                showUpdateNotification(
-                  context: context,
-                  message: 'Account deleted  ',
-                );
-                CustomNavigation.pushAndRemoveUntil(
-                    context, const LoginScreen());
-              }
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 57,
-                ),
-                Row(
-                  children: [
-                    CustomIcon(
-                        onTap: () {
-                          CustomNavigation.pushReplacement(
-                              context, const EditProfile());
-                        },
-                        icon: Icons.arrow_back,
-                        iconSize: 26),
-                    const SizedBox(
-                      width: 85.5,
-                    ),
-                    const Expanded(
-                      child: Text(
-                        'Delete Account',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 65,
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(46, 183, 28, 28),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: const Padding(
-                    padding:
-                        EdgeInsets.only(top: 15, right: 8, bottom: 15, left: 8),
-                    child: Column(
-                      children: [
-                        Text(
-                          ' Are you sure you want to delete your    \n  account?\n',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: Color.fromARGB(181, 244, 67, 54)),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'All your personal information, order history, and saved items '
-                          'will be permanently removed',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(181, 244, 67, 54)),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'You will no longer be able to access your account or any associated data.',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(181, 244, 67, 54)),
-                        ),
-                        SizedBox(
-                          height: 18,
-                        ),
-                      ],
-                    ),
+                    message: 'Account deleted  ',
+                  );
+                  CustomNavigation.pushAndRemoveUntil(
+                      context, const LoginScreen());
+                }
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 57,
                   ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
                     children: [
-                      Flexible(
-                        child: SmallTextbutton(
-                          textColor: customTextTheme(context),
-                          width: 1.5,
-                          buttomColor: appTheme(context),
-                          buttomName: 'CANCEL',
-                          voidCallBack: () {
-                            Navigator.of(context).pop(
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) =>
-                                        const EditProfile(),
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  var curvedAnimation = CurvedAnimation(
-                                    parent: animation,
-                                    curve: Curves.easeInOut,
-                                  );
-
-                                  return FadeTransition(
-                                    opacity: curvedAnimation,
-                                    child: child,
-                                  );
-                                },
-                              ),
-                            );
+                      CustomIcon(
+                          onTap: () {
+                            CustomNavigation.pushReplacement(
+                                context, const EditProfile());
                           },
-                        ),
-                      ),
+                          icon: Icons.arrow_back,
+                          iconSize: 26),
                       const SizedBox(
-                        width: 10,
+                        width: 85.5,
                       ),
-                      Flexible(
-                        child: SmallTextbutton(
-                          width: 1.5,
-                          buttomColor: appTheme(context),
-                          buttomName: 'DELETE ACCOUNT',
-                          textColor: customTextTheme(context),
-                          voidCallBack: () async {
-                            showModelDeletingRule(context);
-                          },
+                      const Expanded(
+                        child: Text(
+                          'Delete Account',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 65,
+                  ),
+                  Container(
+                    decoration: const BoxDecoration(
+                        color: Color.fromARGB(46, 183, 28, 28),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    child: const Padding(
+                      padding: EdgeInsets.only(
+                          top: 15, right: 8, bottom: 15, left: 8),
+                      child: Column(
+                        children: [
+                          Text(
+                            ' Are you sure you want to delete your    \n  account?\n',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Color.fromARGB(181, 244, 67, 54)),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'All your personal information, order history, and saved items '
+                            'will be permanently removed',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(181, 244, 67, 54)),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'You will no longer be able to access your account or any associated data.',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(181, 244, 67, 54)),
+                          ),
+                          SizedBox(
+                            height: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: SmallTextbutton(
+                            textColor: customTextTheme(context),
+                            width: 1.5,
+                            buttomColor: appTheme(context),
+                            buttomName: 'CANCEL',
+                            voidCallBack: () {
+                              Navigator.of(context).pop(
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      const EditProfile(),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    var curvedAnimation = CurvedAnimation(
+                                      parent: animation,
+                                      curve: Curves.easeInOut,
+                                    );
+
+                                    return FadeTransition(
+                                      opacity: curvedAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Flexible(
+                          child: SmallTextbutton(
+                            width: 1.5,
+                            buttomColor: appTheme(context),
+                            buttomName: 'DELETE ACCOUNT',
+                            textColor: customTextTheme(context),
+                            voidCallBack: () async {
+                              showModelDeletingRule(context);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -372,36 +375,4 @@ void showModelDeletingRule(BuildContext context) async {
       showDeleteAccountBottomSheet(context);
     }
   });
-}
-
-void showUpdateNotification({
-  required BuildContext context,
-  required String message,
-  Color? color = CustomColors.green,
-  IconData icon = Icons.check_circle,
-}) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Row(
-        children: [
-          Icon(icon, color: customTextTheme(context)),
-          const SizedBox(width: 12),
-          Text(
-            message,
-            style: GoogleFonts.poppins(
-              color: customTextTheme(context),
-              fontSize: 14,
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: color,
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: const EdgeInsets.all(30),
-      duration: const Duration(seconds: 2),
-    ),
-  );
 }

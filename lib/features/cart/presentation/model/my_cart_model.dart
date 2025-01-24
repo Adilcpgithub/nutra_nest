@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 class MyCartModel extends Equatable {
   final String id;
   final String name;
-  final String price;
+  final int price;
   final String imageUrl;
   final String brand;
   final int productCount;
-  double get priceAsDouble => double.tryParse(price) ?? 0.0;
+  double get priceAsDouble => price.toDouble();
   double get subtotal => priceAsDouble * productCount;
 
   const MyCartModel(
@@ -32,7 +32,7 @@ class MyCartModel extends Equatable {
     return MyCartModel(
         id: map['productId'] ?? '',
         name: map['name'] ?? '',
-        price: map['price'] ?? '',
+        price: map['price'] ?? 0,
         imageUrl: map['imageUrl'] ?? '',
         brand: map['brand'] ?? '',
         productCount: map['productCount'] ?? 1);
@@ -40,7 +40,7 @@ class MyCartModel extends Equatable {
   MyCartModel copyWith({
     String? id,
     String? name,
-    String? price,
+    int? price,
     String? imageUrl,
     String? brand,
     int? productCount,

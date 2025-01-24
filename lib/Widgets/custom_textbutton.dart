@@ -6,12 +6,15 @@ class CustomTextbutton extends StatelessWidget {
   final bool showButtonName;
   final VoidCallback voidCallBack;
   final Color color;
-  const CustomTextbutton(
-      {super.key,
-      this.showButtonName = true,
-      required this.buttomName,
-      required this.voidCallBack,
-      this.color = CustomColors.black});
+  Color? nameColor;
+  CustomTextbutton({
+    super.key,
+    this.showButtonName = true,
+    required this.buttomName,
+    required this.voidCallBack,
+    this.nameColor,
+    this.color = CustomColors.black,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,9 @@ class CustomTextbutton extends StatelessWidget {
               ? Text(
                   buttomName,
                   style: TextStyle(
-                      color: Theme.of(context).textTheme.bodySmall!.color,
+                      color: nameColor == null
+                          ? Theme.of(context).textTheme.bodySmall!.color
+                          : nameColor!,
                       fontSize: 18),
                 )
               : const CircularProgressIndicator(

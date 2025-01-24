@@ -12,7 +12,7 @@ Widget cycleProductCard(
     {required String imagUrl,
     required VoidCallback funtion,
     required String cycleName,
-    required String price,
+    required int price,
     required BuildContext context,
     required String id,
     required Cycle cycle}) {

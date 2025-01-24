@@ -15,6 +15,7 @@ import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dar
 import 'package:nutra_nest/screen/user/delete_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/custom_textbutton.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 
@@ -99,7 +100,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     showUpdateNotification(
                       context: context,
                       message: 'Product added to cart',
-                      color: const Color.fromARGB(255, 133, 177, 116),
+                      color: CustomColors.green,
                     );
                   },
                   child: Column(

@@ -117,6 +117,8 @@ class WishBloc extends Bloc<WishEvent, WishState> {
           cartData.add(wishModel.toMap());
           log('product id added to cart from wish');
           await ref.set({'cart': cartData});
+          emit(WishDataAddSuccessful(
+              wishItems: state.wishItems, message: 'Product added to cart'));
         }
       } catch (e) {
         log('error forom Wish data adding to the cart list $e');

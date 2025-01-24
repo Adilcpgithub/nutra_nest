@@ -498,6 +498,7 @@ buildCheckOutButton() {
           child: FadeInUp(
             child: CustomTextbutton(
               color: CustomColors.green,
+              nameColor: Colors.white,
               buttomName: 'PROCEED TO CHECKOUT',
               voidCallBack: () {},
             ),

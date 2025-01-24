@@ -1,7 +1,7 @@
 class Cycle {
   final String id;
   final String name;
-  final String price;
+  final int price;
   final List<String> imageUrl;
   final String brand;
   final String category;
@@ -27,7 +27,7 @@ class Cycle {
   Cycle copytWith(
     String? id,
     String? name,
-    String? price,
+    int? price,
     List<String>? imageUrl,
     String? brand,
     String? category,
@@ -41,7 +41,7 @@ class Cycle {
     return Cycle(
       id: id ?? '',
       name: name ?? '',
-      price: price ?? '',
+      price: price ?? 0,
       imageUrl: imageUrl ?? [],
       brand: brand ?? '',
       category: category ?? '',

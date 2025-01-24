@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class WishModel extends Equatable {
   final String id;
   final String name;
-  final String price;
+  final int price;
   final String imageUrl;
   final String brand;
   final int productCount;
@@ -30,7 +30,7 @@ class WishModel extends Equatable {
     return WishModel(
         id: map['documentId'] ?? '',
         name: map['name'] ?? '',
-        price: map['price'] ?? '',
+        price: map['price'] ?? 0,
         imageUrl: imageUrlList.first.toString(),
         brand: map['brand'] ?? '',
         productCount: map['productCount'] ?? 1);
@@ -38,7 +38,7 @@ class WishModel extends Equatable {
   WishModel copyWith({
     String? id,
     String? name,
-    String? price,
+    int? price,
     String? imageUrl,
     String? brand,
     int? productCount,

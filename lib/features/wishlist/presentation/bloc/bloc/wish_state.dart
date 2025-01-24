@@ -21,3 +21,11 @@ class WishLoading extends WishState {
 class WishLoaded extends WishState {
   const WishLoaded({required super.wishItems});
 }
+
+class WishDataAddSuccessful extends WishState {
+  final String message;
+  const WishDataAddSuccessful(
+      {required super.wishItems, required this.message});
+  @override
+  List<Object> get props => [message];
+}

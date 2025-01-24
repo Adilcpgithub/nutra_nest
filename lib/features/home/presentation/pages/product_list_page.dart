@@ -145,7 +145,9 @@ class _CycleListPageState extends State<CycleListPage> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _filterChip('Under - ₹10k', onTap: () {}),
+          _filterChip('Under - ₹10k', onTap: () {
+            print('sssss');
+          }),
           _filterChip('₹10k - ₹20k', onTap: () {}),
           _filterChip('Above - ₹30k ', onTap: () {}),
         ],
@@ -153,7 +155,8 @@ class _CycleListPageState extends State<CycleListPage> {
     );
   }
 
-  Widget _filterChip(String label, {required VoidCallback onTap}) {
+  Widget _filterChip(String label,
+      {required VoidCallback onTap, bool changeColor = false}) {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(
@@ -161,7 +164,8 @@ class _CycleListPageState extends State<CycleListPage> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: CustomColors.green.withOpacity(0.1),
+            color: CustomColors.green,
+            //!changed button color to identify the selection
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: CustomColors.green),
           ),
@@ -171,7 +175,7 @@ class _CycleListPageState extends State<CycleListPage> {
               Text(
                 label,
                 style: const TextStyle(
-                  color: CustomColors.green,
+                  color: Colors.white,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -186,43 +190,6 @@ class _CycleListPageState extends State<CycleListPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildFilterSection(String title, List<String> options) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: customTextTheme(context)),
-        ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: options.map((option) {
-            return FilterChip(
-              label: Text(option),
-              selected: false, // Manage selection state
-              onSelected: (selected) {
-                // Handle selection
-              },
-              backgroundColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-                side: const BorderSide(color: CustomColors.green),
-              ),
-              labelStyle: const TextStyle(color: CustomColors.green),
-              selectedColor: CustomColors.green.withOpacity(0.1),
-            );
-          }).toList(),
-        ),
-        const SizedBox(height: 16),
-      ],
     );
   }
 

@@ -39,10 +39,11 @@ class ProductCartCubit extends Cubit<ProductCartState> {
             productCount: 1,
             name: cycle.name,
             imageUrl: cycle.imageUrl[0],
-            brand: cycle.price,
+            brand: cycle.brand,
             price: cycle.price);
 
         cartData.add(myCart.toMap());
+        emit(state.copyWith(isAddedToCart: true));
         log('product id added to cart collection1');
 
         log('message 5');
