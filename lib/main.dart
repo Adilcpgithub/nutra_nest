@@ -17,6 +17,7 @@ import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/price_container/price_container_bloc.dart';
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
@@ -92,6 +93,7 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => LoginBloc()),
           BlocProvider(create: (context) => SignUpBloc()),
           BlocProvider(create: (context) => ProfilBloc()),
+          BlocProvider(create: (context) => PriceContainerBloc()),
           BlocProvider(create: (context) => CycleBloc()),
           BlocProvider(create: (context) => SearchBlocBloc()),
           BlocProvider(create: (context) => ImageBloc()),

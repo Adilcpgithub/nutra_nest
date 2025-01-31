@@ -25,3 +25,14 @@ class CycleErrorState extends CycleState {
   @override
   List<Object> get props => [error];
 }
+
+class SearchDataLoaded extends CycleState {
+  final List<Cycle> cycles;
+  final Set<String> favorites;
+
+  const SearchDataLoaded(this.cycles, {this.favorites = const {}});
+  @override
+  List<Object> get props => [cycles, favorites];
+}
+
+class SearchIsEmpty extends CycleState {}

@@ -23,14 +23,14 @@ bool isDark(BuildContext context) {
 
 Color customTextTheme(BuildContext context) {
   return Theme.of(context).brightness == Brightness.dark
-      ? CustomColors.white
-      : CustomColors.black;
+      ? Colors.white
+      : Colors.black;
 }
 
 Color appTheme(BuildContext context) {
   return Theme.of(context).brightness == Brightness.dark
-      ? CustomColors.black
-      : CustomColors.white;
+      ? Colors.black
+      : Colors.white;
 }
 
 double deviceHeight(BuildContext context) {

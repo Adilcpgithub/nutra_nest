@@ -19,6 +19,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appTheme(context),
       body: SafeArea(
         child: BlocBuilder<NetworkCubit, bool>(
           builder: (context, isConnected) {

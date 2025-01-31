@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/blocs/search_bloc/bloc/search_bloc_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/price_container/price_container_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/pages/product_details_page.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/utity/card.dart';
@@ -23,6 +24,7 @@ class CycleListPage extends StatefulWidget {
 }
 
 class _CycleListPageState extends State<CycleListPage> {
+  final TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     context.read<CycleBloc>().add(LoadCycleByType(widget.cycleTypeNumber));
@@ -30,8 +32,24 @@ class _CycleListPageState extends State<CycleListPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    final searchBarBloc = context.read<SearchBlocBloc>();
+    if (searchBarBloc.state is SearchBarVisible) {
+      searchBarBloc.add(ToggleSearchBarEvent());
+    }
+    final pricecontainerbloc = context.read<PriceContainerBloc>();
+    if (pricecontainerbloc.state.selectedIndex != null) {
+      pricecontainerbloc
+          .add((ToggleContainerEvent(pricecontainerbloc.state.selectedIndex!)));
+    }
+    searchController.clear();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appTheme(context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -40,7 +58,7 @@ class _CycleListPageState extends State<CycleListPage> {
               sizedBox10(),
               buildHeader(context),
               sizedBox10(),
-              buildSearchBar(),
+              buildSearchBar(widget.cycleTypeNumber, context, searchController),
               sizedBox10(),
               showCycleList(),
             ],
@@ -69,6 +87,11 @@ class _CycleListPageState extends State<CycleListPage> {
               if (searchBarBloc.state is SearchBarVisible) {
                 searchBarBloc.add(ToggleSearchBarEvent());
               }
+              final pricecontainerbloc = context.read<PriceContainerBloc>();
+              if (pricecontainerbloc.state.selectedIndex != null) {
+                pricecontainerbloc.add((ToggleContainerEvent(
+                    pricecontainerbloc.state.selectedIndex!)));
+              }
             },
             icon: Icons.arrow_back,
             iconSize: 26),
@@ -87,6 +110,13 @@ class _CycleListPageState extends State<CycleListPage> {
             onTap: () {
               log('pressed');
               context.read<SearchBlocBloc>().add(ToggleSearchBarEvent());
+              final pricecontainerbloc = context.read<PriceContainerBloc>();
+              //this fountion for  romove price selected data when search feild cloased
+              if (pricecontainerbloc.state.selectedIndex != null) {
+                pricecontainerbloc.add((ToggleContainerEvent(
+                    pricecontainerbloc.state.selectedIndex!)));
+              }
+              searchController.clear();
             },
             icon: Icons.search,
             iconSize: 29)
@@ -94,8 +124,8 @@ class _CycleListPageState extends State<CycleListPage> {
     );
   }
 
-  Widget buildSearchBar() {
-    final TextEditingController searchController = TextEditingController();
+  Widget buildSearchBar(int cycleTypeNumber, BuildContext context,
+      TextEditingController searchController) {
     return BlocBuilder<SearchBlocBloc, SearchBlocState>(
       builder: (context, state) {
         if (state is SearchBarVisible) {
@@ -111,6 +141,39 @@ class _CycleListPageState extends State<CycleListPage> {
                         child: SizedBox(
                           height: 68,
                           child: CustomTextFormField(
+                            onChanged: (data) {
+                              log('seach data is  $data');
+                              if (data.isEmpty) {
+                                context
+                                    .read<CycleBloc>()
+                                    .add(LoadCycleByType(cycleTypeNumber));
+                              } else {
+                                log('search data is not empty ');
+                                final priceContainerState =
+                                    context.read<PriceContainerBloc>().state;
+                                final selectedPriceIndex =
+                                    priceContainerState.selectedIndex;
+                                log('selected price index :$selectedPriceIndex');
+                                context.read<CycleBloc>().add(SearchCycles(
+                                    typeNumber: cycleTypeNumber,
+                                    pricetypeNumber: selectedPriceIndex,
+                                    cycleNameOrBrand:
+                                        searchController.text.trim()));
+                                // final priceContainerState =
+                                //     context.read<PriceContainerBloc>().state;
+                                // if (priceContainerState
+                                //     is PriceContainerInitial) {
+                                //   log('message');
+
+                                //   final selectedPriceIndex =
+                                //       priceContainerState.selectedIndex;
+                                //   context.read<CycleBloc>().add(SearchCycles(
+                                //         typeNumber: cycleTypeNumber,
+                                //         pricetypeNumber: selectedPriceIndex,
+                                //       ));
+                                // }
+                              }
+                            },
                             prefixIcon: Padding(
                               padding:
                                   const EdgeInsets.only(left: 20, right: 23),
@@ -145,51 +208,71 @@ class _CycleListPageState extends State<CycleListPage> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _filterChip('Under - ₹10k', onTap: () {
-            print('sssss');
-          }),
-          _filterChip('₹10k - ₹20k', onTap: () {}),
-          _filterChip('Above - ₹30k ', onTap: () {}),
+          _filterChip(
+            context,
+            'under - ₹10k',
+            0,
+          ),
+          _filterChip(
+            context,
+            '₹10k - ₹20k',
+            1,
+          ),
+          _filterChip(
+            context,
+            'above - ₹30k',
+            2,
+          )
         ],
       ),
     );
   }
 
-  Widget _filterChip(String label,
-      {required VoidCallback onTap, bool changeColor = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: CustomColors.green,
-            //!changed button color to identify the selection
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: CustomColors.green),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
+  Widget _filterChip(BuildContext context, String label, int index) {
+    return BlocBuilder<PriceContainerBloc, PriceContainerState>(
+      builder: (context, state) {
+        log(' now state id  is  ${state.selectedIndex}');
+        return Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: GestureDetector(
+            onTap: () {
+              log('onTap form Seachselection controller index is $index');
+              context
+                  .read<PriceContainerBloc>()
+                  .add(ToggleContainerEvent(index));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color:
+                    state.selectedIndex != null && state.selectedIndex == index
+                        ? CustomColors.green
+                        : appTheme(context),
+                //!changed button color to identify the selection
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: CustomColors.green),
               ),
-              const SizedBox(width: 4),
-              const Icon(
-                Icons.close,
-                size: 16,
-                color: CustomColors.green,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: state.selectedIndex != null &&
+                              state.selectedIndex == index
+                          ? Colors.white
+                          : CustomColors.green,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -209,10 +292,7 @@ class _CycleListPageState extends State<CycleListPage> {
                 itemCount: state.cycles.length,
                 itemBuilder: (context, index) {
                   final cycle = state.cycles[index];
-                  // return Container(
-                  //   color: Colors.amber,
-                  //   height: 300,
-                  // );
+
                   return SizedBox(
                     height: 180,
                     // width: double.infinity,
@@ -238,6 +318,8 @@ class _CycleListPageState extends State<CycleListPage> {
                 },
               ),
             );
+          } else if (state is SearchIsEmpty) {
+            return Container();
           } else {
             return SizedBox(
               height: deviceHeight(context) / 2,
@@ -252,21 +334,6 @@ class _CycleListPageState extends State<CycleListPage> {
                 ],
               ),
             );
-
-            // Center(
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: LottieBuilder.asset(
-            //               'assets/Animation - 1736829505158.json'),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // );
           }
         } else if (state is CycleLoadingState) {
           return SizedBox(
@@ -277,24 +344,36 @@ class _CycleListPageState extends State<CycleListPage> {
               ),
             ),
           );
-        } else if (state is CycleErrorState) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Text(
-                  state.error,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.red),
+        } else if (state is SearchIsEmpty) {
+          return Expanded(
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset('assets/Animation - 1738300675103.json',
+                    height: deviceWidth(context) / 2),
+                const SizedBox(
+                  height: 30,
                 ),
-              ),
-            ],
+                Text(
+                  'No result found!',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.bodySmall!.color,
+                  ),
+                )
+              ],
+            )),
           );
         } else {
-          return const Center(
-            child: Text(
-              '404',
-              style: TextStyle(color: Colors.red),
+          return const Expanded(
+            child: Center(
+              child: Text(
+                'Something Went Wrong',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: Colors.red),
+              ),
             ),
           );
         }

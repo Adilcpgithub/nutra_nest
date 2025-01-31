@@ -31,6 +31,7 @@ class _WhishListScreenState extends State<WhishListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appTheme(context),
       body: BlocListener<WishBloc, WishState>(
         listener: (context, state) {
           if (state is WishDataAddSuccessful) {

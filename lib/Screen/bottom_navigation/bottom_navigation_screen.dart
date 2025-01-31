@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/bottom_navigation/account_screen.dart';
 import 'package:nutra_nest/features/cart/presentation/pages/cart_screen.dart';
 import 'package:nutra_nest/features/home/presentation/pages/home_screen.dart';
@@ -45,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: appTheme(context),
       body: _screens[_selectedIndex], // Display the selected screen
       bottomNavigationBar: Container(
         color: Colors.transparent, // Background color for the bar

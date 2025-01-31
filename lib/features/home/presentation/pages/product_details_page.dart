@@ -85,7 +85,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white,
+      backgroundColor: appTheme(context),
       body: BlocProvider(
         create: (context) => ProductCartCubit(),
         child: SafeArea(
