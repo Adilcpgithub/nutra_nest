@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/model/cycle.dart';
 
@@ -101,12 +100,13 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
             'category',
             isEqualTo: event.category,
           );
-      // .where('price', isLessThanOrEqualTo: 50000);
+
       if (event.priceRange != null) {
         log('price rage is ${event.priceRange}');
         switch (event.priceRange) {
           case 'under-₹10k':
             query = query.where('price', isLessThanOrEqualTo: 10000);
+
             break;
 
           case '₹10k-₹20k':
@@ -119,12 +119,6 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
             query = query.where('price', isGreaterThan: 30000);
             break;
         }
-        if (event.cycleNameOrBrand != null &&
-            event.cycleNameOrBrand!.isNotEmpty) {
-          log(('you have +++++++++++++++++++++'));
-        } else {
-          log(('no data ------------------'));
-        }
       } else {
         log('price range not selected');
       }
@@ -134,6 +128,13 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
         List<Map<String, dynamic>> cycles = snapshot.docs.map((doc) {
           return {...doc.data(), 'documentId': doc.id};
         }).toList();
+        if (event.cycleNameOrBrand != null &&
+            event.cycleNameOrBrand!.isNotEmpty) {
+          cycles = cycles.where((cycle) {
+            String name = cycle['name'].toString().toLowerCase();
+            return name.contains(event.cycleNameOrBrand!.toLowerCase());
+          }).toList();
+        }
         log('cycles length is ${cycles.length}');
         List<Cycle> searchedCycle =
             cycles.map((e) => Cycle.fromMap(e)).toList();
