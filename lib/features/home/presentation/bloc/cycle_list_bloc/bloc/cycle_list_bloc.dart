@@ -47,8 +47,7 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
         _favorites = currentSet;
       }
       emit(CycleLoadedState(newCycles, favorites: _favorites));
-      print('ssssssssssssss');
-      print(newCycles);
+
       log(' new cycles length is ${newCycles.length}');
     } catch (e) {
       emit(CycleErrorState(e.toString()));
@@ -70,10 +69,8 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
               .collection('favoriteCollection')
               .doc(event.userId)
               .set({'favorites': updatedFavorites});
-          print("Set added to Firestore successfully!");
         } catch (e) {
           log('$e');
-          print("Failed to add set to Firestore: $e");
         }
       } else {
         updatedFavorites.add(event.productId);
@@ -84,10 +81,8 @@ class CycleBloc extends Bloc<CycleEvent, CycleState> {
               .collection('favoriteCollection')
               .doc(event.userId)
               .set({'favorites': updatedFavorites});
-          print("Set added to Firestore successfully!");
         } catch (e) {
           log('$e');
-          print("Failed to add set to Firestore: $e");
         }
       }
     }

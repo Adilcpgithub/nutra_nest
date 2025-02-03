@@ -46,7 +46,7 @@ class SignSuccess extends StatelessWidget {
             child: CustomTextbutton(
                 color: CustomColors.green,
                 buttomName: 'START SHOPPING',
-                nameColor: customTextTheme(context),
+                nameColor: Colors.white,
                 voidCallBack: () async {
                   CustomNavigation.pushAndRemoveUntil(
                       context, const MyHomePage());

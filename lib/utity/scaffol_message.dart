@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nutra_nest/core/theme/app_theme.dart';
+
 import 'package:nutra_nest/utity/colors.dart';
 
 void showUpdateNotification({

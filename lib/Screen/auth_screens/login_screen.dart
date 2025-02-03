@@ -1,9 +1,8 @@
 import 'dart:developer';
-
+import 'package:animate_do/animate_do.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
 import 'package:nutra_nest/Widgets/textformfield.dart';
@@ -11,6 +10,7 @@ import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/utity/scaffol_message.dart';
@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     double deviceHeight = MediaQuery.of(context).size.height;
     double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: appTheme(context),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: BlocBuilder<LoginBloc, LoginState>(
@@ -44,11 +45,12 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(
                   height: deviceHeight / 2,
-                  child: Center(
-                    child: Image.asset(
-                      'assets/NutraNestPo.png',
-                      height: 180,
-                    ),
+                  child: FadeInLeft(
+                    child: Center(
+                        child: Image.asset(
+                      appLogo(context),
+                      width: 300,
+                    )),
                   ),
                 ),
                 Form(
@@ -72,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 20, bottom: 5),
+                            padding: const EdgeInsets.only(top: 20, bottom: 5),
                             child: Flexible(
                               child: Text(
                                 'Log In',
@@ -125,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           onChanged: (countryCode) {
                                             selectedCountryCode =
                                                 countryCode.dialCode!;
-                                            print(selectedCountryCode);
+
                                             context
                                                 .read<LoginBloc>()
                                                 .add(ToggleEmailVisibility());
@@ -291,21 +293,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.success) {
         log('login  success');
-        CustomNavigation.pushAndRemoveUntil(context, const MyHomePage());
+        if (context.mounted) {
+          CustomNavigation.pushAndRemoveUntil(context, const MyHomePage());
+        }
 
         _emailorPhoneNumberController.clear();
         _passwordController.clear();
       } else {
-        showUpdateNotification(
-            context: context,
-            message: response.errorMessage ?? 'login failed',
-            color: Colors.red);
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text(response.errorMessage ?? showUpdateNotification),
-        //     backgroundColor: Colors.red,
-        //   ),
-        // );
+        if (context.mounted) {
+          showUpdateNotification(
+              context: context,
+              message: response.errorMessage ?? 'login failed',
+              color: Colors.red);
+        }
       }
     }
   }

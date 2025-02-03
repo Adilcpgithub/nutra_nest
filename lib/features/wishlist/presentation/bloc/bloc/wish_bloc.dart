@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
-import 'package:nutra_nest/features/cart/presentation/model/my_cart_model.dart';
 import 'package:nutra_nest/features/wishlist/presentation/model/wish_model.dart';
 
 part 'wish_event.dart';
@@ -20,7 +19,6 @@ class WishBloc extends Bloc<WishEvent, WishState> {
         final snapshotFavorite =
             await firestore.collection('favoriteCollection').doc(userId).get();
         if (snapshotFavorite.exists) {
-          print(snapshotFavorite.toString());
           List<dynamic> favorites = snapshotFavorite.data()?['favorites'] ?? [];
           List<String> datas = favorites.map((e) => e.toString()).toList();
           log(datas.toString());

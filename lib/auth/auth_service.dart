@@ -119,7 +119,7 @@ class AuthService {
         log('error coccoure when store image url in firestore :$e');
       }
     } catch (e) {
-      print('Error uploading image: $e');
+      log(e.toString());
     }
     return null;
   }

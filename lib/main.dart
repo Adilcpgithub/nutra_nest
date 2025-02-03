@@ -15,13 +15,9 @@ import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
-import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/price_container/price_container_bloc.dart';
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
-import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
-import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
-import 'package:nutra_nest/screen/sign_success.dart';
 import 'package:nutra_nest/screen/splash_screen.dart';
 import 'package:nutra_nest/screen/user/re_auth/cubit/auth_cubit.dart';
 

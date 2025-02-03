@@ -1,11 +1,10 @@
 import 'dart:developer';
-
+import 'dart:ui';
 import 'package:animate_do/animate_do.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
@@ -387,6 +386,27 @@ buildTotalContainer(BuildContext context) {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              Container(
+                width: double.infinity, // Full width
+                height: 0.1, // Only 2 pixels height
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(255, 179, 188, 183)
+                        .withOpacity(0.3),
+                    blurRadius: 3,
+                    spreadRadius: 4,
+                  ),
+                ]),
+                child: ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                        sigmaX: 10.0, sigmaY: 10.0), //  Blur effect
+                    child: Container(
+                      color: const Color.fromARGB(169, 0, 0, 0),
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -462,14 +482,12 @@ Future<Cycle?> getProductById(String productId) async {
     log('sssssssss');
     // Check if the document exists
     if (docSnapshot.exists) {
-      log(' existing');
-      print(docSnapshot.data());
       // Convert the document data to a Cycle object
       Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
       return Cycle.fromMap(data);
     } else {
       log('not existiong ');
-      print('Product with ID $productId does not exist.');
+
       return null;
     }
   } catch (e) {

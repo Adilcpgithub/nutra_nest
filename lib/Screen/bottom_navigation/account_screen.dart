@@ -6,7 +6,7 @@ import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
-import 'package:nutra_nest/screen/user/edit_profile.dart';
+import 'package:nutra_nest/screen/user/profile.dart';
 import 'package:nutra_nest/screen/user/manage_address.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';

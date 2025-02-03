@@ -159,19 +159,6 @@ class _CycleListPageState extends State<CycleListPage> {
                                     pricetypeNumber: selectedPriceIndex,
                                     cycleNameOrBrand:
                                         searchController.text.trim()));
-                                // final priceContainerState =
-                                //     context.read<PriceContainerBloc>().state;
-                                // if (priceContainerState
-                                //     is PriceContainerInitial) {
-                                //   log('message');
-
-                                //   final selectedPriceIndex =
-                                //       priceContainerState.selectedIndex;
-                                //   context.read<CycleBloc>().add(SearchCycles(
-                                //         typeNumber: cycleTypeNumber,
-                                //         pricetypeNumber: selectedPriceIndex,
-                                //       ));
-                                // }
                               }
                             },
                             prefixIcon: Padding(
@@ -321,17 +308,20 @@ class _CycleListPageState extends State<CycleListPage> {
           } else if (state is SearchIsEmpty) {
             return Container();
           } else {
-            return SizedBox(
-              height: deviceHeight(context) / 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 90,
-                  ),
-                  Lottie.asset('assets/Animation - 1736829505158.json',
-                      height: deviceHeight(context) / 4),
-                ],
+            return Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Lottie.asset(
+                          height: deviceHeight(context) / 2,
+                          width: deviceWidth(context) / 3,
+                          'assets/Animation - 1736829505158.json',
+                        ),
+                      ]),
+                ),
               ),
             );
           }

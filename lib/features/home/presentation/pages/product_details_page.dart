@@ -1,7 +1,4 @@
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,13 +9,13 @@ import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/
 import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
-import 'package:nutra_nest/screen/user/delete_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/custom_textbutton.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 
+// ignore: must_be_immutable
 class ProductDetails extends StatefulWidget {
   double? count;
   final Cycle cycle;
@@ -278,7 +275,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                             children: [
                               Expanded(
                                 child: GestureDetector(
-                                  onTap: () => print(sampleData.length),
                                   child: Text(
                                     currentCycle.description,
                                     maxLines: 40,

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class ImageCarousel extends StatelessWidget {
-  final List<String> offerImages = [
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ97LQR6VpYTM9B2O-xR5TeoQ11BjnHOVQeDZPLL_vrhcebI5FbmpMwxzv7k5MIpKYQF7I&usqp=CAU',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZnPSfjT2pxqBnDiFMoI5NjIoalAgmkOqwTg&s',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxJvN-EDXpF4r34NX2iErtZUyk3ejpzm9avg&s',
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4RTB6zR976YBjgeDDugVT3FsCNUL4mhl6mA&s'
-  ];
+  const ImageCarousel({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<String> offerImages = [
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ97LQR6VpYTM9B2O-xR5TeoQ11BjnHOVQeDZPLL_vrhcebI5FbmpMwxzv7k5MIpKYQF7I&usqp=CAU',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZnPSfjT2pxqBnDiFMoI5NjIoalAgmkOqwTg&s',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxJvN-EDXpF4r34NX2iErtZUyk3ejpzm9avg&s',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4RTB6zR976YBjgeDDugVT3FsCNUL4mhl6mA&s'
+    ];
     return Center(
         child: SizedBox(
       width: double.infinity,

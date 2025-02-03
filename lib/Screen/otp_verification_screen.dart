@@ -249,7 +249,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 color: Colors.black,
                 buttomName: 'VIRIFY CODE',
                 voidCallBack: () {
-                  print('button pressed');
                   String opt = _otpControllers
                       .map((countroller) => countroller.text)
                       .join();

@@ -25,37 +25,39 @@ class SplashScreen extends StatelessWidget {
           await Future.delayed(const Duration(milliseconds: 1500));
 
           if (status) {
-            Navigator.of(context).pushReplacement(
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    const MyHomePage(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  // For example, a fade transition
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-              ),
-            );
+            if (context.mounted) {
+              Navigator.of(context).pushReplacement(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const MyHomePage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            }
           } else {
-            Navigator.of(context).pushReplacement(
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    const LoginScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  // For example, a fade transition
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-              ),
-            );
+            if (context.mounted) {
+              Navigator.of(context).pushReplacement(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const LoginScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    // For example, a fade transition
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            }
           }
-          // ignore: use_build_context_synchronously
         }
       },
       child: Scaffold(
@@ -68,7 +70,6 @@ class SplashScreen extends StatelessWidget {
                 children: [
                   Stack(children: [
                     AnimatedContainer(
-                      // transform: Matrix4.rotationZ(state.rotate),
                       duration: const Duration(milliseconds: 1300),
                       width: state.imageSize,
                       height: state.imageSize,

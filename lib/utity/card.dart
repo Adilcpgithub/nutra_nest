@@ -164,10 +164,11 @@ Widget cycleProductCard(
                 onTap: () async {
                   log('favorite pressed');
                   var userStatus = await UserStatus().getUserId();
-
-                  context
-                      .read<CycleBloc>()
-                      .add(ToggleFavoriteEvent(id, userStatus));
+                  if (context.mounted) {
+                    context
+                        .read<CycleBloc>()
+                        .add(ToggleFavoriteEvent(id, userStatus));
+                  }
                 },
                 splashColor: Colors.transparent,
                 highlightColor: Colors.green.withOpacity(0.4),

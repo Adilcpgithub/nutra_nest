@@ -37,7 +37,7 @@ class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
     }
   }
 
-  Future<void> _onDeleteImage(
+  Future<void> onDeleteImage(
       DeleteImageEvent event, Emitter<ProfilState> emit) async {
     emit(ProfileImageLoading());
   }

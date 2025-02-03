@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nutra_nest/utity/colors.dart';
 
 // Light Theme
 ThemeData lightTheme = ThemeData.light().copyWith(

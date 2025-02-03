@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
+// ignore: must_be_immutable
 class CustomTextbutton extends StatelessWidget {
   final String buttomName;
   final bool showButtonName;

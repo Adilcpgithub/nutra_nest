@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -235,18 +234,7 @@ Widget _buildFeaturedSection(BuildContext context) {
             ),
           ],
         ),
-        // BackdropFilter(
-        //     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        //     child:
-
-        Stack(children: [
-          // Container(
-          //   color: const Color.fromARGB(8, 0, 0, 0).withOpacity(0.2),
-          //   width: 200,
-          //   height: 190,
-          // ),
-          ImageCarousel()
-        ]),
+        const Stack(children: [ImageCarousel()]),
         const SizedBox(
           height: 10,
         )

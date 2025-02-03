@@ -1,17 +1,13 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final _auth = FirebaseAuth.instance;
   final UserStatus userStatus = UserStatus();
   Future<void> deleteUserAccount(String email, String password) async {

@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Widgets/custom_textbutton.dart';
@@ -6,6 +7,7 @@ import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/sign_success.dart';
+import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import '../../core/theme/app_theme.dart';
@@ -25,6 +27,7 @@ class SignUpScreen extends StatelessWidget {
     double deviceHeight = MediaQuery.of(context).size.height;
     // double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: appTheme(context),
       body: BlocBuilder<SignUpBloc, SignUpState>(
         builder: (context, state) {
           final signUpBloc = context.read<SignUpBloc>();
@@ -32,15 +35,16 @@ class SignUpScreen extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 10,
-                ),
+                    //  height: 10,
+                    ),
                 SizedBox(
                   height: deviceHeight / 3,
-                  child: Center(
-                    child: Image.asset(
-                      'assets/NutraNestPo.png',
-                      height: 180,
-                    ),
+                  child: FadeInLeft(
+                    child: Center(
+                        child: Image.asset(
+                      appLogo(context),
+                      width: 300,
+                    )),
                   ),
                 ),
                 SingleChildScrollView(
@@ -301,6 +305,7 @@ class SignUpScreen extends StatelessWidget {
         showDialog(
           context: context,
           barrierDismissible: false,
+          // ignore: deprecated_member_use
           builder: (_) => WillPopScope(
             onWillPop: () async => false, // Prevent back button dismissal
             child: const Center(

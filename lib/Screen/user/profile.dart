@@ -9,6 +9,7 @@ import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dar
 import 'package:nutra_nest/screen/user/delete_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 
 class EditProfile extends StatefulWidget {
@@ -107,11 +108,10 @@ class _EditProfileState extends State<EditProfile> {
         BlocConsumer<ProfilBloc, ProfilState>(
           listener: (context, state) {
             if (state is ProfilImageSuccessful && !state.isNewUpload) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Image Uploaded!'),
-                  backgroundColor: CustomColors.green,
-                ),
+              showUpdateNotification(
+                context: context,
+                message: 'Image Uploaded!',
+                color: CustomColors.green,
               );
             }
           },
@@ -121,6 +121,7 @@ class _EditProfileState extends State<EditProfile> {
               width: 160,
               decoration: BoxDecoration(
                 image: const DecorationImage(
+                    fit: BoxFit.cover,
                     image: AssetImage('assets/default_profil_image.jpg')),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
@@ -146,7 +147,7 @@ class _EditProfileState extends State<EditProfile> {
                               color: CustomColors.green,
                             )
                           : ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(20),
                               child: Image.asset(
                                 'assets/default_profil_image.jpg',
                                 fit: BoxFit.fill,
@@ -387,33 +388,6 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ),
       ],
-    );
-  }
-
-  void showUpdateNotification(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.check_circle, color: Colors.white),
-            const SizedBox(width: 12),
-            Text(
-              message,
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: CustomColors.green,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: const EdgeInsets.all(20),
-        duration: const Duration(seconds: 2),
-      ),
     );
   }
 }

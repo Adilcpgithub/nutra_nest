@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
+// ignore: must_be_immutable
 class CustomIcon extends StatelessWidget {
   final VoidCallback onTap;
   IconData? icon;
