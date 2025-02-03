@@ -1,9 +1,12 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/utity/app_logo.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -55,24 +58,34 @@ class SplashScreen extends StatelessWidget {
           // ignore: use_build_context_synchronously
         }
       },
-      child: Scaffold(body: Center(
-        child: BlocBuilder<SplashBloc, SplashState>(builder: (builder, state) {
-          return AnimatedContainer(
-            transform: Matrix4.rotationZ(state.rotate),
-            duration: const Duration(milliseconds: 1500),
-            width: state.imageSize,
-            height: state.imageSize,
-            curve: Curves.easeInOut,
-            alignment: Alignment.center,
-            child: Opacity(
-              opacity: state.opacity,
-              child: Image.asset(
-                'assets/NutraNestPo.png',
-              ),
-            ),
-          );
-        }),
-      )),
+      child: Scaffold(
+          backgroundColor: appTheme(context),
+          body: Center(
+            child:
+                BlocBuilder<SplashBloc, SplashState>(builder: (builder, state) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(children: [
+                    AnimatedContainer(
+                      // transform: Matrix4.rotationZ(state.rotate),
+                      duration: const Duration(milliseconds: 1300),
+                      width: state.imageSize,
+                      height: state.imageSize,
+                      curve: Curves.easeInOut,
+                      alignment: Alignment.center,
+                      child: Opacity(
+                        opacity: state.opacity,
+                        child: FadeInLeft(
+                          child: Image.asset(appLogo(context)),
+                        ),
+                      ),
+                    ),
+                  ]),
+                ],
+              );
+            }),
+          )),
     );
   }
 }

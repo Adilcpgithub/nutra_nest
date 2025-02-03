@@ -10,7 +10,7 @@ abstract class ProfilEvent extends Equatable {
 class UploadImageEvent extends ProfilEvent {
   final String userId;
 
-  UploadImageEvent(
+  const UploadImageEvent(
     this.userId,
   );
   @override
@@ -24,7 +24,7 @@ class GetImageUrlEvent extends ProfilEvent {}
 class DeleteImageEvent extends ProfilEvent {
   final String userId;
 
-  DeleteImageEvent(this.userId);
+  const DeleteImageEvent(this.userId);
 
   @override
   List<Object> get props => [userId];

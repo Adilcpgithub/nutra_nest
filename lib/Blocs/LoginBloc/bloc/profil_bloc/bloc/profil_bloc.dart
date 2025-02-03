@@ -15,23 +15,23 @@ class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
   Future<void> _onUploadImage(
       UploadImageEvent event, Emitter<ProfilState> emit) async {
     AuthService authService = AuthService();
-    emit(CloudinaryLoading());
+    emit(ProfileImageLoading());
     String? imageUrl = await authService.uploadImage();
     if (imageUrl != null) {
-      emit(CloudinaryUrlRetrieved(imageUrl: imageUrl, isNewUpload: false));
+      emit(ProfilImageSuccessful(imageUrl: imageUrl, isNewUpload: false));
     }
   }
 
   Future<void> _onGetImageUrl(
       GetImageUrlEvent event, Emitter<ProfilState> emit) async {
     AuthService authService = AuthService();
-    emit(CloudinaryLoading());
+    emit(ProfileImageLoading());
     var data = await authService.getUserData(UserStatus.userIdFinal);
     String imageUrl = data?['profileImage'] ?? '';
 
     if (imageUrl.isNotEmpty) {
       log('you have image $imageUrl');
-      emit(CloudinaryUrlRetrieved(imageUrl: imageUrl, isNewUpload: true));
+      emit(ProfilImageSuccessful(imageUrl: imageUrl, isNewUpload: true));
     } else {
       emit(ShowDefaulImage());
     }
@@ -39,6 +39,6 @@ class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
 
   Future<void> _onDeleteImage(
       DeleteImageEvent event, Emitter<ProfilState> emit) async {
-    emit(CloudinaryLoading());
+    emit(ProfileImageLoading());
   }
 }

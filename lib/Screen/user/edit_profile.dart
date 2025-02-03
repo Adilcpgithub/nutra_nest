@@ -106,7 +106,7 @@ class _EditProfileState extends State<EditProfile> {
       children: [
         BlocConsumer<ProfilBloc, ProfilState>(
           listener: (context, state) {
-            if (state is CloudinaryUrlRetrieved && !state.isNewUpload) {
+            if (state is ProfilImageSuccessful && !state.isNewUpload) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Image Uploaded!'),
@@ -120,6 +120,8 @@ class _EditProfileState extends State<EditProfile> {
               height: 160,
               width: 160,
               decoration: BoxDecoration(
+                image: const DecorationImage(
+                    image: AssetImage('assets/default_profil_image.jpg')),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -130,7 +132,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ],
               ),
-              child: state is CloudinaryUrlRetrieved
+              child: state is ProfilImageSuccessful
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
@@ -139,7 +141,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     )
                   : Center(
-                      child: state is CloudinaryLoading
+                      child: state is ProfileImageLoading
                           ? const CircularProgressIndicator(
                               color: CustomColors.green,
                             )

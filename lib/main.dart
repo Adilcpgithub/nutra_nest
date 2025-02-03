@@ -21,6 +21,8 @@ import 'package:nutra_nest/features/home/presentation/bloc/price_container/price
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/screen/sign_success.dart';
+import 'package:nutra_nest/screen/splash_screen.dart';
 import 'package:nutra_nest/screen/user/re_auth/cubit/auth_cubit.dart';
 
 void main() async {
@@ -106,25 +108,25 @@ class _MyWidgetState extends State<MyApp> {
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
             return MaterialApp(
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              themeMode: themeMode,
-              debugShowCheckedModeBanner: false,
-              home: //SplashScreen()
-                  //SignSuccess(),
-                  // OtpVerificationScreen()
-                  //  OtpVerificationScreen()
-                  //  MyHomePage()
-                  // EditProfile(),
-                  // const AddAddress(),
-                  //SignUpScreen(),
-                  // const ManageAddress(),
-                  // const DeleteScreen()
-                  // const SplashScreen()
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: themeMode,
+                debugShowCheckedModeBanner: false,
+                home: const SplashScreen()
+                //  SignSuccess(),
+                // OtpVerificationScreen()
+                //  OtpVerificationScreen()
+                //  MyHomePage()
+                // EditProfile(),
+                // const AddAddress(),
+                //SignUpScreen(),
+                // const ManageAddress(),
+                // const DeleteScreen()
+                // const SplashScreen()
 
-                  // Dee(),
-                  status ? const MyHomePage() : const LoginScreen(),
-            );
+                // Dee(),
+                //status ? const MyHomePage() : const LoginScreen(),
+                );
           },
         ));
   }

@@ -13,6 +13,7 @@ import 'package:nutra_nest/screen/auth_screens/sign_up_screen.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/utity/scaffol_message.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -295,12 +296,16 @@ class _LoginScreenState extends State<LoginScreen> {
         _emailorPhoneNumberController.clear();
         _passwordController.clear();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(response.errorMessage ?? 'Registration failed'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        showUpdateNotification(
+            context: context,
+            message: response.errorMessage ?? 'login failed',
+            color: Colors.red);
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(response.errorMessage ?? showUpdateNotification),
+        //     backgroundColor: Colors.red,
+        //   ),
+        // );
       }
     }
   }

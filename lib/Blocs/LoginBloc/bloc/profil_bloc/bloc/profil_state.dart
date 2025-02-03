@@ -11,24 +11,29 @@ sealed class ProfilState extends Equatable {
 
 final class ProfilInitial extends ProfilState {}
 
-class CloudinaryLoading extends ProfilState {}
+class ProfileImageLoading extends ProfilState {}
 
 // ignore: must_be_immutable
-class CloudinaryUrlRetrieved extends ProfilState {
+class ProfilImageSuccessful extends ProfilState {
   String imageUrl = '';
   final bool isNewUpload;
 
-  CloudinaryUrlRetrieved({required this.imageUrl, this.isNewUpload = false});
+  ProfilImageSuccessful({required this.imageUrl, this.isNewUpload = false});
 }
 
-class CloudinaryDeleted extends ProfilState {}
+class ProfilImageDeleted extends ProfilState {}
 
 class ShowDefaulImage extends ProfilState {
-  final defaultImage = '';
+  @override
+  // ignore: overridden_fields
+  final String defaultImage = '';
+
+  @override
+  List<Object> get props => [defaultImage];
 }
 
 class CloudinaryError extends ProfilState {
   final String errorMessage;
 
-  CloudinaryError(this.errorMessage);
+  const CloudinaryError(this.errorMessage);
 }

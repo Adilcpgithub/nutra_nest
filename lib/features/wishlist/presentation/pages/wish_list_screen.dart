@@ -192,7 +192,7 @@ Widget builWishList(BuildContext context) {
                                                   height: double.infinity,
                                                   width: double.maxFinite,
                                                   child: Image.asset(
-                                                    applogo,
+                                                    appLogo(context),
                                                     fit: BoxFit.cover,
                                                   )),
                                               const CircularProgressIndicator(
