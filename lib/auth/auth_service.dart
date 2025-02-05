@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +18,8 @@ class AuthResponse {
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instanceFor(
       bucket: 'nutranest-a6417.firebasestorage.app');
@@ -216,6 +219,7 @@ class AuthService {
 
   Future<void> signOut() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await _googleSignIn.signOut();
     await prefs.remove('user_id');
     await prefs.setBool('is_logged_in', false);
     try {
@@ -257,6 +261,116 @@ class AuthService {
     await prefs.remove('user_id');
     await prefs.setBool('is_logged_in', false);
     return 'Verification failed try again';
+  }
+
+  //! google auth
+  Future<bool> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        log("User canceled Google Sign-In");
+        return false; // User canceled sign-in
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        log('User signed in successfully');
+        log('Email: ${user.email ?? 'No Email'}');
+        log('UID: ${user.uid}');
+        log('Display Name: ${user.displayName ?? 'No Name'}');
+
+        // Save session locally
+        await userStatus.saveUsersSession(user.uid);
+
+        // Check if the user is new and store data only for new users
+        if (userCredential.additionalUserInfo?.isNewUser ?? false) {
+          log("New user detected, saving details to Firestore...");
+          try {
+            await storeDataToFirebase(
+              email: user.email ?? 'No Email',
+              userId: user.uid,
+              phoneNumber: 'unknown',
+              name: user.displayName ?? 'unknown',
+            );
+            log('User data stored in Firestore');
+          } catch (e) {
+            log('Error storing data to Firestore: $e');
+          }
+        } else {
+          log("Existing user, no need to store data.");
+        }
+      }
+
+      return true;
+    } catch (e) {
+      log('Google Sign-In Error: $e');
+      return false;
+    }
+  }
+
+  Future<void> reauthenticateGoogleUser(User user) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      await user.reauthenticateWithCredential(credential);
+      log('google Reauth successful');
+    } catch (e) {
+      log('google reauthentication failed :${e.toString()}');
+    }
+  }
+
+  Future<bool> deleteGoogleAccount() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        log(" No user logged in!");
+        return false;
+      }
+
+      await reauthenticateGoogleUser(user); // Step 1: Reauthenticate
+      await deleteUserData(user.uid); // Step 2: Delete Firestore Data
+      await user.delete(); // Step 3: Delete Firebase Account
+      await GoogleSignIn().signOut(); //sign out form google
+      await FirebaseAuth.instance.signOut(); // sign out from firebase
+
+      log(" Google user account deleted successfully!");
+      return true;
+    } catch (e) {
+      log(" Error deleting Google account: $e");
+      return false;
+    }
+  }
+
+  Future<void> deleteUserData(String userId) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Delete user data from Firestore (Example: 'users' collection)
+      await firestore.collection('users').doc(userId).delete();
+
+      // Also remove their wishlist, cart, or any other collections
+      await firestore.collection('favoriteCollection').doc(userId).delete();
+      await firestore.collection('cartCollection').doc(userId).delete();
+
+      log(" User data deleted from Firestore!");
+    } catch (e) {
+      log(" Failed to delete user data: $e");
+    }
   }
 
   Future<void> updateName(String name) async {

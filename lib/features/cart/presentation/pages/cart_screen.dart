@@ -11,6 +11,7 @@ import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/pages/product_details_page.dart';
 import 'package:nutra_nest/model/cycle.dart';
+import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/utity/number_format.dart';
@@ -110,6 +111,8 @@ Widget buildCartContainer() {
           child: FadeInDown(
             duration: const Duration(milliseconds: 600),
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(
+                  decelerationRate: ScrollDecelerationRate.fast),
               itemCount: cartItems.length,
               itemBuilder: (context, index) {
                 final item = cartItems[index];
@@ -180,7 +183,7 @@ Widget buildCartContainer() {
                                                     height: double.infinity,
                                                     width: double.maxFinite,
                                                     child: Image.asset(
-                                                      'assets/NutraNestPo.png',
+                                                      appLogo(context),
                                                       fit: BoxFit.cover,
                                                     )),
                                                 const CircularProgressIndicator(

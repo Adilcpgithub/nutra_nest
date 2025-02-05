@@ -13,12 +13,12 @@ void showUpdateNotification({
     SnackBar(
       content: Row(
         children: [
-          Icon(icon, color: CustomColors.white),
+          Icon(icon, color: Colors.white),
           const SizedBox(width: 12),
           Text(
             message,
             style: GoogleFonts.poppins(
-              color: CustomColors.white,
+              color: Colors.white,
               fontSize: 14,
             ),
           ),

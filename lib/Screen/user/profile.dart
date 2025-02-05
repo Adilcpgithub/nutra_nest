@@ -270,16 +270,16 @@ class _EditProfileState extends State<EditProfile> {
                               color: Colors.black87,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
+                            child: const Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const CircularProgressIndicator(
+                                CircularProgressIndicator(
                                   color: CustomColors.green,
                                 ),
-                                const SizedBox(height: 16),
+                                SizedBox(height: 16),
                                 Text(
                                   'Updating name...',
-                                  style: GoogleFonts.poppins(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
                                   ),

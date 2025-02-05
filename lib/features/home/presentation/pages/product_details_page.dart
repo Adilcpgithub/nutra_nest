@@ -9,6 +9,7 @@ import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/
 import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/utity/scaffol_message.dart';
@@ -506,7 +507,7 @@ Widget buildCycleImages(PageController pageController, Cycle cycle) {
                                   height: double.maxFinite,
                                   width: double.maxFinite,
                                   child: Image.asset(
-                                    'assets/NutraNestPo.png',
+                                    appLogo(context),
                                     fit: BoxFit.cover,
                                   )),
                               const CircularProgressIndicator(

@@ -15,28 +15,38 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       try {
         log('is calling ');
         final userId = await UserStatus().getUserId();
+        if (userId.isEmpty) {
+          log('user is not logged in !');
+          emit(const CartLoaded(cartItems: []));
+          return;
+        }
 
         final snapshot =
             await firestore.collection('cartCollection').doc(userId).get();
-
-        if (snapshot.exists) {
-          List<Map<String, dynamic>> cartData =
-              List<Map<String, dynamic>>.from(snapshot.data()?['cart'] ?? []);
-
-          log('cartData length is ${cartData.length}');
-          List<MyCartModel> mycartDats =
-              cartData.map((data) => MyCartModel.fromMap(data)).toList();
-          log('mycartDats length is ${mycartDats.length}');
-          log(mycartDats.toString());
-          emit(CartLoaded(cartItems: mycartDats));
-          List<double> totalSumList =
-              mycartDats.map((e) => e.subtotal).toList();
-          double totalSum = 0;
-          for (var i in totalSumList) {
-            totalSum += i;
-          }
-          emit(ProductTotal(cartItems: state.cartItems, total: totalSum));
+        if (!snapshot.exists) {
+          log('No wishlist found for this user');
+          emit(const CartLoaded(cartItems: []));
+          return;
         }
+
+        List<Map<String, dynamic>> cartData =
+            List<Map<String, dynamic>>.from(snapshot.data()?['cart'] ?? []);
+
+        List<MyCartModel> mycartDats =
+            cartData.map((data) => MyCartModel.fromMap(data)).toList();
+        if (mycartDats.isEmpty) {
+          log('No cart items found');
+          emit(const CartLoaded(cartItems: []));
+          return;
+        }
+
+        emit(CartLoaded(cartItems: mycartDats));
+        List<double> totalSumList = mycartDats.map((e) => e.subtotal).toList();
+        double totalSum = 0;
+        for (var i in totalSumList) {
+          totalSum += i;
+        }
+        emit(ProductTotal(cartItems: state.cartItems, total: totalSum));
       } catch (e) {
         log(e.toString());
       }

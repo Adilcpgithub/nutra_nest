@@ -233,7 +233,7 @@ customShowDialog(BuildContext context) {
                         child: SmallTextbutton(
                           width: 1,
                           buttomColor: CustomColors.black,
-                          textColor: CustomColors.white,
+                          textColor: Colors.white,
                           buttomName: 'CANCEL',
                           voidCallBack: () {
                             Navigator.of(context).pop(
@@ -266,7 +266,7 @@ customShowDialog(BuildContext context) {
                         child: SmallTextbutton(
                           width: 1,
                           buttomColor: CustomColors.black,
-                          textColor: CustomColors.white,
+                          textColor: Colors.white,
                           buttomName: 'LOG OUT',
                           voidCallBack: () async {
                             await authService.signOut();

@@ -14,43 +14,65 @@ class WishBloc extends Bloc<WishEvent, WishState> {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     on<LoadwishList>((event, emit) async {
+      log('loadwish calling');
+
       try {
+        // Step 1: Get user ID
         final userId = await UserStatus().getUserId();
+        if (userId.isEmpty) {
+          log('User is not logged in!');
+          emit(const WishLoaded(wishItems: []));
+          return;
+        }
+
+        log('message 2');
+
+        // Step 2: Fetch wishlist data
         final snapshotFavorite =
             await firestore.collection('favoriteCollection').doc(userId).get();
-        if (snapshotFavorite.exists) {
-          List<dynamic> favorites = snapshotFavorite.data()?['favorites'] ?? [];
-          List<String> datas = favorites.map((e) => e.toString()).toList();
-          log(datas.toString());
-          log('snap shot have data');
-          // log(favorites.toString());
-          QuerySnapshot querySnapshot = await firestore
-              .collection('cycles')
-              .where(FieldPath.documentId, whereIn: datas)
-              .get();
-          if (querySnapshot.docs.isNotEmpty) {
-            var wishtData = querySnapshot.docs.map((doc) {
-              return WishModel.fromMap({
-                ...doc.data() as Map<String, dynamic>,
-                'documentId': doc.id
-              });
-            }).toList();
-            if (wishtData.isNotEmpty) {
-              log('successful');
 
-              emit(WishLoaded(wishItems: wishtData));
-            }
-            log('${wishtData.length} wish datas length is this ');
-            // List<Map<String, dynamic>>.from(
-            //     querySnapshot.docs().mapdata?['cart'] ?? []);
-          } else {
-            emit(WishLoaded(wishItems: state.wishItems));
-          }
+        if (!snapshotFavorite.exists) {
+          log('No wishlist found for this user');
+          emit(const WishLoaded(wishItems: []));
+          return;
+        }
+
+        log('message 3');
+
+        // Step 3: Extract favorites list
+        List<dynamic> favorites = snapshotFavorite.data()?['favorites'] ?? [];
+        List<String> datas = favorites.map((e) => e.toString()).toList();
+
+        if (datas.isEmpty) {
+          log('No wishlist items found');
+          emit(const WishLoaded(wishItems: []));
+          return;
+        }
+
+        log('message 4');
+
+        // Step 4: Fetch cycle details from Firestore
+        QuerySnapshot querySnapshot = await firestore
+            .collection('cycles')
+            .where(FieldPath.documentId, whereIn: datas)
+            .get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          var wishtData = querySnapshot.docs.map((doc) {
+            return WishModel.fromMap(
+                {...doc.data() as Map<String, dynamic>, 'documentId': doc.id});
+          }).toList();
+
+          log('Fetched ${wishtData.length} wishlist items');
+
+          emit(WishLoaded(wishItems: wishtData));
         } else {
-          emit(WishLoaded(wishItems: state.wishItems));
+          log('No matching wishlist items found');
+          emit(const WishLoaded(wishItems: []));
         }
       } catch (e) {
-        log(e.toString());
+        log('Error loading wishlist: $e');
+        emit(const WishLoaded(wishItems: []));
       }
     });
 

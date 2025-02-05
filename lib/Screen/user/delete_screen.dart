@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
 import 'package:nutra_nest/screen/user/profile.dart';
@@ -222,7 +223,7 @@ void showDeleteAccountBottomSheet(BuildContext rootContext) {
                       color: customTextTheme(context),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   CustomTextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -237,7 +238,7 @@ void showDeleteAccountBottomSheet(BuildContext rootContext) {
                     controller: emailController,
                     labelText: ' Email',
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   CustomTextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -253,6 +254,50 @@ void showDeleteAccountBottomSheet(BuildContext rootContext) {
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      log('deleting with google');
+                      AuthService authService = AuthService();
+                      bool isdeleted = await authService.deleteGoogleAccount();
+                      if (isdeleted) {
+                        if (context.mounted) {
+                          CustomNavigation.pushAndRemoveUntil(
+                              context, const LoginScreen());
+                        } else {
+                          if (context.mounted) {
+                            showUpdateNotification(
+                                context: context,
+                                message: 'Account deletion failed ',
+                                color: Colors.red,
+                                icon: Icons.error_outline);
+                          }
+                        }
+                      }
+                    },
+                    icon: Image.asset(
+                      'assets/7123025_logo_google_g_icon.png',
+                      height: 40,
+                    ), // Google icon
+                    label: Text(
+                      ' Via Google',
+                      style: TextStyle(
+                        color: customTextTheme(context),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              width: 1, color: customTextTheme(context)),
+                          borderRadius: BorderRadius.circular(12)),
+                      backgroundColor: appTheme(context),
+                      minimumSize: const Size(double.infinity, 53),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   BlocBuilder<AuthCubit, AuthState>(
                     builder: (context, state) {
                       if (state is AuthLoading) {

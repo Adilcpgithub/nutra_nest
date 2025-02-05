@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  '      Forgot Password ? ',
+                                  'Forgot Password ? ',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 13),
                                 ),
@@ -193,6 +193,52 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: appTheme(context),
                               );
                             },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              bool data = false;
+                              log('calling');
+                              AuthService authService = AuthService();
+                              data = await authService.signInWithGoogle();
+                              if (data) {
+                                if (context.mounted) {
+                                  CustomNavigation.pushAndRemoveUntil(
+                                      context, const MyHomePage());
+                                }
+                              } else {
+                                if (context.mounted) {
+                                  showUpdateNotification(
+                                      icon: Icons.error,
+                                      context: context,
+                                      message: 'google auth',
+                                      color: Colors.red);
+                                }
+                              }
+                            },
+                            icon: Image.asset(
+                              'assets/7123025_logo_google_g_icon.png',
+                              height: 40,
+                            ), // Google icon
+                            label: Text(
+                              'Sign in with Google',
+                              style: TextStyle(
+                                color: customTextTheme(context),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                      width: 1,
+                                      color: customTextTheme(context)),
+                                  borderRadius: BorderRadius.circular(12)),
+                              backgroundColor: appTheme(context),
+                              minimumSize: const Size(double.infinity, 53),
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
@@ -216,26 +262,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      PageRouteBuilder(
-                                        pageBuilder: (context, animation,
-                                                secondaryAnimation) =>
-                                            SignUpScreen(),
-                                        transitionsBuilder: (context, animation,
-                                            secondaryAnimation, child) {
-                                          var curvedAnimation = CurvedAnimation(
-                                            parent: animation,
-                                            curve: Curves
-                                                .easeInOut, // Choose any curve here
-                                          );
-
-                                          return FadeTransition(
-                                            opacity: curvedAnimation,
-                                            child: child,
-                                          );
-                                        },
-                                      ),
-                                    );
+                                    if (context.mounted) {
+                                      CustomNavigation.push(
+                                          context, SignUpScreen());
+                                    }
                                   },
                                 ),
                               ],
@@ -267,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           Container(
-                            height: 100,
+                            height: 50,
                           )
                         ],
                       ),

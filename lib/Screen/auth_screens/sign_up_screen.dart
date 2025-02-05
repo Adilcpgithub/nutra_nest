@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:nutra_nest/screen/sign_success.dart';
 import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/utity/scaffol_message.dart';
 import '../../core/theme/app_theme.dart';
 
 // ignore: must_be_immutable
@@ -179,6 +182,7 @@ class SignUpScreen extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
+
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: deviceHeight * 0.002),
@@ -190,6 +194,53 @@ class SignUpScreen extends StatelessWidget {
                                 color: isDark(context)
                                     ? CustomColors.black
                                     : CustomColors.white,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                bool data = false;
+                                log('calling form sign up');
+                                AuthService authService = AuthService();
+                                data = await authService.signInWithGoogle();
+
+                                if (data) {
+                                  if (context.mounted) {
+                                    CustomNavigation.pushAndRemoveUntil(
+                                        context, const SignSuccess());
+                                  }
+                                } else {
+                                  if (context.mounted) {
+                                    showUpdateNotification(
+                                        icon: Icons.error,
+                                        context: context,
+                                        message: 'google auth',
+                                        color: Colors.red);
+                                  }
+                                }
+                              },
+                              icon: Image.asset(
+                                'assets/7123025_logo_google_g_icon.png',
+                                height: 40,
+                              ), // Google icon
+                              label: Text(
+                                'Sign up with Google',
+                                style: TextStyle(
+                                  color: customTextTheme(context),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        width: 1,
+                                        color: customTextTheme(context)),
+                                    borderRadius: BorderRadius.circular(12)),
+                                backgroundColor: appTheme(context),
+                                minimumSize: const Size(double.infinity, 53),
                               ),
                             ),
                             Padding(
@@ -213,7 +264,7 @@ class SignUpScreen extends StatelessWidget {
                                       'Login',
                                       style: TextStyle(
                                           color: customTextTheme(context),
-                                          fontSize: 15,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     onTap: () {

@@ -25,4 +25,6 @@ class CartLoading extends CartState {
 class ProductTotal extends CartState {
   final double total;
   const ProductTotal({required super.cartItems, required this.total});
+  @override
+  List<Object> get props => [total];
 }

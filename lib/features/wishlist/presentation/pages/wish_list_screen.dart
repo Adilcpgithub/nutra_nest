@@ -108,7 +108,7 @@ Widget buildHeader(
               '$count Items', // Make this dynamic based on your list length
               style: GoogleFonts.poppins(
                 fontSize: 14,
-                color: Colors.grey[600],
+                color: customTextTheme(context),
               ),
             );
           },

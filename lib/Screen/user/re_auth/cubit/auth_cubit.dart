@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
@@ -9,6 +10,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
   final _auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   final UserStatus userStatus = UserStatus();
   Future<void> deleteUserAccount(String email, String password) async {
     emit(AuthLoading());
@@ -26,7 +28,9 @@ class AuthCubit extends Cubit<AuthState> {
         await _auth.currentUser!.reauthenticateWithCredential(credential);
 
         await _auth.currentUser!.delete();
+        await deleteUserData(_auth.currentUser!.uid);
       }
+
       emit(AuthSuccess());
       // await _firestore
       //     .collection('users')
@@ -47,5 +51,15 @@ class AuthCubit extends Cubit<AuthState> {
     }
 
     // return 'Verification failed try again';
+  }
+
+  deleteUserData(String userId) async {
+    try {
+      await firestore.collection('users').doc(userId).delete();
+      await firestore.collection('favoriteCollection').doc(userId).delete();
+      await firestore.collection('cartCollection').doc(userId).delete();
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }
