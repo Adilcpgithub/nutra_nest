@@ -462,81 +462,79 @@ Widget buildHeader(BuildContext context) {
 Widget buildCycleImages(PageController pageController, Cycle cycle) {
   return SizedBox(
     height: 230,
-    child: Expanded(
-      child: BlocBuilder<ImageBloc, ImageState>(builder: (context, state) {
-        if (state is ImageIndexUpdated) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (pageController.hasClients &&
-                pageController.page != state.currentIndex) {
-              pageController.animateToPage(state.currentIndex,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.ease);
-            }
-          });
-        }
-        return PageView.builder(
-            onPageChanged: (index) {
-              context.read<ImageBloc>().add(PageChangedEvent(index));
-            },
-            controller: pageController,
-            itemCount: cycle.imageUrl.length,
-            itemBuilder: (context, index) {
-              return Card(
-                elevation: 3,
-                shadowColor: Colors.white,
-                shape: RoundedRectangleBorder(
+    child: BlocBuilder<ImageBloc, ImageState>(builder: (context, state) {
+      if (state is ImageIndexUpdated) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (pageController.hasClients &&
+              pageController.page != state.currentIndex) {
+            pageController.animateToPage(state.currentIndex,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.ease);
+          }
+        });
+      }
+      return PageView.builder(
+          onPageChanged: (index) {
+            context.read<ImageBloc>().add(PageChangedEvent(index));
+          },
+          controller: pageController,
+          itemCount: cycle.imageUrl.length,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 3,
+              shadowColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Container(
+                height: 230,
+                width: double.infinity,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Container(
-                  height: 230,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    child: Image.network(
-                      cycle.imageUrl[index],
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return ClipRRect(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SizedBox(
-                                  height: double.maxFinite,
-                                  width: double.maxFinite,
-                                  child: Image.asset(
-                                    appLogo(context),
-                                    fit: BoxFit.cover,
-                                  )),
-                              const CircularProgressIndicator(
-                                color: CustomColors.green,
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return const SizedBox(
-                          height: double.maxFinite,
-                          width: double.maxFinite,
-                          child: Center(
-                              child: Icon(
-                            size: 50,
-                            Icons.image_not_supported,
-                            color: Colors.grey,
-                          )),
-                        );
-                      },
-                      fit: BoxFit.cover,
-                    ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  child: Image.network(
+                    cycle.imageUrl[index],
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return ClipRRect(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                                height: double.maxFinite,
+                                width: double.maxFinite,
+                                child: Image.asset(
+                                  appLogo(context),
+                                  fit: BoxFit.cover,
+                                )),
+                            const CircularProgressIndicator(
+                              color: CustomColors.green,
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return const SizedBox(
+                        height: double.maxFinite,
+                        width: double.maxFinite,
+                        child: Center(
+                            child: Icon(
+                          size: 50,
+                          Icons.image_not_supported,
+                          color: Colors.grey,
+                        )),
+                      );
+                    },
+                    fit: BoxFit.cover,
                   ),
                 ),
-              );
-            });
-      }),
-    ),
+              ),
+            );
+          });
+    }),
   );
 }
 

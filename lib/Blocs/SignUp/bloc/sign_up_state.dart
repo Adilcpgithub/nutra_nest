@@ -1,49 +1,43 @@
 part of 'sign_up_bloc.dart';
 
 class SignUpState extends Equatable {
-  final String name;
-  final String phoneNumber;
-  final String email;
-  final String password;
   final bool activateValidation;
   final bool isPickerVisible;
 
   const SignUpState(
-      {required this.name,
-      required this.phoneNumber,
-      required this.email,
-      required this.password,
-      required this.isPickerVisible,
-      required this.activateValidation});
-
-  factory SignUpState.initial() {
-    return const SignUpState(
-        name: '',
-        phoneNumber: '',
-        email: '',
-        password: '',
-        isPickerVisible: false,
-        activateValidation: false);
-  }
+      {this.isPickerVisible = false, this.activateValidation = false});
 
   SignUpState copyWith(
-      {String? name,
-      String? phoneNumber,
-      String? email,
-      String? password,
-      bool? isFormValid,
-      bool? isPickerVisible,
-      bool? activateValidation}) {
+      {bool? isFormValid = false,
+      bool? isPickerVisible = false,
+      bool? activateValidation = false}) {
     return SignUpState(
-        name: name ?? this.name,
-        phoneNumber: phoneNumber ?? this.phoneNumber,
-        email: email ?? this.email,
-        password: password ?? this.password,
         isPickerVisible: isPickerVisible ?? this.isPickerVisible,
         activateValidation: activateValidation ?? this.activateValidation);
   }
 
   @override
-  List<Object> get props =>
-      [name, phoneNumber, email, password, isPickerVisible, activateValidation];
+  List<Object> get props => [isPickerVisible, activateValidation];
 }
+
+class SignUpSuccess extends SignUpState {}
+
+class SignUpFailed extends SignUpState {
+  final String errorMessage;
+  const SignUpFailed(this.errorMessage);
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+class SignUpLoading extends SignUpState {}
+
+class GoogleSignUpSuccess extends SignUpState {}
+
+class GoogleSignUpFailed extends SignUpState {
+  final String errorMessage;
+  const GoogleSignUpFailed(this.errorMessage);
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+class GoogleSignUpLoading extends SignUpState {}

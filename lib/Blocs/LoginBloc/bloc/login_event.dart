@@ -1,21 +1,7 @@
 part of 'login_bloc.dart';
 
-@immutable
-sealed class LoginEvent extends Equatable {
+abstract class LoginEvent extends Equatable {
   const LoginEvent();
-}
-
-class ToggleEmailVisibility extends LoginEvent {
-  @override
-  List<Object> get props => [];
-}
-
-class TogglePickerVisibility extends LoginEvent {
-  @override
-  List<Object> get props => [];
-}
-
-class ActivateValidation extends LoginEvent {
   @override
   List<Object> get props => [];
 }
@@ -26,4 +12,19 @@ class UpdatePhoneNumber extends LoginEvent {
 
   @override
   List<Object> get props => [phoneNumber];
+}
+
+class SubmitToLogin extends LoginEvent {
+  final String email;
+  final String password;
+
+  const SubmitToLogin(this.email, this.password);
+
+  @override
+  List<Object> get props => [email, password];
+}
+
+class GoogleLogin extends LoginEvent {
+  @override
+  List<Object> get props => [];
 }

@@ -6,6 +6,7 @@ import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/model/cycle.dart';
+import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
 Widget cycleProductCard(
@@ -34,52 +35,62 @@ Widget cycleProductCard(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    child: Stack(children: [
-                      Image.network(
-                        imagUrl,
-                        height: 120,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              topRight: Radius.circular(15),
-                            ),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                SizedBox(
-                                    height: 120,
-                                    width: double.maxFinite,
-                                    child: Image.asset(
-                                      'assets/NutraNestPo.png',
-                                      fit: BoxFit.cover,
-                                    )),
-                                const CircularProgressIndicator(
-                                  color: CustomColors.green,
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return const SizedBox(
-                            height: double.maxFinite,
-                            width: double.maxFinite,
-                            child: Center(
-                                child: Icon(
-                              size: 50,
-                              Icons.image_not_supported,
-                              color: Colors.grey,
-                            )),
-                          );
-                        },
-                      ),
-                    ]),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(appLogo(context))),
+                    ),
+                    height: 120,
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      child: Stack(children: [
+                        Image.network(
+                          imagUrl,
+                          height: 120,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                      height: 120,
+                                      width: double.maxFinite,
+                                      child: Image.asset(
+                                        appLogo(context),
+                                        fit: BoxFit.cover,
+                                      )),
+                                  const CircularProgressIndicator(
+                                    color: CustomColors.green,
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox(
+                              height: double.maxFinite,
+                              width: double.maxFinite,
+                              child: Center(
+                                  child: Icon(
+                                size: 50,
+                                Icons.image_not_supported,
+                                color: Colors.grey,
+                              )),
+                            );
+                          },
+                        ),
+                      ]),
+                    ),
                   ),
                   const SizedBox(
                     height: 12,

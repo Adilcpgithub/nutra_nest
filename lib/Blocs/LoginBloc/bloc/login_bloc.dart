@@ -1,25 +1,41 @@
-// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-// ignore: depend_on_referenced_packages
-import 'package:meta/meta.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
+import 'package:nutra_nest/blocs/LoginBloc/bloc/login_bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginState()) {
-    on<ToggleEmailVisibility>((event, emit) {
-      emit(state.copyWith(isEmailVisible: !state.isEmailVisible));
+    final AuthService authService = AuthService();
+
+    on<SubmitToLogin>((event, emit) async {
+      emit(LoginLoading());
+      try {
+        final data = await authService.logInUserWithEmailAndPassword(
+            email: event.email, password: event.password);
+        if (data.success) {
+          emit(LoginSuccess());
+          return;
+        } else {
+          emit(LoginFailed(data.errorMessage ?? 'Login failed'));
+          return;
+        }
+      } catch (e) {
+        emit(LoginFailed(e.toString()));
+      }
     });
-    on<TogglePickerVisibility>((event, emit) {
-      emit(state.copyWith(isPickerVisible: !state.isPickerVisible));
-    });
-    on<UpdatePhoneNumber>((event, emit) {
-      emit(state.copyWith(phoneNumber: event.phoneNumber));
-    });
-    on<ActivateValidation>((event, emit) {
-      emit(state.copyWith(activateValidation: true));
+    on<GoogleLogin>((event, emit) async {
+      emit(GoogleLoginLoading());
+      bool data = false;
+      data = await authService.signInWithGoogle();
+      if (data) {
+        emit(GoogleLoginSuccess());
+        return;
+      } else {
+        emit(const GoogleLoginFailed('google auth failed'));
+      }
     });
   }
 }

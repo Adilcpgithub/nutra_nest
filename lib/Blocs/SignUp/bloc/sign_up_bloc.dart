@@ -1,41 +1,46 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:nutra_nest/auth/auth_service.dart';
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  SignUpBloc() : super(SignUpState.initial()) {
-    on<NameChanged>((event, emit) {
-      emit(state.copyWith(name: event.name, isFormValid: _validateForm()));
-    });
-    on<PhoneChanged>((event, emit) {
-      emit(state.copyWith(
-          phoneNumber: event.phoneNumber, isFormValid: _validateForm()));
-    });
-    on<EmailChanged>((event, emit) {
-      emit(state.copyWith(email: event.email, isFormValid: _validateForm()));
-    });
-    on<PasswordChanged>((event, emit) {
-      emit(state.copyWith(email: event.password, isFormValid: _validateForm()));
-    });
-    on<TogglePickerVisibility>((event, emit) {
-      emit(state.copyWith(isPickerVisible: !state.isPickerVisible));
-    });
+  SignUpBloc() : super(const SignUpState()) {
+    AuthService authService = AuthService();
+    on<SubmitToSignUp>((event, emit) async {
+      emit(SignUpLoading());
+      try {
+        final data = await authService.createUserWithEmailAndPassword(
+          name: event.name,
+          phoneNumber: event.phoneNumber,
+          email: event.email,
+          password: event.password,
+        );
 
-    on<ActivateValidation>((event, emit) {
-      emit(state.copyWith(activateValidation: true));
+        if (data.success) {
+          emit(SignUpSuccess());
+          return;
+        } else {
+          emit(SignUpFailed(data.errorMessage ?? 'SignUp failed'));
+          return;
+        }
+      } catch (e) {
+        emit(SignUpFailed(e.toString()));
+      }
     });
-    //
-    on<SignUpSubmitted>((event, emit) {});
-  }
-
-  bool _validateForm() {
-    return state.name.isNotEmpty &&
-        state.phoneNumber.isNotEmpty &&
-        state.email.isNotEmpty &&
-        state.password.isNotEmpty;
+    on<GoogleSignUp>((event, emit) async {
+      emit(GoogleSignUpLoading());
+      bool data = false;
+      data = await authService.signInWithGoogle();
+      if (data) {
+        emit(GoogleSignUpSuccess());
+        return;
+      } else {
+        emit(const GoogleSignUpFailed('google auth failed'));
+        return;
+      }
+    });
   }
 }

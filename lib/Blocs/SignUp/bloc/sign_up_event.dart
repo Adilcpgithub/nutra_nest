@@ -1,31 +1,10 @@
 part of 'sign_up_bloc.dart';
 
-@immutable
-sealed class SignUpEvent extends Equatable {
+class SignUpEvent extends Equatable {
   const SignUpEvent();
 
   @override
   List<Object> get props => [];
-}
-
-class NameChanged extends SignUpEvent {
-  final String name;
-  const NameChanged(this.name);
-}
-
-class PhoneChanged extends SignUpEvent {
-  final String phoneNumber;
-  const PhoneChanged(this.phoneNumber);
-}
-
-class EmailChanged extends SignUpEvent {
-  final String email;
-  const EmailChanged(this.email);
-}
-
-class PasswordChanged extends SignUpEvent {
-  final String password;
-  const PasswordChanged(this.password);
 }
 
 class SignUpSubmitted extends SignUpEvent {}
@@ -39,3 +18,19 @@ class TogglePickerVisibility extends SignUpEvent {
   @override
   List<Object> get props => [];
 }
+
+class SubmitToSignUp extends SignUpEvent {
+  final String name;
+  final String phoneNumber;
+  final String email;
+  final String password;
+  const SubmitToSignUp(
+      {required this.name,
+      required this.phoneNumber,
+      required this.email,
+      required this.password});
+  @override
+  List<Object> get props => [name, phoneNumber, email, password];
+}
+
+class GoogleSignUp extends SignUpEvent {}

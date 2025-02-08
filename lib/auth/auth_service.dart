@@ -217,6 +217,14 @@ class AuthService {
     }
   }
 
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw Exception('Failed to sent reset email :$e');
+    }
+  }
+
   Future<void> signOut() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await _googleSignIn.signOut();

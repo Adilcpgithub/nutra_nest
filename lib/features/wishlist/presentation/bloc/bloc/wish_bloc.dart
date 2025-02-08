@@ -138,7 +138,24 @@ class WishBloc extends Bloc<WishEvent, WishState> {
           log('product id added to cart from wish');
           await ref.set({'cart': cartData});
           emit(WishDataAddSuccessful(
-              wishItems: state.wishItems, message: 'Product added to cart'));
+              wishItems: state.wishItems,
+              message: 'Product added to cart',
+              isNewMessage: true));
+          emit(WishDataAddSuccessful(
+              wishItems: state.wishItems, message: '', isNewMessage: false));
+          return;
+        } else {
+          log('sss11111sssss');
+
+          emit(WishDataAddingFailed(
+              wishItems: state.wishItems,
+              message: 'Product already in cart',
+              isNewFailed: true));
+          await Future.delayed(const Duration(milliseconds: 1000));
+          emit(WishDataAddingFailed(
+              wishItems: state.wishItems, message: '', isNewFailed: false));
+          log('aaaaaaaaaaaa111sssss');
+          return;
         }
       } catch (e) {
         log('error forom Wish data adding to the cart list $e');

@@ -27,3 +27,25 @@ class LoginState extends Equatable {
   List<Object?> get props =>
       [isEmailVisible, isPickerVisible, phoneNumber, activateValidation];
 }
+
+class LoginSuccess extends LoginState {}
+
+class LoginFailed extends LoginState {
+  final String errorMessage;
+  const LoginFailed(this.errorMessage);
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+class LoginLoading extends LoginState {}
+
+class GoogleLoginSuccess extends LoginState {}
+
+class GoogleLoginFailed extends LoginState {
+  final String errorMessage;
+  const GoogleLoginFailed(this.errorMessage);
+  @override
+  List<Object> get props => [errorMessage];
+}
+
+class GoogleLoginLoading extends LoginState {}

@@ -31,11 +31,17 @@ class _WhishListScreenState extends State<WhishListScreen> {
       backgroundColor: appTheme(context),
       body: BlocListener<WishBloc, WishState>(
         listener: (context, state) {
-          if (state is WishDataAddSuccessful) {
+          if (state is WishDataAddSuccessful && state.isNewMessage) {
             return showUpdateNotification(
               context: context,
               message: state.message,
               color: CustomColors.green,
+            );
+          } else if (state is WishDataAddingFailed && state.isNewFailed) {
+            return showUpdateNotification(
+              context: context,
+              message: state.message,
+              color: Colors.red,
             );
           }
         },
@@ -125,6 +131,7 @@ Widget builWishList(BuildContext context) {
         return Expanded(
           child: FadeInDown(
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
               itemCount: state.wishItems.length,
               itemBuilder: (context, index) {
                 final wishModelData = state.wishItems[index];
@@ -160,7 +167,10 @@ Widget builWishList(BuildContext context) {
                               padding: const EdgeInsets.only(left: 5),
                               child: Container(
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12)),
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                      image: AssetImage(appLogo(context))),
+                                ),
                                 height: 130,
                                 width: 130,
                                 child: ClipRRect(

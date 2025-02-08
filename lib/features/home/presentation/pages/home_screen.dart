@@ -13,55 +13,72 @@ import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/image_carousel.dart';
 import 'package:nutra_nest/widgets/textformfield.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    log('haeijioeejoi1;1');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appTheme(context),
-      body: SafeArea(
-        child: BlocBuilder<NetworkCubit, bool>(
-          builder: (context, isConnected) {
-            log('is connected is $isConnected');
-            if (isConnected) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: isMobile(context)
-                          ? 20
-                          : MediaQuery.of(context).size.width / 4),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildHeader(context),
-                      _buildSearchBar(context),
-                      _buildFeaturedSection(context),
-                      _buildSparePartsSection(context),
-                      _buildCycleTypesGrid(context),
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              return Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset('assets/Animation - 1736755470091.json',
-                      height: 110),
-                  Text(
-                    'No internet connection!',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).textTheme.bodySmall!.color,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SafeArea(
+          child: BlocBuilder<NetworkCubit, bool>(
+            builder: (context, isConnected) {
+              log('is connected is $isConnected');
+              if (isConnected) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: isMobile(context)
+                            ? 20
+                            : MediaQuery.of(context).size.width / 4),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(context),
+                        _buildSearchBar(context),
+                        _buildFeaturedSection(context),
+                        _buildSparePartsSection(context),
+                        _buildCycleTypesGrid(context),
+                      ],
                     ),
-                  )
-                ],
-              ));
-            }
-          },
+                  ),
+                );
+              } else {
+                return Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset('assets/Animation - 1736755470091.json',
+                        height: 110),
+                    Text(
+                      'No internet connection!',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.bodySmall!.color,
+                      ),
+                    )
+                  ],
+                ));
+              }
+            },
+          ),
         ),
       ),
     );
@@ -187,6 +204,7 @@ Widget _buildHeader(BuildContext context) {
 //adfashskdflasdhf
 Widget _buildSearchBar(BuildContext context) {
   final TextEditingController searchCountroller = TextEditingController();
+  FocusNode focusNode = FocusNode();
   return FadeInDown(
     child: Column(
       children: [
@@ -195,16 +213,19 @@ Widget _buildSearchBar(BuildContext context) {
           child: SizedBox(
             height: 68,
             child: CustomTextFormField(
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 23),
+              focusNode: focusNode,
+              autofocus: false,
+              prefixIcon: const Padding(
+                padding: EdgeInsets.only(left: 20, right: 23),
                 child: Icon(
                   Icons.search,
                   size: 30,
-                  color: Theme.of(context).textTheme.bodySmall!.color,
+                  color: Colors.grey,
                 ),
               ),
               controller: searchCountroller,
-              labelText: 'Search',
+              labelText: 'Search for Cycles, Spare Parts, and More...',
+              labelTextColor: Colors.grey,
             ),
           ),
         ),
@@ -275,6 +296,7 @@ Widget _buildCycleTypesGrid(BuildContext context) {
                 children: [
                   _cycleContainer('Mountain\n     Bikes', Icons.terrain, () {
                     log('button pressed 1');
+                    FocusScope.of(context).unfocus();
                     CustomNavigation.push(
                         context,
                         const CycleListPage(

@@ -6,7 +6,7 @@ sealed class ProfilState extends Equatable {
   const ProfilState();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [defaultImage];
 }
 
 final class ProfilInitial extends ProfilState {}
@@ -15,10 +15,13 @@ class ProfileImageLoading extends ProfilState {}
 
 // ignore: must_be_immutable
 class ProfilImageSuccessful extends ProfilState {
-  String imageUrl = '';
+  final String imageUrl;
   final bool isNewUpload;
 
-  ProfilImageSuccessful({required this.imageUrl, this.isNewUpload = false});
+  const ProfilImageSuccessful(
+      {required this.imageUrl, this.isNewUpload = false});
+  @override
+  List<Object> get props => [imageUrl, isNewUpload];
 }
 
 class ProfilImageDeleted extends ProfilState {}
@@ -32,8 +35,10 @@ class ShowDefaulImage extends ProfilState {
   List<Object> get props => [defaultImage];
 }
 
-class CloudinaryError extends ProfilState {
-  final String errorMessage;
+class ShowMessage extends ProfilState {
+  final String message;
+  const ShowMessage({required this.message});
 
-  const CloudinaryError(this.errorMessage);
+  @override
+  List<Object> get props => [message];
 }

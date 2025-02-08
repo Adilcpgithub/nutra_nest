@@ -16,6 +16,7 @@ void showUpdateNotification({
           Icon(icon, color: Colors.white),
           const SizedBox(width: 12),
           Text(
+            overflow: TextOverflow.clip,
             message,
             style: GoogleFonts.poppins(
               color: Colors.white,

@@ -11,14 +11,21 @@ class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
     on<UploadImageEvent>(_onUploadImage);
     on<GetImageUrlEvent>(_onGetImageUrl);
   }
-
   Future<void> _onUploadImage(
       UploadImageEvent event, Emitter<ProfilState> emit) async {
     AuthService authService = AuthService();
+    log('Upload image started'); // Debug log
     emit(ProfileImageLoading());
+
     String? imageUrl = await authService.uploadImage();
+
     if (imageUrl != null) {
+      log(' Image uploaded: $imageUrl'); // Debug log
       emit(ProfilImageSuccessful(imageUrl: imageUrl, isNewUpload: false));
+
+      await Future.delayed(const Duration(milliseconds: 200));
+      log(' Emitting ShowMessage'); // Debug log
+      emit(const ShowMessage(message: 'Image Uploaded!'));
     }
   }
 

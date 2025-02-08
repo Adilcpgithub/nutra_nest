@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
+// ignore: must_be_immutable
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
@@ -13,20 +15,27 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final String? errorText;
+  bool? autofocus;
+  FocusNode? focusNode;
+  Color? labelTextColor;
+  AutovalidateMode? autovalidateMode;
 
-  const CustomTextFormField({
-    super.key,
-    required this.controller,
-    required this.labelText,
-    this.hintText = '',
-    this.onChanged,
-    this.keyboardType = TextInputType.text,
-    this.obscureText = false,
-    this.prefixIcon,
-    this.floatingLabelBehavior,
-    this.errorText,
-    this.validator,
-  });
+  CustomTextFormField(
+      {super.key,
+      required this.controller,
+      required this.labelText,
+      this.hintText = '',
+      this.onChanged,
+      this.keyboardType = TextInputType.text,
+      this.obscureText = false,
+      this.prefixIcon,
+      this.floatingLabelBehavior,
+      this.errorText,
+      this.validator,
+      this.labelTextColor,
+      this.autofocus,
+      this.focusNode,
+      this.autovalidateMode});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +46,9 @@ class CustomTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         child: TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          focusNode: focusNode,
+          autofocus: autofocus ?? false,
           onChanged: onChanged,
           controller: controller,
           keyboardType: keyboardType,
@@ -48,7 +60,8 @@ class CustomTextFormField extends StatelessWidget {
 
             labelStyle: TextStyle(
               fontSize: 18,
-              color: Theme.of(context).textTheme.bodySmall!.color,
+              color: labelTextColor ??
+                  Theme.of(context).textTheme.bodySmall!.color,
             ),
             hintText: hintText,
             prefixIcon: prefixIcon,

@@ -24,8 +24,20 @@ class WishLoaded extends WishState {
 
 class WishDataAddSuccessful extends WishState {
   final String message;
+  final bool isNewMessage;
   const WishDataAddSuccessful(
-      {required super.wishItems, required this.message});
+      {required super.wishItems,
+      required this.message,
+      required this.isNewMessage});
   @override
   List<Object> get props => [message];
+}
+
+class WishDataAddingFailed extends WishState {
+  final String message;
+  final bool isNewFailed;
+  const WishDataAddingFailed(
+      {required super.wishItems,
+      required this.message,
+      required this.isNewFailed});
 }

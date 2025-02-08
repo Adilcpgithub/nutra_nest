@@ -153,7 +153,10 @@ Widget buildCartContainer() {
                                 padding: const EdgeInsets.all(12.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12)),
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: DecorationImage(
+                                        image: AssetImage(appLogo(context))),
+                                  ),
                                   height: 130,
                                   width: 130,
                                   child: ClipRRect(

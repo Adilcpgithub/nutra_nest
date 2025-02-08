@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
-import 'package:nutra_nest/screen/user/profile.dart';
+import 'package:nutra_nest/screen/user/profile_screen.dart';
 import 'package:nutra_nest/screen/user/re_auth/cubit/auth_cubit.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';

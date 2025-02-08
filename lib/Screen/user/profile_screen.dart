@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
@@ -90,7 +91,7 @@ class _EditProfileState extends State<EditProfile> {
         const SizedBox(width: 92.5),
         Expanded(
           child: Text(
-            'Edit Profile',
+            'Profile',
             style: GoogleFonts.poppins(
               fontSize: 19,
               fontWeight: FontWeight.w600,
@@ -107,10 +108,11 @@ class _EditProfileState extends State<EditProfile> {
       children: [
         BlocConsumer<ProfilBloc, ProfilState>(
           listener: (context, state) {
-            if (state is ProfilImageSuccessful && !state.isNewUpload) {
+            if (state is ShowMessage && context.mounted) {
+              log(' ShowMessage triggered: ${state.message}');
               showUpdateNotification(
                 context: context,
-                message: 'Image Uploaded!',
+                message: state.message,
                 color: CustomColors.green,
               );
             }
@@ -162,6 +164,7 @@ class _EditProfileState extends State<EditProfile> {
           right: 10,
           child: GestureDetector(
             onTap: () {
+              log('touched');
               BlocProvider.of<ProfilBloc>(context)
                   .add(UploadImageEvent(UserStatus.userIdFinal));
             },
