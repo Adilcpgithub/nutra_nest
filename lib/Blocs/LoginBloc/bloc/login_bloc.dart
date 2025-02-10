@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
-import 'package:nutra_nest/blocs/LoginBloc/bloc/login_bloc.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -32,7 +31,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       data = await authService.signInWithGoogle();
       if (data) {
         emit(GoogleLoginSuccess());
-        return;
       } else {
         emit(const GoogleLoginFailed('google auth failed'));
       }

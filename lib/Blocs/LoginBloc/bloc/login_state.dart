@@ -39,7 +39,10 @@ class LoginFailed extends LoginState {
 
 class LoginLoading extends LoginState {}
 
-class GoogleLoginSuccess extends LoginState {}
+class GoogleLoginSuccess extends LoginState {
+  @override
+  List<Object> get props => [];
+}
 
 class GoogleLoginFailed extends LoginState {
   final String errorMessage;

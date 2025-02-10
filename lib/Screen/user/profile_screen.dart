@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
@@ -194,20 +195,62 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Widget _buildEditFields() {
+    FocusNode focusName = FocusNode();
+    FocusNode focusphoneNumber = FocusNode();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildEditFieldWithUpdate(
+          focusNode: focusName,
+          category: 'name',
           label: 'Full Name:',
           controller: _nameCountroller,
-          onUpdate: () => authService.updateName(_nameCountroller.text),
+          onUpdate: () async {
+            FocusScope.of(context).unfocus();
+            await Future.delayed(
+                const Duration(milliseconds: 300)); // Give some time to process
+            SystemChannels.textInput
+                .invokeMethod('TextInput.hide'); // Force keyboard to close
+
+            log('on updated button pressed');
+            await Future.delayed(const Duration(milliseconds: 1200));
+            await authService.updateName(_nameCountroller.text.trim());
+            if (context.mounted) {
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+            }
+          },
         ),
         const SizedBox(height: 20),
-        _buildEditFieldReadOnly(
+        _buildEditFieldWithUpdate(
+          focusNode: focusphoneNumber,
+          category: 'mobile number',
+          keyboardType: TextInputType.phone,
           label: 'Mobile Number:',
           controller: _mobileNumberCountroller,
-          keyboardType: TextInputType.phone,
+          onUpdate: () async {
+            FocusScope.of(context).unfocus();
+            await Future.delayed(
+                const Duration(milliseconds: 300)); // Give some time to process
+            SystemChannels.textInput
+                .invokeMethod('TextInput.hide'); // Force keyboard to close
+
+            log('on updated button pressed');
+            await Future.delayed(const Duration(milliseconds: 1200));
+            await authService
+                .updatephoneNumber(_mobileNumberCountroller.text.trim());
+            if (context.mounted) {
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+            }
+          },
         ),
+
+        // _buildEditFieldReadOnly(
+        //   label: 'Mobile Number:',
+        //   controller: _mobileNumberCountroller,
+        //   keyboardType: TextInputType.phone,
+        // ),
         const SizedBox(height: 20),
         _buildEditFieldReadOnly(
           label: 'Email ID:',
@@ -218,11 +261,13 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget _buildEditFieldWithUpdate({
-    required String label,
-    required TextEditingController controller,
-    required VoidCallback onUpdate,
-  }) {
+  Widget _buildEditFieldWithUpdate(
+      {required String label,
+      required TextEditingController controller,
+      required String category,
+      required VoidCallback onUpdate,
+      TextInputType? keyboardType,
+      FocusNode? focusNode}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -248,6 +293,8 @@ class _EditProfileState extends State<EditProfile> {
             children: [
               Expanded(
                 child: TextField(
+                  focusNode: focusNode,
+                  keyboardType: keyboardType,
                   controller: controller,
                   style: TextStyle(color: customTextTheme(context)),
                   decoration: const InputDecoration(
@@ -273,16 +320,17 @@ class _EditProfileState extends State<EditProfile> {
                               color: Colors.black87,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                CircularProgressIndicator(
+                                const CircularProgressIndicator(
                                   color: CustomColors.green,
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 Text(
-                                  'Updating name...',
-                                  style: TextStyle(
+                                  'Updating $category...',
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.none,
                                     color: Colors.white,
                                     fontSize: 14,
                                   ),
@@ -293,6 +341,7 @@ class _EditProfileState extends State<EditProfile> {
                         );
                       },
                     );
+                    onUpdate();
                   }
                 },
                 child: Container(

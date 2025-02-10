@@ -14,6 +14,7 @@ import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
+import 'package:nutra_nest/features/address/presentaion/bloc/address_bloc/address_bloc.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/price_container/price_container_bloc.dart';
@@ -100,6 +101,7 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => CartBloc()),
           BlocProvider(create: (context) => WishBloc()),
           BlocProvider(create: (context) => AuthCubit()),
+          BlocProvider(create: (context) => AddressBloc()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {

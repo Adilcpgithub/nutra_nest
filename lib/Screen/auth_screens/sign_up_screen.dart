@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -233,11 +231,11 @@ class SignUpScreen extends StatelessWidget {
                                           .add(GoogleSignUp());
                                     },
                                     icon: data
-                                        ? const SizedBox(
+                                        ? SizedBox(
                                             height: 25,
                                             width: 25,
                                             child: CircularProgressIndicator(
-                                              color: Colors.white,
+                                              color: customTextTheme(context),
                                             ),
                                           )
                                         : Image.asset(

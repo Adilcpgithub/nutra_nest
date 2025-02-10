@@ -37,10 +37,14 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state is LoginSuccess || state is GoogleLoginSuccess) {
+            if (state is LoginSuccess) {
               CustomNavigation.pushAndRemoveUntil(context, const MyHomePage());
               _emailrController.clear();
               _passwordController.clear();
+              return;
+            }
+            if (state is GoogleLoginSuccess) {
+              CustomNavigation.pushAndRemoveUntil(context, const MyHomePage());
               return;
             }
             if (state is LoginFailed) {
@@ -384,11 +388,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                         .add(GoogleLogin());
                                   },
                                   icon: data
-                                      ? const SizedBox(
+                                      ? SizedBox(
                                           height: 25,
                                           width: 25,
                                           child: CircularProgressIndicator(
-                                            color: Colors.white,
+                                            color: customTextTheme(context),
                                           ),
                                         )
                                       : Image.asset(

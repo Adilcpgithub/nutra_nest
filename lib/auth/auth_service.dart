@@ -274,6 +274,8 @@ class AuthService {
   //! google auth
   Future<bool> signInWithGoogle() async {
     try {
+      // Ensure user is signed out before signing in
+      await _googleSignIn.signOut(); //
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
         log("User canceled Google Sign-In");
@@ -386,13 +388,6 @@ class AuthService {
         .collection('users')
         .doc(await userStatus.getUserId())
         .update({'name': name});
-  }
-
-  Future<void> updateEmail(String emai) async {
-    await _firestore
-        .collection('users')
-        .doc(await userStatus.getUserId())
-        .update({'email': emai});
   }
 
   Future<void> updatephoneNumber(String phoneNumber) async {
