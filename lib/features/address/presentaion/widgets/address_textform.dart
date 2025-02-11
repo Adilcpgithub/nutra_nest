@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/utity/colors.dart';
 
+// ignore: must_be_immutable
 class AddressTextform extends StatelessWidget {
   final String headline;
   int? maxLength;
@@ -28,7 +29,7 @@ class AddressTextform extends StatelessWidget {
       ),
       TextFormField(
           keyboardType: keyboardType,
-          maxLines: maxLength,
+          maxLength: maxLength,
           controller: controller,
           style: TextStyle(color: customTextTheme(context), fontSize: 13),
           autovalidateMode: AutovalidateMode.onUserInteraction,

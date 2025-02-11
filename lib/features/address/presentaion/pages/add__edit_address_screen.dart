@@ -1,16 +1,15 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/features/address/data/models/address_model.dart';
 import 'package:nutra_nest/features/address/presentaion/bloc/address_bloc/address_bloc.dart';
 import 'package:nutra_nest/features/address/presentaion/widgets/address_textform.dart';
-import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
+// ignore: must_be_immutable
 class AddOrDeleteaddressScreen extends StatefulWidget {
   final bool isAddAddress;
   AddressModel? addressModel;
@@ -71,180 +70,231 @@ class _AddaddressScreenState extends State<AddOrDeleteaddressScreen> {
                 height: deviceHeight(context),
                 child: Form(
                   key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CustomIcon(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              icon: Icons.arrow_back,
-                              iconSize: 26),
-                          const SizedBox(
-                            width: 0,
-                          ),
-                          Expanded(
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              widget.isAddAddress
-                                  ? 'New Address'
-                                  : 'Edit Address',
-                              style: TextStyle(
-                                  color: customTextTheme(context),
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      AddressTextform(
-                        controller: _houseNameController,
-                        headline: 'House Name',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'House name cannot be empty';
-                          }
-                          if (value.length < 3) {
-                            return 'Must be at least 3 characters long';
-                          }
-                          return null;
-                        },
-                      ),
-                      AddressTextform(
-                        controller: _postOfficeController,
-                        headline: 'Post Office',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Post office cannot be empty';
-                          }
-                          if (value.length < 3) {
-                            return 'Must be at least 3 characters long';
-                          }
-                          return null;
-                        },
-                      ),
-                      AddressTextform(
-                        controller: _districtController,
-                        headline: 'District',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'District cannot be empty';
-                          }
-                          if (value.length < 3) {
-                            return 'Must be at least 3 characters long';
-                          }
-                          return null;
-                        },
-                      ),
-                      AddressTextform(
-                        controller: _stateController,
-                        headline: 'State',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'State cannot be empty';
-                          }
-                          if (value.length < 3) {
-                            return 'Must be at least 3 characters long';
-                          }
-                          return null;
-                        },
-                      ),
-                      AddressTextform(
-                        controller: _pinCodeController,
-                        headline: 'Pin Code',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Pin code cannot be empty';
-                          }
-                          if (value.length != 6) {
-                            return 'Pin code must be 6 digits';
-                          }
-                          if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                            return 'Pin code must contain only numbers';
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.number,
-                        maxLength: 6,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: BlocListener<AddressBloc, AddressState>(
+                    listener: (context, state) async {
+                      if (state is AddAddressSuccess && state.isNew) {
+                        showUpdateNotification(
+                            context: context, message: 'New address added');
+                        await Future.delayed(
+                            const Duration(milliseconds: 1000));
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      }
+                      if (state is UpdatedAddressSuccess && state.isNew) {
+                        showUpdateNotification(
+                            // ignore: use_build_context_synchronously
+                            context: context,
+                            message: ' Address updated');
+                        await Future.delayed(
+                            const Duration(milliseconds: 1000));
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      }
+                      if (state is AddressError) {
+                        showUpdateNotification(
+                            // ignore: use_build_context_synchronously
+                            context: context,
+                            message: state.message,
+                            color: Colors.red);
+                        await Future.delayed(
+                            const Duration(milliseconds: 1500));
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      }
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Flexible(
-                              child: SmallTextbutton(
-                                textColor: customTextTheme(context),
-                                width: 1.5,
-                                buttomColor: appTheme(context),
-                                buttomName: 'CANCEL',
-                                voidCallBack: () {
+                            CustomIcon(
+                                onTap: () {
                                   Navigator.of(context).pop();
                                 },
+                                icon: Icons.arrow_back,
+                                iconSize: 26),
+                            const SizedBox(
+                              width: 0,
+                            ),
+                            Expanded(
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                widget.isAddAddress
+                                    ? 'New Address'
+                                    : 'Edit Address',
+                                style: TextStyle(
+                                    color: customTextTheme(context),
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
                             const SizedBox(
                               width: 10,
                             ),
-                            Flexible(
-                              child: SmallTextbutton(
-                                width: 1.5,
-                                buttomColor: appTheme(context),
-                                buttomName: widget.isAddAddress
-                                    ? 'Save Address'
-                                    : 'Update Address',
-                                textColor: customTextTheme(context),
-                                voidCallBack: () async {
-                                  if (_formKey.currentState?.validate() ??
-                                      false) {
-                                    String addressId = '';
-                                    if (!widget.isAddAddress) {
-                                      addressId = widget.addressModel?.id ?? '';
-                                    }
-                                    final addressModel = AddressModel(
-                                      id: addressId, // This will be set by your backend
-                                      houseName:
-                                          _houseNameController.text.trim(),
-                                      postOffice:
-                                          _postOfficeController.text.trim(),
-                                      district: _districtController.text.trim(),
-                                      state: _stateController.text.trim(),
-                                      pinCode: _pinCodeController.text.trim(),
-                                    );
-                                    if (widget.isAddAddress) {
-                                      log('editing fuction called');
-                                      context.read<AddressBloc>().add(
-                                          AddAddress(addressModel.toMap()));
-                                    } else {
-                                      log('editing fuction called');
-                                      context.read<AddressBloc>().add(
-                                          EditAddress(addressId, addressModel));
-                                    }
-                                    Navigator.of(context).pop();
-                                  }
-                                },
-                              ),
-                            ),
                           ],
                         ),
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        AddressTextform(
+                          controller: _houseNameController,
+                          headline: 'House Name',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'House name cannot be empty';
+                            }
+                            if (value.length < 3) {
+                              return 'Must be at least 3 characters long';
+                            }
+                            return null;
+                          },
+                        ),
+                        AddressTextform(
+                          controller: _postOfficeController,
+                          headline: 'Post Office',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Post office cannot be empty';
+                            }
+                            if (value.length < 3) {
+                              return 'Must be at least 3 characters long';
+                            }
+                            return null;
+                          },
+                        ),
+                        AddressTextform(
+                          controller: _districtController,
+                          headline: 'District',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'District cannot be empty';
+                            }
+                            if (value.length < 3) {
+                              return 'Must be at least 3 characters long';
+                            }
+                            return null;
+                          },
+                        ),
+                        AddressTextform(
+                          controller: _stateController,
+                          headline: 'State',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'State cannot be empty';
+                            }
+                            if (value.length < 3) {
+                              return 'Must be at least 3 characters long';
+                            }
+                            return null;
+                          },
+                        ),
+                        AddressTextform(
+                          controller: _pinCodeController,
+                          headline: 'Pin Code',
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Pin code cannot be empty';
+                            }
+                            if (value.length != 6) {
+                              return 'Pin code must be 6 digits';
+                            }
+                            if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                              return 'Pin code must contain only numbers';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.number,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: SmallTextbutton(
+                                  textColor: customTextTheme(context),
+                                  width: 1.5,
+                                  buttomColor: appTheme(context),
+                                  buttomName: 'CANCEL',
+                                  voidCallBack: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                child: BlocBuilder<AddressBloc, AddressState>(
+                                  builder: (context, state) {
+                                    bool showLoading;
+                                    if (state is AddressLoading) {
+                                      showLoading = true;
+                                    } else {
+                                      showLoading = false;
+                                    }
+                                    return SmallTextbutton(
+                                      showcircleavatar: showLoading,
+                                      width: 1.5,
+                                      buttomColor: appTheme(context),
+                                      buttomName: widget.isAddAddress
+                                          ? 'Save Address'
+                                          : 'Update Address',
+                                      textColor: customTextTheme(context),
+                                      voidCallBack: () async {
+                                        if (_formKey.currentState?.validate() ??
+                                            false) {
+                                          String addressId = '';
+                                          if (!widget.isAddAddress) {
+                                            addressId =
+                                                widget.addressModel?.id ?? '';
+                                          }
+                                          final addressModel = AddressModel(
+                                            id: addressId, // This will be set by your backend
+                                            houseName: _houseNameController.text
+                                                .trim(),
+                                            postOffice: _postOfficeController
+                                                .text
+                                                .trim(),
+                                            district:
+                                                _districtController.text.trim(),
+                                            state: _stateController.text.trim(),
+                                            pinCode:
+                                                _pinCodeController.text.trim(),
+                                          );
+                                          if (widget.isAddAddress) {
+                                            log('editing fuction called');
+                                            context.read<AddressBloc>().add(
+                                                AddAddress(
+                                                    addressModel.toMap()));
+                                          } else {
+                                            log('editing fuction called');
+                                            context.read<AddressBloc>().add(
+                                                EditAddress(
+                                                    addressId, addressModel));
+                                          }
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

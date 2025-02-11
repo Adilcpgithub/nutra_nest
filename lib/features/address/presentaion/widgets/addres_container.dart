@@ -4,6 +4,7 @@ import 'package:nutra_nest/features/address/data/models/address_model.dart';
 
 import 'package:nutra_nest/utity/colors.dart';
 
+// ignore: must_be_immutable
 class AddresContainer extends StatelessWidget {
   final AddressModel addressModel;
   VoidCallback deleteAddress;
@@ -113,7 +114,9 @@ class AddresContainer extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
-                      color: customTextTheme(context)),
+                      color: addressModel.isPrimary
+                          ? const Color.fromARGB(255, 47, 250, 54)
+                          : customTextTheme(context)),
                 ),
               ),
             ),

@@ -25,7 +25,6 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
   // Load Addresses
   Future<void> _onLoadAddresses(
       LoadAddresses event, Emitter<AddressState> emit) async {
-    emit(AddressLoading());
     try {
       final userId = await userStatus.getUserId();
       DocumentSnapshot userDoc =
@@ -38,18 +37,17 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
 
       final userData = userDoc.data() as Map<String, dynamic>;
 
-      List<dynamic> addresses =
-          userData.containsKey('addresses') ? userData['addresses'] : [];
+      List<Map<String, dynamic>> addresses =
+          List<Map<String, dynamic>>.from(userData['addresses'] ?? []);
       String selectedId = userData.containsKey('selectedAddressId')
           ? userData['selectedAddressId']
           : '';
 
-      // Ensure only one address is marked as primary
+      // ✅ Ensure only one address is marked as `isPrimary`
       List<Map<String, dynamic>> updatedAddresses = addresses.map((address) {
         return {
-          ...address as Map<String, dynamic>,
-          'isPrimary':
-              address['id'] == selectedId, // Mark selected address as primary
+          ...address,
+          'isPrimary': address['id'] == selectedId, // Mark selected address
         };
       }).toList();
 
@@ -70,7 +68,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       log('on add user bloc');
       final userId = await userStatus.getUserId();
       DocumentReference userRef = firestore.collection('users').doc(userId);
-
+      emit(AddressLoading());
       await firestore.runTransaction((transaction) async {
         DocumentSnapshot userSnapshot = await transaction.get(userRef);
 
@@ -91,9 +89,11 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       });
 
       add(LoadAddresses());
+      emit(const AddAddressSuccess(true));
+      emit(const AddAddressSuccess(false));
     } catch (e) {
       log(e.toString());
-      emit(AddressError("Failed to add address: ${e.toString()}"));
+      emit(const AddressError("Failed to add address}"));
     }
   }
 
@@ -109,7 +109,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       add(LoadAddresses());
     } catch (e) {
       log(e.toString());
-      emit(AddressError("Failed to select address: ${e.toString()}"));
+      emit(const AddressError("Failed to select address}"));
     }
   }
 
@@ -120,22 +120,43 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       final userId = await userStatus.getUserId();
       DocumentReference userRef = firestore.collection('users').doc(userId);
 
-      await firestore.runTransaction((transaction) async {
-        DocumentSnapshot userSnapshot = await transaction.get(userRef);
+      // Get the latest data before making changes
+      DocumentSnapshot userSnapshot = await userRef.get();
+      final userData = userSnapshot.data() as Map<String, dynamic>? ?? {};
+      List<dynamic> addresses = List.from(userData['addresses'] ?? []);
 
-        final userData = userSnapshot.data() as Map<String, dynamic>? ?? {};
-        List<dynamic> addresses =
-            userData.containsKey('addresses') ? userData['addresses'] : [];
+      if (addresses.isEmpty) {
+        emit(const AddressLoaded(addresses: [], selectedAddressId: ''));
+        return;
+      }
 
-        if (addresses.isEmpty) {
-          throw Exception("No addresses found.");
-        }
+      // Remove the deleted address
+      addresses.removeWhere((addr) => addr['id'] == event.addressId);
 
-        addresses.removeWhere((addr) => addr['id'] == event.addressId);
-        transaction.update(userRef, {'addresses': addresses});
-      });
+      // Update Firestore
+      await userRef.update({'addresses': addresses});
 
-      add(LoadAddresses());
+      // Fetch updated data after deletion
+      DocumentSnapshot updatedSnapshot = await userRef.get();
+      final updatedData = updatedSnapshot.data() as Map<String, dynamic>? ?? {};
+      List<Map<String, dynamic>> updatedAddresses =
+          List<Map<String, dynamic>>.from(updatedData['addresses'] ?? []);
+      String updatedSelectedId = updatedData.containsKey('selectedAddressId')
+          ? updatedData['selectedAddressId']
+          : '';
+
+      // Ensure a valid selected address remains
+      if (updatedSelectedId.isEmpty && updatedAddresses.isNotEmpty) {
+        updatedSelectedId = updatedAddresses.first['id'];
+        await userRef.update({'selectedAddressId': updatedSelectedId});
+      }
+      emit(const AddressDeletionSuccess(true));
+      // Emit the updated state
+      emit(AddressLoaded(
+        addresses: updatedAddresses,
+        selectedAddressId: updatedSelectedId,
+      ));
+      // emit(const AddressDeletionSuccess(false));
     } catch (e) {
       emit(AddressError("Failed to delete address: ${e.toString()}"));
     }
@@ -161,7 +182,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         if (index == -1) {
           throw Exception("Address not found.");
         }
-
+        emit(AddressLoading());
         // Update the address with new details
         addresses[index] = {
           ...addresses[index], // Keep existing data
@@ -176,8 +197,12 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       });
 
       add(LoadAddresses()); // Reload addresses after edit
+      emit(const UpdatedAddressSuccess(true));
+      emit(const UpdatedAddressSuccess(false));
     } catch (e) {
-      emit(AddressError("Failed to update address: ${e.toString()}"));
+      emit(const AddressError(
+        "Failed to update address",
+      ));
     }
   }
 }

@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/features/address/data/models/address_model.dart';
 import 'package:nutra_nest/features/address/presentaion/bloc/address_bloc/address_bloc.dart';
@@ -10,6 +7,7 @@ import 'package:nutra_nest/features/address/presentaion/pages/add__edit_address_
 import 'package:nutra_nest/features/address/presentaion/widgets/addres_container.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
+import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
@@ -40,8 +38,16 @@ class _ManageAddressState extends State<ManageAddress> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Stack(children: [
-            SizedBox(
+          child: SizedBox(
+            child: BlocListener<AddressBloc, AddressState>(
+              listener: (context, state) {
+                if (state is AddressDeletionSuccess && state.isNew) {
+                  showUpdateNotification(
+                      context: context,
+                      message: 'Address deleted',
+                      color: Colors.red);
+                }
+              },
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -77,7 +83,7 @@ class _ManageAddressState extends State<ManageAddress> {
                       ],
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 30,
                     ),
                     Row(
                       children: [
@@ -89,16 +95,16 @@ class _ManageAddressState extends State<ManageAddress> {
                                 'Saved Addresses',
                                 style: TextStyle(
                                     color: customTextTheme(context),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800),
                               );
                             } else {
                               return Text(
-                                'No Address ',
+                                'No Address  ',
                                 style: TextStyle(
                                     color: customTextTheme(context),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800),
                               );
                             }
                           },
@@ -143,45 +149,47 @@ class _ManageAddressState extends State<ManageAddress> {
                           );
                         } else {
                           return SizedBox(
-                            height: deviceHeight(context) - 150,
+                            height: deviceHeight(context) / 2,
+                            child: Center(
+                              child:
+                                  Image.asset('assets/Address is empty.webp'),
+                            ),
                           );
                         }
                       },
                     ),
                   ]),
             ),
-            BlocBuilder<AddressBloc, AddressState>(
-              builder: (context, state) {
-                if (state is AddressLoaded && state.addresses.length < 3) {
-                  return Positioned(
-                    bottom: 30,
-                    left: 10,
-                    right: 0,
-                    child: SizedBox(
-                      height: 40,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 95),
-                        child: SmallTextbutton(
-                          buttomColor: CustomColors.green,
-                          buttomName: 'Add New',
-                          voidCallBack: () {
-                            CustomNavigation.push(
-                                context,
-                                AddOrDeleteaddressScreen(
-                                  isAddAddress: true,
-                                ));
-                          },
-                        ),
-                      ),
-                    ),
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
-            )
-          ]),
+          ),
         ),
+      ),
+      bottomNavigationBar: BlocBuilder<AddressBloc, AddressState>(
+        builder: (context, state) {
+          if (state is AddressLoaded && state.addresses.length < 3) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: SizedBox(
+                height: 40,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 95),
+                  child: SmallTextbutton(
+                    buttomColor: CustomColors.green,
+                    buttomName: 'Add Address',
+                    voidCallBack: () {
+                      CustomNavigation.push(
+                          context,
+                          AddOrDeleteaddressScreen(
+                            isAddAddress: true,
+                          ));
+                    },
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }
