@@ -6,6 +6,7 @@ import 'package:nutra_nest/utity/colors.dart';
 void showUpdateNotification({
   required BuildContext context,
   required String message,
+  int? milliseconds,
   Color? color = CustomColors.green,
   IconData icon = Icons.check_circle,
 }) {
@@ -31,7 +32,7 @@ void showUpdateNotification({
         borderRadius: BorderRadius.circular(10),
       ),
       margin: const EdgeInsets.all(30),
-      duration: const Duration(seconds: 2),
+      duration: Duration(milliseconds: milliseconds ?? 2000),
     ),
   );
 }

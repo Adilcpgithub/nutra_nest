@@ -45,7 +45,8 @@ class _ManageAddressState extends State<ManageAddress> {
                   showUpdateNotification(
                       context: context,
                       message: 'Address deleted',
-                      color: Colors.red);
+                      color: Colors.red,
+                      milliseconds: 1000);
                 }
               },
               child: Column(

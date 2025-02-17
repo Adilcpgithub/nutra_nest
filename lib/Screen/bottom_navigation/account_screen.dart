@@ -6,6 +6,7 @@ import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/screen/auth_screens/login_screen.dart';
+import 'package:nutra_nest/screen/bottom_navigation/chat_screen.dart';
 import 'package:nutra_nest/screen/user/profile_screen.dart';
 import 'package:nutra_nest/features/address/presentaion/pages/address_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
@@ -75,17 +76,15 @@ class AccountScreen extends StatelessWidget {
                         iconImage: 'assets/image copy 3.png',
                         function: () {},
                       ),
-                      // buildNameContainer(
-                      //   context: context,
-                      //   containerName: 'Frequently Asked Questions',
-                      //   iconImage: 'assets/image copy 4.png',
-                      //   function: () {},
-                      // ),
                       buildNameContainer(
                         context: context,
                         containerName: 'Help and Support',
                         iconImage: 'assets/image copy 5.png',
-                        function: () {},
+                        function: () async {
+                          UserStatus userStatus = UserStatus();
+                          final userId = await userStatus.getUserId();
+                          CustomNavigation.push(context, ChatScreen(userId));
+                        },
                       ),
                     ],
                   ),

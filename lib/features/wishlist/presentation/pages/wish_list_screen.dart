@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,9 +7,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
+import 'package:nutra_nest/features/cart/presentation/pages/cart_screen.dart';
+import 'package:nutra_nest/features/home/presentation/pages/product_details_page.dart';
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
+import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/utity/number_format.dart';
 import 'package:nutra_nest/utity/scaffol_message.dart';
 
@@ -141,137 +147,159 @@ Widget builWishList(BuildContext context) {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: SingleChildScrollView(
                     child: Stack(children: [
-                      Container(
-                        height: 160,
-                        decoration: BoxDecoration(
-                          color: isDark(context)
-                              ? CustomColors.white
-                              : CustomColors.lightWhite,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            // Product Image
+                      GestureDetector(
+                        onTap: () async {
+                          log('button pressed');
+                          Cycle? cycle = await getProductById(wishModelData.id);
+                          if (cycle != null) {
+                            CustomNavigation.push(
+                                // ignore: use_build_context_synchronously
+                                context,
+                                ProductDetails(
+                                  cycle: cycle,
+                                  fromCart: true,
+                                  cycleFromCart: cycle,
+                                  productId: wishModelData.id,
+                                  iscartAdded: true,
+                                ));
+                          } else {
+                            log('false');
+                          }
+                        },
+                        child: Container(
+                          height: 160,
+                          decoration: BoxDecoration(
+                            color: isDark(context)
+                                ? CustomColors.white
+                                : CustomColors.lightWhite,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              // Product Image
 
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: DecorationImage(
-                                      image: AssetImage(appLogo(context))),
-                                ),
-                                height: 130,
-                                width: 130,
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(12)),
-                                  child: Stack(children: [
-                                    Image.network(
-                                      wishModelData.imageUrl,
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                      loadingBuilder:
-                                          (context, child, loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          return child;
-                                        }
-                                        return ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(12),
-                                            topRight: Radius.circular(12),
-                                          ),
-                                          child: Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              SizedBox(
-                                                  height: double.infinity,
-                                                  width: double.maxFinite,
-                                                  child: Image.asset(
-                                                    appLogo(context),
-                                                    fit: BoxFit.cover,
-                                                  )),
-                                              const CircularProgressIndicator(
-                                                color: CustomColors.green,
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return const SizedBox(
-                                          height: double.maxFinite,
-                                          width: double.maxFinite,
-                                          child: Center(
-                                              child: Icon(
-                                            size: 50,
-                                            Icons.image_not_supported,
-                                            color: Colors.grey,
-                                          )),
-                                        );
-                                      },
-                                    ),
-                                  ]),
-                                ),
-                              ),
-                            ),
-                            // Product Details
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Product Name and Remove Button
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            wishModelData.name,
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black87,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: DecorationImage(
+                                        image: AssetImage(appLogo(context))),
+                                  ),
+                                  height: 130,
+                                  width: 130,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(12)),
+                                    child: Stack(children: [
+                                      Image.network(
+                                        wishModelData.imageUrl,
+                                        height: double.infinity,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12),
                                             ),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    // Product Details
-                                    Text(
-                                      'Brand : ${wishModelData.brand}',
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 13,
-                                        color: customTextTheme(context),
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                    height: double.infinity,
+                                                    width: double.maxFinite,
+                                                    child: Image.asset(
+                                                      appLogo(context),
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                                const CircularProgressIndicator(
+                                                  color: CustomColors.green,
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const SizedBox(
+                                            height: double.maxFinite,
+                                            width: double.maxFinite,
+                                            child: Center(
+                                                child: Icon(
+                                              size: 50,
+                                              Icons.image_not_supported,
+                                              color: Colors.grey,
+                                            )),
+                                          );
+                                        },
                                       ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    // Price and Add to Cart
-                                  ],
+                                    ]),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              // Product Details
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      // Product Name and Remove Button
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              wishModelData.name,
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black87,
+                                              ),
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      // Product Details
+                                      Text(
+                                        'Brand : ${wishModelData.brand}',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          color: customTextTheme(context),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      // Price and Add to Cart
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Positioned(

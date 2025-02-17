@@ -73,36 +73,36 @@ class _AddaddressScreenState extends State<AddOrDeleteaddressScreen> {
                   child: BlocListener<AddressBloc, AddressState>(
                     listener: (context, state) async {
                       if (state is AddAddressSuccess && state.isNew) {
-                        showUpdateNotification(
-                            context: context, message: 'New address added');
-                        await Future.delayed(
-                            const Duration(milliseconds: 1000));
-                        if (context.mounted) {
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          showUpdateNotification(
+                              context: context,
+                              message: 'New address added',
+                              milliseconds: 1200);
+                        }).then((_) {
                           Navigator.of(context).pop();
-                        }
+                        });
                       }
                       if (state is UpdatedAddressSuccess && state.isNew) {
-                        showUpdateNotification(
-                            // ignore: use_build_context_synchronously
-                            context: context,
-                            message: ' Address updated');
-                        await Future.delayed(
-                            const Duration(milliseconds: 1000));
-                        if (context.mounted) {
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          showUpdateNotification(
+                              context: context,
+                              message: 'Address updated',
+                              milliseconds: 1200);
+                        }).then((_) {
                           Navigator.of(context).pop();
-                        }
+                        });
                       }
                       if (state is AddressError) {
-                        showUpdateNotification(
-                            // ignore: use_build_context_synchronously
-                            context: context,
-                            message: state.message,
-                            color: Colors.red);
-                        await Future.delayed(
-                            const Duration(milliseconds: 1500));
-                        if (context.mounted) {
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          showUpdateNotification(
+                              // ignore: use_build_context_synchronously
+                              context: context,
+                              message: state.message,
+                              color: Colors.red,
+                              milliseconds: 1200);
+                        }).then((_) {
                           Navigator.of(context).pop();
-                        }
+                        });
                       }
                     },
                     child: Column(

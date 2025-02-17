@@ -95,7 +95,7 @@ class _EditProfileState extends State<EditProfile> {
             style: GoogleFonts.poppins(
               fontSize: 19,
               fontWeight: FontWeight.w600,
-              color: Colors.white,
+              color: customTextTheme(context),
             ),
           ),
         ),

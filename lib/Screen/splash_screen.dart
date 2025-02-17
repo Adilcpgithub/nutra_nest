@@ -78,7 +78,10 @@ class SplashScreen extends StatelessWidget {
                       child: Opacity(
                         opacity: state.opacity,
                         child: FadeInLeft(
-                          child: Image.asset(appLogo(context)),
+                          child: Image.asset(
+                            appLogo(context),
+                            height: deviceHeight(context) / 3,
+                          ),
                         ),
                       ),
                     ),
