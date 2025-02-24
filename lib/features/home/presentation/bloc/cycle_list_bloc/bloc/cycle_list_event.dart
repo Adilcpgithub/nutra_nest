@@ -4,7 +4,7 @@ sealed class CycleEvent extends Equatable {
   const CycleEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadCycleByType extends CycleEvent {
@@ -33,7 +33,7 @@ class ToggleFavoriteEvent extends CycleEvent {
   const ToggleFavoriteEvent(this.productId, this.userId);
 
   @override
-  List<Object> get props => [productId];
+  List<Object> get props => [productId, userId];
 }
 
 // ignore: must_be_immutable
@@ -64,7 +64,15 @@ class SearchCycles extends CycleEvent {
             ? priceList[pricetypeNumber]
             : null;
   @override
-  List<Object> get props => [cycleTypeList, category, typeNumber];
+  List<Object?> get props => [
+        priceList,
+        cycleNameOrBrand,
+        priceRange,
+        pricetypeNumber,
+        cycleTypeList,
+        category,
+        typeNumber
+      ];
   @override
   String toString() {
     return 'SearchCycles(category: $category, typeNumber: $typeNumber, cycleNameOrBrand: $cycleNameOrBrand, priceRange: $priceRange, pricetypeNumber: $pricetypeNumber)';

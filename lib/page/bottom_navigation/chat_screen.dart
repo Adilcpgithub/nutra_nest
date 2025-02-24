@@ -5,15 +5,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
-import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/page/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 
 class ChatScreen extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final useId;
-  ChatScreen(this.useId);
+  const ChatScreen(this.useId, {super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ChatScreenState createState() => _ChatScreenState();
 }
 
@@ -36,6 +38,9 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     _messageController.clear();
+    await _db.collection("chats").doc(senderId).set({
+      "exists": true,
+    });
   }
 
   @override
@@ -146,6 +151,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       style: TextStyle(color: customTextTheme(context)),
                       controller: _messageController,
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.sentences,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15)),

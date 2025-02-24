@@ -1,14 +1,19 @@
+// ignore_for_file: dead_code
+
+import 'dart:async';
 import 'dart:developer';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/home_product/prodoct_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/pages/product_details_page.dart';
 import 'package:nutra_nest/features/home/presentation/pages/product_list_page.dart';
 import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
+import 'package:nutra_nest/utity/card.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/utity/number_format.dart';
@@ -25,7 +30,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    log('haeijioeejoi1;1');
+    context.read<ProductBloc>().add(ProductInitialEvent());
 
     super.initState();
   }
@@ -52,9 +57,66 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         _buildHeader(context),
                         _buildSearchBar(context),
-                        _buildFeaturedSection(context),
-                        _buildSparePartsSection(context),
-                        _buildCycleTypesGrid(context),
+                        BlocBuilder<ProductBloc, ProductState>(
+                          builder: (context, state) {
+                            if (state is ProductLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: CustomColors.green,
+                                ),
+                              );
+                            } else if (state is ProductLoadedState) {
+                              return SizedBox(
+                                height: 800,
+                                child: GridView.builder(
+                                  padding: const EdgeInsets.only(bottom: 240),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 6,
+                                    mainAxisSpacing: 5,
+                                    childAspectRatio: 0.76,
+                                  ),
+                                  itemCount: state.cycles.length,
+                                  itemBuilder: (context, index) {
+                                    final cycle = state.cycles[index];
+
+                                    return SizedBox(
+                                      height: 180,
+                                      // width: double.infinity,
+                                      child: cycleProductCard(
+                                        cycle: cycle,
+                                        context: context,
+                                        id: cycle.id,
+                                        imagUrl: cycle.imageUrl[0],
+                                        funtion: () {
+                                          log('dddd');
+                                          CustomNavigation.push(
+                                              context,
+                                              ProductDetails(
+                                                cycle: cycle,
+                                                fromCart: false,
+                                                productId: cycle.id,
+                                              ));
+                                        },
+                                        cycleName: cycle.name,
+                                        price: cycle.price,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Column(
+                                children: [
+                                  _buildFeaturedSection(context),
+                                  _buildSparePartsSection(context),
+                                  _buildCycleTypesGrid(context),
+                                ],
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -107,7 +169,7 @@ Widget _buildHeader(BuildContext context) {
               ),
             ),
             Text(
-              'Rider-Spot',
+              'Rider Spot',
               style: GoogleFonts.poppins(
                 color: Theme.of(context).textTheme.bodySmall!.color,
                 fontSize: 24,
@@ -203,6 +265,7 @@ Widget _buildHeader(BuildContext context) {
 
 //adfashskdflasdhf
 Widget _buildSearchBar(BuildContext context) {
+  Timer? _debounce;
   final TextEditingController searchCountroller = TextEditingController();
   FocusNode focusNode = FocusNode();
   return FadeInDown(
@@ -213,6 +276,21 @@ Widget _buildSearchBar(BuildContext context) {
           child: SizedBox(
             height: 68,
             child: CustomTextFormField(
+              onChanged: (value) {
+                if (_debounce?.isActive ?? false) _debounce!.cancel();
+                _debounce = Timer(const Duration(milliseconds: 700), () {
+                  // Call your search function here
+                  if (value.isNotEmpty) {
+                    log('kooi');
+
+                    context.read<ProductBloc>().add(GetAllPoduct(value));
+                  } else {
+                    context.read<ProductBloc>().add(ProductInitialEvent());
+                  }
+                });
+
+                log(value);
+              },
               focusNode: focusNode,
               autofocus: false,
               prefixIcon: const Padding(

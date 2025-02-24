@@ -8,7 +8,7 @@ import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/p
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
-import 'package:nutra_nest/screen/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/page/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';

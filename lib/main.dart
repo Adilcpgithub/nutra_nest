@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nutra_nest/Blocs/LoginBloc/bloc/login_bloc.dart';
-import 'package:nutra_nest/Blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/LoginBloc/bloc/profil_bloc/bloc/profil_bloc.dart';
 import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
@@ -17,10 +16,12 @@ import 'package:nutra_nest/core/theme/cubit/theme_cubit.dart';
 import 'package:nutra_nest/features/address/presentaion/bloc/address_bloc/address_bloc.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/home_product/prodoct_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/price_container/price_container_bloc.dart';
+import 'package:nutra_nest/features/splash/presentation/blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
-import 'package:nutra_nest/screen/splash_screen.dart';
-import 'package:nutra_nest/screen/user/re_auth/cubit/auth_cubit.dart';
+import 'package:nutra_nest/features/splash/presentation/page/splash_screen.dart';
+import 'package:nutra_nest/page/user/re_auth/cubit/auth_cubit.dart';
 
 void main() async {
   // await FirebaseAppCheck.instance.activate(
@@ -102,6 +103,7 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => WishBloc()),
           BlocProvider(create: (context) => AuthCubit()),
           BlocProvider(create: (context) => AddressBloc()),
+          BlocProvider(create: (context) => ProductBloc()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
