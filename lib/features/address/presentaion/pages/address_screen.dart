@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/features/address/data/models/address_model.dart';
 import 'package:nutra_nest/features/address/presentaion/bloc/address_bloc/address_bloc.dart';
@@ -11,8 +12,10 @@ import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 import 'package:nutra_nest/widgets/small_text_buttom.dart';
 
+// ignore: must_be_immutable
 class ManageAddress extends StatefulWidget {
-  const ManageAddress({super.key});
+  bool? isFromCheckout;
+  ManageAddress({super.key, this.isFromCheckout});
 
   @override
   State<ManageAddress> createState() => _ManageAddressState();
@@ -22,6 +25,11 @@ class _ManageAddressState extends State<ManageAddress> {
   @override
   void initState() {
     context.read<AddressBloc>().add(LoadAddresses());
+    if (widget.isFromCheckout != null && widget.isFromCheckout == true) {
+      Fluttertoast.showToast(
+          msg: 'Choose your default address or add a new ',
+          timeInSecForIosWeb: 3);
+    }
     super.initState();
   }
 

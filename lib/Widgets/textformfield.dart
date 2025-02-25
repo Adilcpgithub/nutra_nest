@@ -15,9 +15,11 @@ class CustomTextFormField extends StatelessWidget {
   final FloatingLabelBehavior? floatingLabelBehavior;
   final String? errorText;
   bool? autofocus;
+
   FocusNode? focusNode;
   Color? labelTextColor;
   AutovalidateMode? autovalidateMode;
+  IconButton? suffixIcon;
 
   CustomTextFormField(
       {super.key,
@@ -34,7 +36,8 @@ class CustomTextFormField extends StatelessWidget {
       this.labelTextColor,
       this.autofocus,
       this.focusNode,
-      this.autovalidateMode});
+      this.autovalidateMode,
+      this.suffixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +67,7 @@ class CustomTextFormField extends StatelessWidget {
             ),
             hintText: hintText,
             prefixIcon: prefixIcon,
+            suffixIcon: suffixIcon,
 
             errorText: errorText, // Show error text here
             border: OutlineInputBorder(

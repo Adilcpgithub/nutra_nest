@@ -18,9 +18,11 @@ import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/home_product/prodoct_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/price_container/price_container_bloc.dart';
+import 'package:nutra_nest/features/payment/presentation/blocs/user_addres/user_address_bloc.dart';
 import 'package:nutra_nest/features/splash/presentation/blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
 import 'package:nutra_nest/features/splash/presentation/page/splash_screen.dart';
+import 'package:nutra_nest/page/razorpay_screen.dart';
 import 'package:nutra_nest/page/user/re_auth/cubit/auth_cubit.dart';
 
 void main() async {
@@ -104,6 +106,7 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => AuthCubit()),
           BlocProvider(create: (context) => AddressBloc()),
           BlocProvider(create: (context) => ProductBloc()),
+          BlocProvider(create: (context) => UserAddressBloc()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
@@ -112,7 +115,9 @@ class _MyWidgetState extends State<MyApp> {
                 darkTheme: darkTheme,
                 themeMode: themeMode,
                 debugShowCheckedModeBanner: false,
-                home: const SplashScreen()
+                home:
+                    // Sample(),
+                    const SplashScreen()
                 //  SignSuccess(),
                 // OtpVerificationScreen()
                 //  OtpVerificationScreen()

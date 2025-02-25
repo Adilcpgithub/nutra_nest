@@ -67,7 +67,7 @@ class AccountScreen extends StatelessWidget {
                         containerName: 'Update Address',
                         iconImage: 'assets/image copy.png',
                         function: () {
-                          CustomNavigation.push(context, const ManageAddress());
+                          CustomNavigation.push(context, ManageAddress());
                         },
                       ),
                       buildNameContainer(

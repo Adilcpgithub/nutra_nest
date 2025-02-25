@@ -60,52 +60,76 @@ class _HomeScreenState extends State<HomeScreen> {
                         BlocBuilder<ProductBloc, ProductState>(
                           builder: (context, state) {
                             if (state is ProductLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator(
-                                  color: CustomColors.green,
+                              return const SizedBox(
+                                height: 400,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: CustomColors.green,
+                                  ),
                                 ),
                               );
                             } else if (state is ProductLoadedState) {
-                              return SizedBox(
-                                height: 800,
-                                child: GridView.builder(
-                                  padding: const EdgeInsets.only(bottom: 240),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 6,
-                                    mainAxisSpacing: 5,
-                                    childAspectRatio: 0.76,
+                              if (state.cycles.isEmpty) {
+                                return SizedBox(
+                                  height: 800,
+                                  child: SingleChildScrollView(
+                                    physics: const BouncingScrollPhysics(),
+                                    child: Center(
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Lottie.asset(
+                                              height: deviceHeight(context) / 2,
+                                              width: deviceWidth(context) / 3,
+                                              'assets/Animation - 1736829505158.json',
+                                            ),
+                                          ]),
+                                    ),
                                   ),
-                                  itemCount: state.cycles.length,
-                                  itemBuilder: (context, index) {
-                                    final cycle = state.cycles[index];
+                                );
+                              } else {
+                                return SizedBox(
+                                  height: 800,
+                                  child: GridView.builder(
+                                    padding: const EdgeInsets.only(bottom: 240),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 6,
+                                      mainAxisSpacing: 5,
+                                      childAspectRatio: 0.76,
+                                    ),
+                                    itemCount: state.cycles.length,
+                                    itemBuilder: (context, index) {
+                                      final cycle = state.cycles[index];
 
-                                    return SizedBox(
-                                      height: 180,
-                                      // width: double.infinity,
-                                      child: cycleProductCard(
-                                        cycle: cycle,
-                                        context: context,
-                                        id: cycle.id,
-                                        imagUrl: cycle.imageUrl[0],
-                                        funtion: () {
-                                          log('dddd');
-                                          CustomNavigation.push(
-                                              context,
-                                              ProductDetails(
-                                                cycle: cycle,
-                                                fromCart: false,
-                                                productId: cycle.id,
-                                              ));
-                                        },
-                                        cycleName: cycle.name,
-                                        price: cycle.price,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
+                                      return SizedBox(
+                                        height: 180,
+                                        // width: double.infinity,
+                                        child: cycleProductCard(
+                                          cycle: cycle,
+                                          context: context,
+                                          id: cycle.id,
+                                          imagUrl: cycle.imageUrl[0],
+                                          funtion: () {
+                                            log('dddd');
+                                            CustomNavigation.push(
+                                                context,
+                                                ProductDetails(
+                                                  cycle: cycle,
+                                                  fromCart: false,
+                                                  productId: cycle.id,
+                                                ));
+                                          },
+                                          cycleName: cycle.name,
+                                          price: cycle.price,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
                             } else {
                               return Column(
                                 children: [
@@ -276,6 +300,16 @@ Widget _buildSearchBar(BuildContext context) {
           child: SizedBox(
             height: 68,
             child: CustomTextFormField(
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    focusNode.unfocus();
+                    searchCountroller.clear();
+                    context.read<ProductBloc>().add(ProductInitialEvent());
+                  },
+                  icon: Icon(
+                    Icons.clear,
+                    color: customTextTheme(context),
+                  )),
               onChanged: (value) {
                 if (_debounce?.isActive ?? false) _debounce!.cancel();
                 _debounce = Timer(const Duration(milliseconds: 700), () {

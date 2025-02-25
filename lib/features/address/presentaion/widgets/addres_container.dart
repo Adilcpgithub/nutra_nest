@@ -115,7 +115,7 @@ class AddresContainer extends StatelessWidget {
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
                       color: addressModel.isPrimary
-                          ? const Color.fromARGB(255, 47, 250, 54)
+                          ? Colors.red
                           : customTextTheme(context)),
                 ),
               ),

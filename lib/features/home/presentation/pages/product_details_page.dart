@@ -185,67 +185,57 @@ class _ProductDetailsState extends State<ProductDetails> {
                             height: 10,
                           ),
                           //!------------------------------
-                          Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 1, bottom: 1, left: 2, right: 2),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        'Rating ',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .color,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: List.generate(5, (index) {
-                                          return Icon(
-                                            Icons.star,
-                                            color: index < rating
-                                                ? Colors.yellow
-                                                : Colors.grey,
-                                            size: 21,
-                                          );
-                                        }),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          customSizedBox(3),
-                          Row(
-                            children: [
-                              Text(
-                                'Weight : ${currentCycle.weight} Kg',
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .color,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     Container(
+                          //       decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(5),
+                          //       ),
+                          //       child: Padding(
+                          //         padding: const EdgeInsets.only(
+                          //             top: 1, bottom: 1, left: 2, right: 2),
+                          //         child: Row(
+                          //           mainAxisAlignment:
+                          //               MainAxisAlignment.spaceEvenly,
+                          //           children: [
+                          //             // Text(
+                          //             //   'Rating ',
+                          //             //   style: TextStyle(
+                          //             //     fontSize: 15,
+                          //             //     color: Theme.of(context)
+                          //             //         .textTheme
+                          //             //         .bodySmall!
+                          //             //         .color,
+                          //             //   ),
+                          //             // ),
+
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          //   customSizedBox(3),
+                          // Row(
+                          //   children: [
+                          //     Text(
+                          //       'Weight : ${currentCycle.weight} Kg',
+                          //       style: TextStyle(
+                          //         color: Theme.of(context)
+                          //             .textTheme
+                          //             .bodySmall!
+                          //             .color,
+                          //         fontSize: 15,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           customSizedBox(3),
                           Row(
                             children: [
                               Text(
                                 textAlign: TextAlign.left,
-                                '₹${currentCycle.price}.00',
+                                'Price : ₹${currentCycle.price}.00',
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme
@@ -292,6 +282,59 @@ class _ProductDetailsState extends State<ProductDetails> {
                               ),
                             ],
                           ),
+                          //! comment section
+                          Divider(
+                            thickness: 0.2,
+                            color: customTextTheme(context),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Ratings & Reviews',
+                                style: TextStyle(
+                                  color: customTextTheme(context),
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: List.generate(5, (index) {
+                                  return Icon(
+                                    Icons.star,
+                                    color: index < rating
+                                        ? Colors.yellow
+                                        : Colors.grey,
+                                    size: 21,
+                                  );
+                                }),
+                              ),
+                              Expanded(child: SizedBox()),
+                              const SizedBox(
+                                height: 120,
+                                child: const Column(
+                                  children: [
+                                    StarRatingBar(rating: 10, maxRating: 10),
+                                    StarRatingBar(rating: 10, maxRating: 10),
+                                    StarRatingBar(rating: 10, maxRating: 10),
+                                    StarRatingBar(rating: 10, maxRating: 10),
+                                    StarRatingBar(rating: 10, maxRating: 10),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+
+                          Divider(
+                            thickness: 0.2,
+                            color: customTextTheme(context),
+                          ),
+                          //!
                           const SizedBox(
                             height: 120,
                           )
@@ -300,7 +343,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       if (currentCycle.description.length < 360)
                         const SizedBox(
                           height: 80,
-                        )
+                        ),
                     ],
                   ),
                 ),
@@ -654,4 +697,36 @@ Widget buildImageIconsAndFavorite(
       },
     ),
   ]);
+}
+
+class StarRatingBar extends StatelessWidget {
+  final double rating;
+  final double maxRating;
+
+  const StarRatingBar(
+      {super.key, required this.rating, required this.maxRating});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Icon(Icons.star, color: Colors.green, size: 20), // Star Icon
+        const SizedBox(width: 8), // Spacing
+        SizedBox(
+          width: 90,
+          child: Expanded(
+            child: LinearProgressIndicator(
+              value: rating / maxRating, // Normalize value (0 to 1)
+              backgroundColor: Colors.grey[300], // Background bar
+              color: Colors.green, // Progress color
+              minHeight: 7, // Adjust thickness
+              borderRadius: BorderRadius.circular(5),
+            ),
+          ),
+        ),
+
+        Text("$rating/$maxRating"), // Show numeric value
+      ],
+    );
+  }
 }

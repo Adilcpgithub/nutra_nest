@@ -10,6 +10,7 @@ import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/pages/product_details_page.dart';
+import 'package:nutra_nest/features/payment/presentation/pages/checkout_page.dart';
 import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
@@ -516,6 +517,11 @@ buildCheckOutButton() {
   return BlocBuilder<CartBloc, CartState>(
     builder: (context, state) {
       if (state.cartItems.isNotEmpty) {
+        // Collect cart details
+        final cartItems = state.cartItems;
+        final subtotal = state is ProductTotal ? state.total : 0;
+        const shippingCost = 560.00;
+        final totalAmount = subtotal + shippingCost;
         return Positioned(
           bottom: 16,
           left: 20,
@@ -525,7 +531,14 @@ buildCheckOutButton() {
               color: CustomColors.green,
               nameColor: Colors.white,
               buttomName: 'PROCEED TO CHECKOUT',
-              voidCallBack: () {},
+              voidCallBack: () {
+                CustomNavigation.push(
+                    context,
+                    CheckoutPage(
+                        cartItems: cartItems,
+                        shippingCost: shippingCost,
+                        totalAmount: totalAmount));
+              },
             ),
           ),
         );
