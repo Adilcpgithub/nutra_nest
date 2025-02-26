@@ -22,6 +22,8 @@ import 'package:nutra_nest/features/payment/presentation/blocs/user_addres/user_
 import 'package:nutra_nest/features/splash/presentation/blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
 import 'package:nutra_nest/features/splash/presentation/page/splash_screen.dart';
+import 'package:nutra_nest/page/bottom_navigation/order/data/repository/order_repository.dart';
+import 'package:nutra_nest/page/bottom_navigation/order/presentation/bloc/user_order_bloc/user_order_bloc.dart';
 import 'package:nutra_nest/page/razorpay_screen.dart';
 import 'package:nutra_nest/page/user/re_auth/cubit/auth_cubit.dart';
 
@@ -107,6 +109,9 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(create: (context) => AddressBloc()),
           BlocProvider(create: (context) => ProductBloc()),
           BlocProvider(create: (context) => UserAddressBloc()),
+          BlocProvider(
+              create: (context) =>
+                  UserOrderBloc(orderRepository: OrderRepository())),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {

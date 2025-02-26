@@ -7,6 +7,7 @@ import 'package:nutra_nest/core/network/cubit/network_cubit.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/page/auth_screens/login_screen.dart';
 import 'package:nutra_nest/page/bottom_navigation/chat_screen.dart';
+import 'package:nutra_nest/page/bottom_navigation/order/presentation/page/order_page.dart';
 import 'package:nutra_nest/page/user/profile_screen.dart';
 import 'package:nutra_nest/features/address/presentaion/pages/address_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
@@ -72,9 +73,11 @@ class AccountScreen extends StatelessWidget {
                       ),
                       buildNameContainer(
                         context: context,
-                        containerName: 'Purchase History',
+                        containerName: 'Order History',
                         iconImage: 'assets/image copy 3.png',
-                        function: () {},
+                        function: () {
+                          CustomNavigation.push(context, const OrderPage());
+                        },
                       ),
                       buildNameContainer(
                         context: context,

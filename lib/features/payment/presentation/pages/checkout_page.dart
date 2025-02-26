@@ -247,10 +247,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       buttomName: 'PROCEED TO CHECKOUT',
                       voidCallBack: () {
                         if (haveAddress) {
+                          var selectedAddress = (state as UserAddressLoaded)
+                              .selectedAddress; //  Get address
+
                           CustomNavigation.push(
                               context,
-                              Sample(
+                              RazorpayScreen(
+                                cartItems: widget.cartItems,
+                                shippingCost: widget.shippingCost,
                                 totalAmount: widget.totalAmount,
+                                address: selectedAddress,
                               ));
                         } else {
                           Fluttertoast.showToast(
