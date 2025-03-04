@@ -818,7 +818,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                       return Center(child: Text(state.message));
                     } else {
                       log('no reveviw');
-                      return Text(
+                      return const Text(
                         'aaaaa',
                         style: TextStyle(color: Colors.amber),
                       );
@@ -827,7 +827,7 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                 ),
               ),
               GestureDetector(
-                child: Text('sssssssssssss'),
+                child: const Text('sssssssssssss'),
                 onTap: () {
                   log('onTap dcalled');
                   context.read<ReviewBloc>().add(AddReviewEvent(
