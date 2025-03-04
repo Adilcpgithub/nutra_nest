@@ -8,13 +8,9 @@ abstract class ProfilEvent extends Equatable {
 }
 
 class UploadImageEvent extends ProfilEvent {
-  final String userId;
-
-  const UploadImageEvent(
-    this.userId,
-  );
+  const UploadImageEvent();
   @override
-  List<Object> get props => [userId];
+  List<Object> get props => [];
 }
 
 class DefaultImageEvent extends ProfilEvent {}

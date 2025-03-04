@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/image_bloc/bloc/image_bloc.dart';
+import 'package:nutra_nest/features/home/data/models/review_model.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cubit/product_cubit/product_cart_cubit.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/review/review_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/widgets/product_details_widget.dart';
 import 'package:nutra_nest/model/cycle.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/page/bottom_navigation/bottom_navigation_screen.dart';
@@ -43,9 +46,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   late Cycle currentCycle;
 
   final int rating = 4;
-  bool isExpanded = false;
-  String sampleData =
-      "LoreIpsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inIpsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inyLorem Ipsorem Ipsum has been the inm y";
 
   //! here the for sample remove with actual data
   bool favorite = false;
@@ -288,7 +288,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             color: customTextTheme(context),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Ratings & Reviews',
@@ -298,10 +298,23 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
+                              ProductDetailsWidget.rateProdcutButton(
+                                context,
+                                () {
+                                  CustomNavigation.push(
+                                      context,
+                                      ReviewWidget(
+                                        productId: widget.productId,
+                                      ));
+                                },
+                              )
                             ],
                           ),
+
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: List.generate(5, (index) {
@@ -314,27 +327,23 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   );
                                 }),
                               ),
-                              Expanded(child: SizedBox()),
-                              const SizedBox(
-                                height: 120,
-                                child: const Column(
-                                  children: [
-                                    StarRatingBar(rating: 10, maxRating: 10),
-                                    StarRatingBar(rating: 10, maxRating: 10),
-                                    StarRatingBar(rating: 10, maxRating: 10),
-                                    StarRatingBar(rating: 10, maxRating: 10),
-                                    StarRatingBar(rating: 10, maxRating: 10),
-                                  ],
-                                ),
-                              )
                             ],
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
 
                           Divider(
                             thickness: 0.2,
                             color: customTextTheme(context),
                           ),
-                          //!
+
+                          Container(
+                            height: 200,
+                            width: double.infinity,
+                            color: Colors.amberAccent,
+                          ),
+                          // //!
                           const SizedBox(
                             height: 120,
                           )
@@ -727,6 +736,114 @@ class StarRatingBar extends StatelessWidget {
 
         Text("$rating/$maxRating"), // Show numeric value
       ],
+    );
+  }
+}
+
+//!-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+class ReviewWidget extends StatefulWidget {
+  final String productId;
+
+  const ReviewWidget({super.key, required this.productId});
+
+  @override
+  State<ReviewWidget> createState() => _ReviewWidgetState();
+}
+
+class _ReviewWidgetState extends State<ReviewWidget> {
+  @override
+  void initState() {
+    context.read<ReviewBloc>().add(FetchReviewsEvent(widget.productId));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          height: 800,
+          color: Colors.white,
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  context.read<ReviewBloc>().add(AddReviewEvent(
+                      widget.productId,
+                      Review(
+                          userId: widget.productId,
+                          userName: 'userName',
+                          comment: 'comment',
+                          rating: 2,
+                          date: DateTime.now())));
+                },
+                child: Container(
+                  height: 100,
+                  color: CustomColors.lightWhite,
+                ),
+              ),
+              SizedBox(
+                height: 500,
+                width: double.infinity,
+                child: BlocBuilder<ReviewBloc, ReviewState>(
+                  builder: (context, state) {
+                    if (state is ReviewLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is ReviewsLoaded) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: state.reviews.map((review) {
+                            return ListTile(
+                              leading:
+                                  const Icon(Icons.star, color: Colors.orange),
+                              title: Text(review.userName),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(review.comment),
+                                  Text(review.date.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.grey)),
+                                ],
+                              ),
+                              trailing: Text(review.rating.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    } else if (state is ReviewError) {
+                      return Center(child: Text(state.message));
+                    } else {
+                      log('no reveviw');
+                      return Text(
+                        'aaaaa',
+                        style: TextStyle(color: Colors.amber),
+                      );
+                    }
+                  },
+                ),
+              ),
+              GestureDetector(
+                child: Text('sssssssssssss'),
+                onTap: () {
+                  log('onTap dcalled');
+                  context.read<ReviewBloc>().add(AddReviewEvent(
+                      widget.productId,
+                      Review(
+                          userId: widget.productId,
+                          userName: 'userName',
+                          comment: 'comment',
+                          rating: 2,
+                          date: DateTime.now())));
+                },
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

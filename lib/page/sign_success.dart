@@ -13,46 +13,48 @@ class SignSuccess extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appTheme(context),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Stack(children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: deviceWidth(context) / 2,
-                  child: Center(
-                      child: LottieBuilder.asset(
-                          'assets/Animation - 1736831368600.json')),
-                ),
-                Text(
-                  ' Successful!',
-                  style: TextStyle(
-                      color: customTextTheme(context),
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 120,
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: Stack(children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: deviceWidth(context) / 2,
+                    child: Center(
+                        child: LottieBuilder.asset(
+                            'assets/Animation - 1736831368600.json')),
+                  ),
+                  Text(
+                    ' Successful!',
+                    style: TextStyle(
+                        color: customTextTheme(context),
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 120,
+                  ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 55,
-            left: 5,
-            right: 5,
-            child: CustomTextbutton(
-                color: CustomColors.green,
-                buttomName: 'START SHOPPING',
-                nameColor: Colors.white,
-                voidCallBack: () async {
-                  CustomNavigation.pushAndRemoveUntil(
-                      context, const MyHomePage());
-                }),
-          )
-        ]),
+            Positioned(
+              bottom: 55,
+              left: 5,
+              right: 5,
+              child: CustomTextbutton(
+                  color: CustomColors.green,
+                  buttomName: 'START SHOPPING',
+                  nameColor: Colors.white,
+                  voidCallBack: () async {
+                    CustomNavigation.pushAndRemoveUntil(
+                        context, const MyHomePage());
+                  }),
+            )
+          ]),
+        ),
       ),
     );
   }

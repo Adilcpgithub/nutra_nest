@@ -52,314 +52,335 @@ class SignUpScreen extends StatelessWidget {
         child: BlocBuilder<SignUpBloc, SignUpState>(
           builder: (context, state) {
             return SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                      //  height: 10,
-                      ),
-                  SizedBox(
-                    height: deviceHeight / 3,
-                    child: FadeInLeft(
-                      child: Center(
-                          child: Image.asset(
-                        appLogo(context),
-                        width: 300,
-                      )),
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    child: Form(
-                      autovalidateMode: state.activateValidation
-                          ? AutovalidateMode.onUserInteraction
-                          : null,
-                      key: _formKey,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: const Border(
-                              top: BorderSide(
-                                  width: 5, color: CustomColors.green)),
-                          color: isDark(context) ? Colors.black : Colors.white,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
+              child: Center(
+                child: SizedBox(
+                  width:
+                      deviceWidth(context) > 400 ? 600 : deviceWidth(context),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                          //  height: 10,
                           ),
+                      SizedBox(
+                        width: deviceWidth(context) > 400
+                            ? 600
+                            : deviceWidth(context),
+                        height: deviceHeight / 3,
+                        child: FadeInLeft(
+                          child: Center(
+                              child: Image.asset(
+                            appLogo(context),
+                            width: 300,
+                          )),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 35),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 20),
-                                child: Text(
-                                  'Sign Up',
-                                  style: TextStyle(
-                                      color: customTextTheme(context),
-                                      fontSize: 34,
-                                      fontWeight: FontWeight.w700),
-                                ),
+                      ),
+                      SingleChildScrollView(
+                        child: Form(
+                          autovalidateMode: state.activateValidation
+                              ? AutovalidateMode.onUserInteraction
+                              : null,
+                          key: _formKey,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: const Border(
+                                  top: BorderSide(
+                                      width: 5, color: CustomColors.green)),
+                              color:
+                                  isDark(context) ? Colors.black : Colors.white,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
                               ),
-                              //1///////////////////////
-                              SizedBox(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: deviceHeight * 0.002),
-                                  child: CustomTextFormField(
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter Name';
-                                      }
-                                      return null;
-                                    },
-                                    controller: _nameController,
-                                    labelText: ' Name  ',
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 35),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20, bottom: 20),
+                                    child: Text(
+                                      'Sign Up',
+                                      style: TextStyle(
+                                          color: customTextTheme(context),
+                                          fontSize: 34,
+                                          fontWeight: FontWeight.w700),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              //2//////////////////
-                              SizedBox(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: deviceHeight * 0.002),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CustomTextFormField(
+                                  //1///////////////////////
+                                  SizedBox(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: deviceHeight * 0.002),
+                                      child: CustomTextFormField(
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'Please enter Phone';
-                                          }
-                                          final mobileRegex =
-                                              RegExp(r'^[0-9]{7,10}$');
-                                          if (!mobileRegex.hasMatch(value)) {
-                                            return 'Please enter a valid mobile number (7 to 10 digits)';
+                                            return 'Please enter Name';
                                           }
                                           return null;
                                         },
-                                        controller: _phoneController,
-                                        labelText: 'Phone Number',
-                                        keyboardType: TextInputType.number,
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
+                                        controller: _nameController,
+                                        labelText: ' Name  ',
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                              //3///////////////////
-                              SizedBox(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: deviceHeight * 0.002),
-                                  child: CustomTextFormField(
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter Email';
-                                      }
-                                      final emailRegex =
-                                          RegExp(r'^[^@]+@[^@]+\.[^@]+');
-                                      if (!emailRegex.hasMatch(value)) {
-                                        return 'Please enter a valid email address';
-                                      }
-                                      return null;
-                                    },
-                                    controller: _emailController,
-                                    labelText: ' Email  ',
+                                  //2//////////////////
+                                  SizedBox(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: deviceHeight * 0.002),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CustomTextFormField(
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter Phone';
+                                              }
+                                              final mobileRegex =
+                                                  RegExp(r'^[0-9]{7,10}$');
+                                              if (!mobileRegex
+                                                  .hasMatch(value)) {
+                                                return 'Please enter a valid mobile number (7 to 10 digits)';
+                                              }
+                                              return null;
+                                            },
+                                            controller: _phoneController,
+                                            labelText: 'Phone Number',
+                                            keyboardType: TextInputType.number,
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.never,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              //4////////////////////////
-                              SizedBox(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: deviceHeight * 0.002),
-                                  child: CustomTextFormField(
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter Password';
-                                      }
-                                      if (value.length < 6) {
-                                        return 'Password must be 6 or more numbers';
-                                      }
-                                      return null;
-                                    },
-                                    controller: _passwordController,
-                                    labelText: ' Password  ',
+                                  //3///////////////////
+                                  SizedBox(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: deviceHeight * 0.002),
+                                      child: CustomTextFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter Email';
+                                          }
+                                          final emailRegex =
+                                              RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                                          if (!emailRegex.hasMatch(value)) {
+                                            return 'Please enter a valid email address';
+                                          }
+                                          return null;
+                                        },
+                                        controller: _emailController,
+                                        labelText: ' Email  ',
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
+                                  //4////////////////////////
+                                  SizedBox(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: deviceHeight * 0.002),
+                                      child: CustomTextFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter Password';
+                                          }
+                                          if (value.length < 6) {
+                                            return 'Password must be 6 or more numbers';
+                                          }
+                                          return null;
+                                        },
+                                        controller: _passwordController,
+                                        labelText: ' Password  ',
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
 
-                              BlocBuilder<SignUpBloc, SignUpState>(
-                                builder: (context, state) {
-                                  bool data = true;
-                                  if (state is SignUpLoading) data = false;
-                                  return Padding(
+                                  BlocBuilder<SignUpBloc, SignUpState>(
+                                    builder: (context, state) {
+                                      bool data = true;
+                                      if (state is SignUpLoading) data = false;
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: deviceHeight * 0.002),
+                                        child: CustomTextbutton(
+                                          showButtonName: data,
+                                          buttomName: 'SIGN UP',
+                                          voidCallBack: () async {
+                                            await _submittion(context);
+                                          },
+                                          color: isDark(context)
+                                              ? CustomColors.black
+                                              : CustomColors.white,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  BlocBuilder<SignUpBloc, SignUpState>(
+                                    builder: (context, state) {
+                                      bool data = false;
+
+                                      if (state is GoogleSignUpLoading) {
+                                        data = true;
+                                      }
+
+                                      return ElevatedButton.icon(
+                                        onPressed: () async {
+                                          context
+                                              .read<SignUpBloc>()
+                                              .add(GoogleSignUp());
+                                        },
+                                        icon: data
+                                            ? SizedBox(
+                                                height: 25,
+                                                width: 25,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color:
+                                                      customTextTheme(context),
+                                                ),
+                                              )
+                                            : Image.asset(
+                                                'assets/7123025_logo_google_g_icon.png',
+                                                height: 40,
+                                              ), // Google icon
+                                        label: Text(
+                                          'Sign up with Google',
+                                          style: TextStyle(
+                                            color: customTextTheme(context),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              side: BorderSide(
+                                                  width: 1,
+                                                  color:
+                                                      customTextTheme(context)),
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
+                                          backgroundColor: appTheme(context),
+                                          minimumSize:
+                                              const Size(double.infinity, 53),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical: deviceHeight * 0.002),
-                                    child: CustomTextbutton(
-                                      showButtonName: data,
-                                      buttomName: 'SIGN UP',
-                                      voidCallBack: () async {
-                                        await _submittion(context);
-                                      },
-                                      color: isDark(context)
-                                          ? CustomColors.black
-                                          : CustomColors.white,
-                                    ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              BlocBuilder<SignUpBloc, SignUpState>(
-                                builder: (context, state) {
-                                  bool data = false;
-
-                                  if (state is GoogleSignUpLoading) {
-                                    data = true;
-                                  }
-
-                                  return ElevatedButton.icon(
-                                    onPressed: () async {
-                                      context
-                                          .read<SignUpBloc>()
-                                          .add(GoogleSignUp());
-                                    },
-                                    icon: data
-                                        ? SizedBox(
-                                            height: 25,
-                                            width: 25,
-                                            child: CircularProgressIndicator(
-                                              color: customTextTheme(context),
-                                            ),
-                                          )
-                                        : Image.asset(
-                                            'assets/7123025_logo_google_g_icon.png',
-                                            height: 40,
-                                          ), // Google icon
-                                    label: Text(
-                                      'Sign up with Google',
-                                      style: TextStyle(
-                                        color: customTextTheme(context),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          side: BorderSide(
-                                              width: 1,
-                                              color: customTextTheme(context)),
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                      backgroundColor: appTheme(context),
-                                      minimumSize:
-                                          const Size(double.infinity, 53),
-                                    ),
-                                  );
-                                },
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: deviceHeight * 0.002),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: deviceHeight * 0.02),
-                                      child: Text(
-                                        'Already having an account?   ',
-                                        style: TextStyle(
-                                            color: customTextTheme(context),
-                                            fontSize: 11),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      child: Text(
-                                        'Login',
-                                        style: TextStyle(
-                                            color: customTextTheme(context),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          PageRouteBuilder(
-                                            pageBuilder: (context, animation,
-                                                    secondaryAnimation) =>
-                                                const LoginScreen(),
-                                            transitionsBuilder: (context,
-                                                animation,
-                                                secondaryAnimation,
-                                                child) {
-                                              var curvedAnimation =
-                                                  CurvedAnimation(
-                                                parent: animation,
-                                                curve: Curves
-                                                    .easeInOut, // Choose any curve here
-                                              );
-
-                                              return FadeTransition(
-                                                opacity: curvedAnimation,
-                                                child: child,
-                                              );
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 10,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          'By continuing, you agree to Perfect match’s',
-                                          style: TextStyle(
-                                              color: customTextTheme(context),
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w300),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: deviceHeight * 0.02),
+                                          child: Text(
+                                            'Already having an account?   ',
+                                            style: TextStyle(
+                                                color: customTextTheme(context),
+                                                fontSize: 11),
+                                          ),
                                         ),
-                                        Text(
-                                          'Terms of Service, Privacy Policy',
-                                          style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              decorationColor:
-                                                  customTextTheme(context),
-                                              decorationThickness: 1.5,
-                                              color: customTextTheme(context),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w300),
+                                        GestureDetector(
+                                          child: Text(
+                                            'Login',
+                                            style: TextStyle(
+                                                color: customTextTheme(context),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation,
+                                                        secondaryAnimation) =>
+                                                    const LoginScreen(),
+                                                transitionsBuilder: (context,
+                                                    animation,
+                                                    secondaryAnimation,
+                                                    child) {
+                                                  var curvedAnimation =
+                                                      CurvedAnimation(
+                                                    parent: animation,
+                                                    curve: Curves
+                                                        .easeInOut, // Choose any curve here
+                                                  );
+
+                                                  return FadeTransition(
+                                                    opacity: curvedAnimation,
+                                                    child: child,
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
                                         ),
-                                        const SizedBox(
-                                          height: 15,
-                                        )
                                       ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(
+                                              'By continuing, you agree to Perfect match’s',
+                                              style: TextStyle(
+                                                  color:
+                                                      customTextTheme(context),
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w300),
+                                            ),
+                                            Text(
+                                              'Terms of Service, Privacy Policy',
+                                              style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  decorationColor:
+                                                      customTextTheme(context),
+                                                  decorationThickness: 1.5,
+                                                  color:
+                                                      customTextTheme(context),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w300),
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                ),
               ),
             );
           },

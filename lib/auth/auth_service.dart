@@ -99,32 +99,26 @@ class AuthService {
 
   // Upload image to Firebase Storage
   Future<String?> uploadImageToFireStore(File imageFile) async {
-    log('1');
     try {
       final ref = _storage
           .ref()
           .child('users/${UserStatus.userIdFinal}/profileImage.jpg');
       final uploadTask = ref.putFile(imageFile);
-      await uploadTask.whenComplete(() {});
-      log('2');
-      // Get the download URL
-      final imageUrl = await ref.getDownloadURL();
-      log('3');
 
-      // Save the URL to Firestore
-      try {
-        await _firestore.collection('users').doc(UserStatus.userIdFinal).set({
-          'profileImage': imageUrl,
-        }, SetOptions(merge: true));
-        log('4');
-        return imageUrl;
-      } catch (e) {
-        log('error coccoure when store image url in firestore :$e');
-      }
+      await uploadTask.whenComplete(() {}); // Wait for upload to complete
+      final imageUrl = await ref.getDownloadURL(); // Get URL after upload
+
+      // Save URL to Firestore before updating UI
+      final userId = await userStatus.getUserId();
+      await _firestore.collection('users').doc(userId).set({
+        'profileImage': imageUrl,
+      }, SetOptions(merge: true));
+
+      return imageUrl; // Return the new image URL
     } catch (e) {
-      log(e.toString());
+      log('Error uploading image: $e');
+      return null;
     }
-    return null;
   }
 
   Future<bool> isUser(userId) async {
@@ -132,19 +126,20 @@ class AuthService {
     log('kooooi');
     if (userData.exists) {
       if (userData['role'] == 'user') {
-        log('okaaaaaaaaaaaaaaaaaaaaaaaaaaa1111');
+        log('okay');
         return true;
       } else {
-        log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+        log('no');
       }
-      log('nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+      log('no');
     }
     return false;
   }
 
-  Future<Map<String, dynamic>?> getUserData(String userId) async {
+  Future<Map<String, dynamic>?> getUserData() async {
     log('get user data called');
     try {
+      final userId = await userStatus.getUserId();
       // Fetch the user document from Firestore
       DocumentSnapshot userSnapshot =
           await _firestore.collection('users').doc(userId).get();

@@ -34,7 +34,12 @@ class UserOrderBloc extends Bloc<UserOrderEvent, UserOrderState> {
         await orderRepository.placeOrder(order);
 
         // Fetch orders again after placing a new one
-        add(FetchUserOrders());
+        add(const FetchUserOrders());
+        List<String> productId = [];
+        for (var cartdata in event.products) {
+          productId.add(cartdata.id);
+        }
+        await orderRepository.addPurchasedProductsIds(productId);
       } catch (e) {
         log('order fething error is $e');
         emit(UserOrderError(message: "Failed to place order: $e"));
@@ -52,7 +57,7 @@ class UserOrderBloc extends Bloc<UserOrderEvent, UserOrderState> {
           onData: (orders) => UserOrderSuccess(orders: orders),
         );
       } catch (e) {
-        emit(UserOrderError(message: "Failed to load user orders"));
+        emit(const UserOrderError(message: "Failed to load user orders"));
       }
     });
   }

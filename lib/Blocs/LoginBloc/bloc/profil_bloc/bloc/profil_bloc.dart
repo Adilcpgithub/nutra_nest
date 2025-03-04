@@ -21,11 +21,18 @@ class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
 
     if (imageUrl != null) {
       log(' Image uploaded: $imageUrl'); // Debug log
-      emit(ProfilImageSuccessful(imageUrl: imageUrl, isNewUpload: false));
+      emit(ProfilImageSuccessful(imageUrl: imageUrl, isNewUpload: true));
 
-      await Future.delayed(const Duration(milliseconds: 200));
       log(' Emitting ShowMessage'); // Debug log
-      emit(const ShowMessage(message: 'Image Uploaded!'));
+      add(GetImageUrlEvent());
+      emit(const ShowMessage(
+          message: 'Profile image updated successfully!', isNew: true));
+      emit(const ShowMessage(
+          message: 'Profile image updated successfully!', isNew: false));
+      return;
+    } else {
+      emit(const ShowMessage(
+          message: 'Image upload failed. Please try again.', isNew: true));
     }
   }
 
@@ -33,7 +40,7 @@ class ProfilBloc extends Bloc<ProfilEvent, ProfilState> {
       GetImageUrlEvent event, Emitter<ProfilState> emit) async {
     AuthService authService = AuthService();
     emit(ProfileImageLoading());
-    var data = await authService.getUserData(UserStatus.userIdFinal);
+    var data = await authService.getUserData();
     String imageUrl = data?['profileImage'] ?? '';
 
     if (imageUrl.isNotEmpty) {

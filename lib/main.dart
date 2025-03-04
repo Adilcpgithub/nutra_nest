@@ -18,29 +18,17 @@ import 'package:nutra_nest/features/cart/presentation/bloc/bloc/cart_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/cycle_list_bloc/bloc/cycle_list_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/home_product/prodoct_bloc.dart';
 import 'package:nutra_nest/features/home/presentation/bloc/price_container/price_container_bloc.dart';
+import 'package:nutra_nest/features/home/presentation/bloc/review/review_bloc.dart';
 import 'package:nutra_nest/features/payment/presentation/blocs/user_addres/user_address_bloc.dart';
 import 'package:nutra_nest/features/splash/presentation/blocs/Splash/bloc/splash_bloc.dart';
 import 'package:nutra_nest/features/wishlist/presentation/bloc/bloc/wish_bloc.dart';
 import 'package:nutra_nest/features/splash/presentation/page/splash_screen.dart';
 import 'package:nutra_nest/page/bottom_navigation/order/data/repository/order_repository.dart';
 import 'package:nutra_nest/page/bottom_navigation/order/presentation/bloc/user_order_bloc/user_order_bloc.dart';
-import 'package:nutra_nest/page/razorpay_screen.dart';
 import 'package:nutra_nest/page/user/re_auth/cubit/auth_cubit.dart';
 
 void main() async {
-  // await FirebaseAppCheck.instance.activate(
-  // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-  // androidProvider: AndroidProvider.debug,
-  //  appleProvider: AppleProvider.appAttest,
-  //);
   WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
-  // await FirebaseAppCheck.instance.activate(
-  //   // webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-  //   androidProvider: AndroidProvider.debug,
-  //   //  appleProvider: AppleProvider.appAttest,
-  // );
-
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
@@ -112,6 +100,7 @@ class _MyWidgetState extends State<MyApp> {
           BlocProvider(
               create: (context) =>
                   UserOrderBloc(orderRepository: OrderRepository())),
+          BlocProvider(create: (_) => ReviewBloc()),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
@@ -120,23 +109,7 @@ class _MyWidgetState extends State<MyApp> {
                 darkTheme: darkTheme,
                 themeMode: themeMode,
                 debugShowCheckedModeBanner: false,
-                home:
-                    // Sample(),
-                    const SplashScreen()
-                //  SignSuccess(),
-                // OtpVerificationScreen()
-                //  OtpVerificationScreen()
-                //  MyHomePage()
-                // EditProfile(),
-                // const AddAddress(),
-                //SignUpScreen(),
-                // const ManageAddress(),
-                // const DeleteScreen()
-                // const SplashScreen()
-
-                // Dee(),
-                //status ? const MyHomePage() : const LoginScreen(),
-                );
+                home: const SplashScreen());
           },
         ));
   }

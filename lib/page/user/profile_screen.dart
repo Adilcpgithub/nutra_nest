@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,6 @@ import 'package:nutra_nest/page/bottom_navigation/bottom_navigation_screen.dart'
 import 'package:nutra_nest/page/user/delete_screen.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:nutra_nest/utity/scaffol_message.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
 
 class EditProfile extends StatefulWidget {
@@ -43,7 +43,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _fetUserData() async {
     await userStatus.getUserId();
 
-    var data = await authService.getUserData(UserStatus.userIdFinal);
+    var data = await authService.getUserData();
     _nameCountroller.text = data?['name'] ?? '';
     _emailCountroller.text = data?['email'] ?? '';
     _mobileNumberCountroller.text = data?['phoneNumber'] ?? '';
@@ -106,26 +106,22 @@ class _EditProfileState extends State<EditProfile> {
   Widget _buildProfileImage() {
     return Stack(
       children: [
-        BlocConsumer<ProfilBloc, ProfilState>(
-          listener: (context, state) {
-            if (state is ShowMessage && context.mounted) {
-              log(' ShowMessage triggered: ${state.message}');
-              showUpdateNotification(
-                context: context,
-                message: state.message,
-                color: CustomColors.green,
-              );
-            }
-          },
+        BlocBuilder<ProfilBloc, ProfilState>(
           builder: (context, state) {
+            String imageUrl =
+                'assets/default_profil_image.jpg'; // Default image
+            bool isLoading = state is ProfileImageLoading;
+
+            if (state is ProfilImageSuccessful) {
+              imageUrl = state.imageUrl;
+            }
+
             return Container(
               height: 160,
               width: 160,
               decoration: BoxDecoration(
-                image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/default_profil_image.jpg')),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius:
+                    BorderRadius.circular(20), // Make it a perfect circle
                 boxShadow: [
                   BoxShadow(
                     color: const Color.fromARGB(255, 179, 188, 183)
@@ -135,27 +131,51 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                 ],
               ),
-              child: state is ProfilImageSuccessful
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        state.imageUrl,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                      width: 160,
+                      imageUrl: imageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        height: 160,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: CustomColors.green,
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/default_profil_image.jpg',
                         fit: BoxFit.cover,
                       ),
-                    )
-                  : Center(
-                      child: state is ProfileImageLoading
-                          ? const CircularProgressIndicator(
-                              color: CustomColors.green,
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.asset(
-                                'assets/default_profil_image.jpg',
-                                fit: BoxFit.fill,
-                              ),
-                            ),
                     ),
+                  ),
+                  if (isLoading) // Blur effect when loading
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 3,
+                            color: CustomColors.green,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             );
           },
         ),
@@ -166,7 +186,7 @@ class _EditProfileState extends State<EditProfile> {
             onTap: () {
               log('touched');
               BlocProvider.of<ProfilBloc>(context)
-                  .add(UploadImageEvent(UserStatus.userIdFinal));
+                  .add(const UploadImageEvent());
             },
             child: Container(
               padding: const EdgeInsets.all(8),

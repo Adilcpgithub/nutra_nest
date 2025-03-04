@@ -86,6 +86,8 @@ class AccountScreen extends StatelessWidget {
                         function: () async {
                           UserStatus userStatus = UserStatus();
                           final userId = await userStatus.getUserId();
+
+                          // ignore: use_build_context_synchronously
                           CustomNavigation.push(context, ChatScreen(userId));
                         },
                       ),

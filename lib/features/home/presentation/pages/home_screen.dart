@@ -134,7 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               return Column(
                                 children: [
                                   _buildFeaturedSection(context),
-                                  _buildSparePartsSection(context),
+                                  //!cha
+                                  //  _buildSparePartsSection(context),
                                   _buildCycleTypesGrid(context),
                                 ],
                               );
@@ -287,9 +288,8 @@ Widget _buildHeader(BuildContext context) {
   );
 }
 
-//adfashskdflasdhf
 Widget _buildSearchBar(BuildContext context) {
-  Timer? _debounce;
+  Timer? debounce;
   final TextEditingController searchCountroller = TextEditingController();
   FocusNode focusNode = FocusNode();
   return FadeInDown(
@@ -311,8 +311,8 @@ Widget _buildSearchBar(BuildContext context) {
                     color: customTextTheme(context),
                   )),
               onChanged: (value) {
-                if (_debounce?.isActive ?? false) _debounce!.cancel();
-                _debounce = Timer(const Duration(milliseconds: 700), () {
+                if (debounce?.isActive ?? false) debounce!.cancel();
+                debounce = Timer(const Duration(milliseconds: 700), () {
                   // Call your search function here
                   if (value.isNotEmpty) {
                     log('kooi');
@@ -522,7 +522,7 @@ Widget _cycleContainer(String cycleName, IconData icon, VoidCallback function,
   );
 }
 
-Widget _buildSparePartsSection(BuildContext context) {
+Widget buildSparePartsSection(BuildContext context) {
   return FadeInUp(
     duration: const Duration(milliseconds: 500),
     child: Column(

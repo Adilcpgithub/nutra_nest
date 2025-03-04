@@ -281,6 +281,8 @@ class _CycleListPageState extends State<CycleListPage> {
                   final cycle = state.cycles[index];
 
                   return SizedBox(
+                    width:
+                        deviceWidth(context) > 400 ? 600 : deviceWidth(context),
                     height: 180,
                     // width: double.infinity,
                     child: cycleProductCard(

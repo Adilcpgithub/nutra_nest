@@ -37,8 +37,9 @@ class ShowDefaulImage extends ProfilState {
 
 class ShowMessage extends ProfilState {
   final String message;
-  const ShowMessage({required this.message});
+  final bool isNew;
+  const ShowMessage({required this.message, required this.isNew});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, isNew];
 }
