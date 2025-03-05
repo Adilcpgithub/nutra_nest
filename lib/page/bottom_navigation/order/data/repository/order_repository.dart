@@ -47,7 +47,7 @@ class OrderRepository {
       log('snapshot products $purchasedProducts');
     }
     purchasedProducts.addAll(productIds);
-    purchasedProducts = purchasedProducts.toSet().toList(); // Remove duplicates
+    purchasedProducts = purchasedProducts.toSet().toList();
 
     log('snapshot products $purchasedProducts');
     await _firestore

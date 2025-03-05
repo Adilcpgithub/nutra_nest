@@ -8,8 +8,10 @@ import 'package:nutra_nest/core/theme/app_theme.dart';
 import 'package:nutra_nest/page/auth_screens/login_screen.dart';
 import 'package:nutra_nest/page/bottom_navigation/chat_screen.dart';
 import 'package:nutra_nest/page/bottom_navigation/order/presentation/page/order_page.dart';
+import 'package:nutra_nest/page/user/privacy_policy_screen.dart';
 import 'package:nutra_nest/page/user/profile_screen.dart';
 import 'package:nutra_nest/features/address/presentaion/pages/address_screen.dart';
+import 'package:nutra_nest/page/user/terms_and_conditions.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
 import 'package:nutra_nest/widgets/icons_widget.dart';
@@ -91,6 +93,30 @@ class AccountScreen extends StatelessWidget {
                           CustomNavigation.push(context, ChatScreen(userId));
                         },
                       ),
+                      buildNameContainer(
+                        context: context,
+                        containerName: 'Privacy Policy',
+                        iconImage: '',
+                        prefixIcons:
+                            const Icon(Icons.article, color: Colors.black),
+                        function: () async {
+                          // ignore: use_build_context_synchronously
+                          CustomNavigation.push(
+                              context, const PrivacyPolicyPage());
+                        },
+                      ),
+                      buildNameContainer(
+                        context: context,
+                        containerName: 'Terms & Conditions',
+                        iconImage: '',
+                        prefixIcons:
+                            const Icon(Icons.lock, color: Colors.black),
+                        function: () async {
+                          // ignore: use_build_context_synchronously
+                          CustomNavigation.push(
+                              context, const TermsConditionsPage());
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -124,6 +150,7 @@ Widget buildNameContainer(
     {required VoidCallback function,
     required BuildContext context,
     required String iconImage,
+    Icon? prefixIcons,
     required String containerName}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -141,10 +168,11 @@ Widget buildNameContainer(
             const SizedBox(
               width: 19,
             ),
-            Image.asset(
-              iconImage,
-              height: 21,
-            ),
+            prefixIcons ??
+                Image.asset(
+                  iconImage,
+                  height: 21,
+                ),
             const SizedBox(width: 59), // Space between icon and text
             Expanded(
               child: Text(
