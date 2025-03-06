@@ -7,6 +7,7 @@ import 'package:nutra_nest/auth/auth_service.dart';
 import 'package:nutra_nest/blocs/signUp/bloc/sign_up_bloc.dart';
 import 'package:nutra_nest/page/auth_screens/login_screen.dart';
 import 'package:nutra_nest/page/sign_success.dart';
+import 'package:nutra_nest/page/user/privacy_policy_screen.dart';
 import 'package:nutra_nest/utity/app_logo.dart';
 import 'package:nutra_nest/utity/colors.dart';
 import 'package:nutra_nest/utity/navigation.dart';
@@ -351,18 +352,26 @@ class SignUpScreen extends StatelessWidget {
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w300),
                                             ),
-                                            Text(
-                                              'Terms of Service, Privacy Policy',
-                                              style: TextStyle(
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  decorationColor:
-                                                      customTextTheme(context),
-                                                  decorationThickness: 1.5,
-                                                  color:
-                                                      customTextTheme(context),
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300),
+                                            GestureDetector(
+                                              onTap: () {
+                                                CustomNavigation.push(context,
+                                                    PrivacyPolicyPage());
+                                              },
+                                              child: Text(
+                                                'Terms of Service, Privacy Policy',
+                                                style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    decorationColor:
+                                                        customTextTheme(
+                                                            context),
+                                                    decorationThickness: 1.5,
+                                                    color: customTextTheme(
+                                                        context),
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                              ),
                                             ),
                                             const SizedBox(
                                               height: 15,
