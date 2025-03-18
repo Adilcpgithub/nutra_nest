@@ -683,6 +683,7 @@ Widget buildImageIconsAndFavorite(
                 .add(ToggleFavoriteEvent(productid, userStatus));
           },
           splashColor: Colors.transparent,
+          // ignore: deprecated_member_use
           highlightColor: Colors.green.withOpacity(0.4),
           child: Container(
             height: 39,
@@ -690,6 +691,7 @@ Widget buildImageIconsAndFavorite(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(width: 1, color: CustomColors.green),
+              // ignore: deprecated_member_use
               color: Colors.green.withOpacity(0.4),
             ),
             child: AnimatedPadding(

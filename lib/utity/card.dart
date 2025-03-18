@@ -182,6 +182,7 @@ Widget cycleProductCard(
                   }
                 },
                 splashColor: Colors.transparent,
+                // ignore: deprecated_member_use
                 highlightColor: Colors.green.withOpacity(0.4),
                 child: Container(
                   height: 35,

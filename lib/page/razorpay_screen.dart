@@ -230,6 +230,7 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
                             '${item.productCount}x ₹${item.price}',
                             style: TextStyle(
                               fontSize: 13,
+                              // ignore: deprecated_member_use
                               color: customTextTheme(context).withOpacity(0.7),
                             ),
                           ),
@@ -261,6 +262,7 @@ class _RazorpayScreenState extends State<RazorpayScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
+        // ignore: deprecated_member_use
         border: Border.all(color: Colors.grey.withOpacity(0.1)),
       ),
       child: Column(

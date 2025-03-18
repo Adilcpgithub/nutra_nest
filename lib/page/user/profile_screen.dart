@@ -125,6 +125,7 @@ class _EditProfileState extends State<EditProfile> {
                 boxShadow: [
                   BoxShadow(
                     color: const Color.fromARGB(255, 179, 188, 183)
+                        // ignore: deprecated_member_use
                         .withOpacity(0.3),
                     blurRadius: 10,
                     spreadRadius: 2,
@@ -163,6 +164,7 @@ class _EditProfileState extends State<EditProfile> {
                     Positioned.fill(
                       child: Container(
                         decoration: BoxDecoration(
+                          // ignore: deprecated_member_use
                           color: Colors.white.withOpacity(0.4),
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -195,6 +197,7 @@ class _EditProfileState extends State<EditProfile> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
+                    // ignore: deprecated_member_use
                     color: CustomColors.green.withOpacity(0.3),
                     blurRadius: 8,
                     spreadRadius: 1,
@@ -305,6 +308,7 @@ class _EditProfileState extends State<EditProfile> {
             color: appTheme(context),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
+              // ignore: deprecated_member_use
               color: CustomColors.green.withOpacity(0.3),
             ),
           ),
@@ -368,6 +372,7 @@ class _EditProfileState extends State<EditProfile> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
+                    // ignore: deprecated_member_use
                     color: CustomColors.green.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -412,6 +417,7 @@ class _EditProfileState extends State<EditProfile> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               width: 2,
+              // ignore: deprecated_member_use
               color: CustomColors.green.withOpacity(0.3),
             ),
           ),

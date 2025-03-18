@@ -76,6 +76,7 @@ class _OrderPageState extends State<OrderPage> {
           Icon(
             Icons.shopping_bag_outlined,
             size: 80,
+            // ignore: deprecated_member_use
             color: customTextTheme(context).withOpacity(0.5),
           ),
           const SizedBox(height: 16),
@@ -91,6 +92,7 @@ class _OrderPageState extends State<OrderPage> {
           Text(
             "Start shopping to see your orders here",
             style: TextStyle(
+              // ignore: deprecated_member_use
               color: customTextTheme(context).withOpacity(0.7),
               fontSize: 16,
             ),
@@ -141,6 +143,7 @@ class _OrderPageState extends State<OrderPage> {
                     Text(
                       _formatDate(order.createdAt.toDate()),
                       style: TextStyle(
+                        // ignore: deprecated_member_use
                         color: customTextTheme(context).withOpacity(0.7),
                         fontSize: 14,
                       ),
@@ -196,6 +199,7 @@ class _OrderPageState extends State<OrderPage> {
                               "Qty: ${product.productCount}",
                               style: TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     customTextTheme(context).withOpacity(0.7),
                                 fontSize: 13,
                               ),
@@ -264,6 +268,7 @@ class _OrderPageState extends State<OrderPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
+        // ignore: deprecated_member_use
         color: statusColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: statusColor),

@@ -280,6 +280,7 @@ void showModelDeletingAddress(BuildContext context, String addressId) async {
         );
       }).then((result) {
     if (result == true) {
+      // ignore: use_build_context_synchronously
       context.read<AddressBloc>().add(DeleteAddress(addressId));
     }
   });

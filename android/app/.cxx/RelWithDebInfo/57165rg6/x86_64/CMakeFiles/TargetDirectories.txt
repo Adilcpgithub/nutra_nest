@@ -1,0 +1,2 @@
+C:/Users/TUF/nutra_nest/android/app/.cxx/RelWithDebInfo/57165rg6/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/TUF/nutra_nest/android/app/.cxx/RelWithDebInfo/57165rg6/x86_64/CMakeFiles/rebuild_cache.dir

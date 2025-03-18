@@ -75,20 +75,24 @@ class _AddaddressScreenState extends State<AddOrDeleteaddressScreen> {
                       if (state is AddAddressSuccess && state.isNew) {
                         Future.delayed(const Duration(milliseconds: 500), () {
                           showUpdateNotification(
+                              // ignore: use_build_context_synchronously
                               context: context,
                               message: 'New address added',
                               milliseconds: 1200);
                         }).then((_) {
+                          // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
                         });
                       }
                       if (state is UpdatedAddressSuccess && state.isNew) {
                         Future.delayed(const Duration(milliseconds: 500), () {
                           showUpdateNotification(
+                              // ignore: use_build_context_synchronously
                               context: context,
                               message: 'Address updated',
                               milliseconds: 1200);
                         }).then((_) {
+                          // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
                         });
                       }
@@ -101,6 +105,7 @@ class _AddaddressScreenState extends State<AddOrDeleteaddressScreen> {
                               color: Colors.red,
                               milliseconds: 1200);
                         }).then((_) {
+                          // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
                         });
                       }

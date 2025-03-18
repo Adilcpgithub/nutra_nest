@@ -302,7 +302,9 @@ Widget buildCartContainer() {
                                         .read<CartBloc>()
                                         .add(DecreaseProductCount(item.id));
                                   },
+                                  // ignore: deprecated_member_use
                                   splashColor: Colors.grey.withOpacity(0.3),
+                                  // ignore: deprecated_member_use
                                   highlightColor: Colors.grey.withOpacity(0.1),
                                   child: const Center(
                                     child: Text(
@@ -333,7 +335,9 @@ Widget buildCartContainer() {
                                         .read<CartBloc>()
                                         .add(IncreaseProductCount(item.id));
                                   },
+                                  // ignore: deprecated_member_use
                                   splashColor: Colors.grey.withOpacity(0.3),
+                                  // ignore: deprecated_member_use
                                   highlightColor: Colors.grey.withOpacity(0.1),
                                   child: const Center(
                                     child: Text(
@@ -399,6 +403,7 @@ buildTotalContainer(BuildContext context) {
                 decoration: BoxDecoration(boxShadow: [
                   BoxShadow(
                     color: const Color.fromARGB(255, 179, 188, 183)
+                        // ignore: deprecated_member_use
                         .withOpacity(0.3),
                     blurRadius: 3,
                     spreadRadius: 4,

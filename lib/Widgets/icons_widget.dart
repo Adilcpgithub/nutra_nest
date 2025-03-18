@@ -22,7 +22,9 @@ class CustomIcon extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(10), // Match the border radius
+          // ignore: deprecated_member_use
           splashColor: Colors.grey.withOpacity(0.3), // Splash effect
+          // ignore: deprecated_member_use
           highlightColor: Colors.grey.withOpacity(0.1),
           onTap: onTap,
           child: Container(

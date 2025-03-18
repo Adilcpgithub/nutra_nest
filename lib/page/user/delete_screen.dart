@@ -414,6 +414,7 @@ void showModelDeletingRule(BuildContext context) async {
       }).then((result) {
     if (result == true) {
       // Navigator.of(context).pop();
+      // ignore: use_build_context_synchronously
       showDeleteAccountBottomSheet(context);
     }
   });
