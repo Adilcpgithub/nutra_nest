@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "nutra_nest"
+location: "asia-east1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "postgres"
+      cloudSql:
+        instanceId: "n"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

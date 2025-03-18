@@ -7,6 +7,7 @@ import 'package:nutra_nest/features/splash/presentation/blocs/Splash/bloc/splash
 import 'package:nutra_nest/page/auth_screens/login_screen.dart';
 import 'package:nutra_nest/page/bottom_navigation/bottom_navigation_screen.dart';
 import 'package:nutra_nest/utity/app_logo.dart';
+import 'package:nutra_nest/utity/navigation.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -26,36 +27,11 @@ class SplashScreen extends StatelessWidget {
 
           if (status) {
             if (context.mounted) {
-              Navigator.of(context).pushReplacement(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      const MyHomePage(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
+              CustomNavigation.pushAndRemoveUntil(context, MyHomePage());
             }
           } else {
             if (context.mounted) {
-              Navigator.of(context).pushReplacement(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      const LoginScreen(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    // For example, a fade transition
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
+              CustomNavigation.pushAndRemoveUntil(context, LoginScreen());
             }
           }
         }

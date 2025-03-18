@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "544605270040-24ia0maat5b1k6in5n5iv783qlgj1div.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nutra_nest",
+            "certificate_hash": "0dba397cec1142ed755fcad3db3ea5eeee2e3790"
+          }
+        },
+        {
           "client_id": "544605270040-sd138ffce35pa7345ulq4ftfrjsv3ocs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -57,6 +65,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "544605270040-gbrh6p2i5lveohsp86uu2j7btk00rehs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ride_spot",
+            "certificate_hash": "9dd0d1f3db68fc6f5a2b95fd8f86ce10dd2747bb"
+          }
+        },
         {
           "client_id": "544605270040-40ghkb5n4a0r0gcquqonatard20k9nqi.apps.googleusercontent.com",
           "client_type": 3
