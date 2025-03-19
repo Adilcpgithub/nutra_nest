@@ -121,7 +121,11 @@ class _MyHomePageState extends State<MyHomePage> {
             duration: const Duration(milliseconds: 250),
             height: 68,
             decoration: BoxDecoration(
-              color: isSelected ? CustomColors.green : CustomColors.lightWhite,
+              color: isSelected
+                  ? CustomColors.green
+                  : Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey[800]
+                      : CustomColors.lightWhite,
               borderRadius: BorderRadius.circular(15),
             ),
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -137,7 +141,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       return Transform.scale(
                         scale: scale,
                         child: Image.asset(
-                          isSelected ? whiteImg : blackImag,
+                          isDark(context)
+                              ? isSelected
+                                  ? whiteImg
+                                  : whiteImg
+                              : isSelected
+                                  ? whiteImg
+                                  : blackImag,
+
+                          // isSelected ? whiteImg : blackImag,
                           height: isSelected ? 20 : 22,
                         ),
                       );
@@ -147,7 +159,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     label,
                     style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
+                      color: isDark(context)
+                          ? isSelected
+                              ? Colors.white
+                              : Colors.white
+                          : isSelected
+                              ? Colors.white
+                              : Colors.black,
                       fontSize: 14.5,
                       fontWeight: FontWeight.w400,
                     ),

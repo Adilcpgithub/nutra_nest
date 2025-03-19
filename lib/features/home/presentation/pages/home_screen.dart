@@ -235,50 +235,50 @@ Widget _buildHeader(BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const SizedBox(height: 17),
-                GestureDetector(
-                  onTap: () async {},
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 39,
-                        width: 39,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 1.5, color: CustomColors.green),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(7.0),
-                          child: Icon(
-                            Icons.notifications,
-                            color: Theme.of(context).textTheme.bodySmall!.color,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: -1,
-                        right: 5,
-                        child: Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                              color: CustomColors.green,
-                              shape: BoxShape.circle,
-                              // borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                  width: 1, color: CustomColors.green)),
-                          padding: const EdgeInsets.all(4),
-                          child: Text(
-                            '1',
-                            style: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.bodySmall!.color,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () async {},
+                //   child: Stack(
+                //     children: [
+                //       Container(
+                //         height: 39,
+                //         width: 39,
+                //         decoration: BoxDecoration(
+                //           border:
+                //               Border.all(width: 1.5, color: CustomColors.green),
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //         child: Padding(
+                //           padding: const EdgeInsets.all(7.0),
+                //           child: Icon(
+                //             Icons.notifications,
+                //             color: Theme.of(context).textTheme.bodySmall!.color,
+                //           ),
+                //         ),
+                //       ),
+                //       Positioned(
+                //         top: -1,
+                //         right: 5,
+                //         child: Container(
+                //           height: 30,
+                //           decoration: BoxDecoration(
+                //               color: CustomColors.green,
+                //               shape: BoxShape.circle,
+                //               // borderRadius: BorderRadius.circular(8),
+                //               border: Border.all(
+                //                   width: 1, color: CustomColors.green)),
+                //           padding: const EdgeInsets.all(4),
+                //           child: Text(
+                //             '1',
+                //             style: TextStyle(
+                //               color:
+                //                   Theme.of(context).textTheme.bodySmall!.color,
+                //             ),
+                //           ),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ],

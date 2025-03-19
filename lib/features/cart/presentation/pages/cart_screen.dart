@@ -405,8 +405,8 @@ buildTotalContainer(BuildContext context) {
                     color: const Color.fromARGB(255, 179, 188, 183)
                         // ignore: deprecated_member_use
                         .withOpacity(0.3),
-                    blurRadius: 3,
-                    spreadRadius: 4,
+                    blurRadius: 1,
+                    spreadRadius: 1,
                   ),
                 ]),
                 child: ClipRect(
@@ -432,9 +432,9 @@ buildTotalContainer(BuildContext context) {
                       builder: (context, state) {
                         if (state is ProductTotal) {
                           return cartText(
-                              context, '${formate().format(state.total)}.00');
+                              context, '₹${formate().format(state.total)}.00');
                         } else {
-                          return cartText(context, '0');
+                          return cartText(context, '₹0');
                         }
                       },
                     ),
@@ -447,7 +447,7 @@ buildTotalContainer(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     cartText(context, 'Shipping'),
-                    cartText(context, '560.00'),
+                    cartText(context, '₹560.00'),
                   ],
                 ),
               ),
@@ -462,9 +462,9 @@ buildTotalContainer(BuildContext context) {
                         if (state is ProductTotal) {
                           //! set the Shipping amount
                           return cartText(context,
-                              '${formate().format(state.total + 560)}.00');
+                              '₹${formate().format(state.total + 560)}.00');
                         } else {
-                          return cartText(context, '0.00');
+                          return cartText(context, '₹0.00');
                         }
                       },
                     ),

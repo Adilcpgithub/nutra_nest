@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nutra_nest/core/theme/app_theme.dart';
+import 'package:nutra_nest/page/bottom_navigation/bottom_navigation_screen.dart';
+import 'package:nutra_nest/widgets/icons_widget.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});
@@ -7,15 +10,18 @@ class PrivacyPolicyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Privacy Policy'),
-        centerTitle: true,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Text(
-            '''
+          child: Column(
+            children: [
+              const SizedBox(height: 37),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: buildHeader(context),
+              ),
+              Text(
+                '''
  
 Last Updated: 04/03/25  
 
@@ -51,11 +57,47 @@ We may update this Privacy Policy periodically. We will notify users of any sign
 
 For questions, contact adilcp8590@gmail.com.  
 ''',
-            style: TextStyle(
-                fontSize: 16, height: 2.0, color: customTextTheme(context)),
+                style: TextStyle(
+                    fontSize: 16, height: 2.0, color: customTextTheme(context)),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+}
+
+Widget buildHeader(BuildContext context) {
+  return Column(
+    children: [
+      Row(
+        children: [
+          CustomIcon(
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (_) => const MyHomePage(setIndex: 3)),
+                );
+              },
+              icon: Icons.arrow_back,
+              iconSize: 26),
+          const SizedBox(width: 70),
+          Expanded(
+            child: Text(
+              'Privacy Policy',
+              style: GoogleFonts.poppins(
+                fontSize: 19,
+                fontWeight: FontWeight.w600,
+                color: customTextTheme(context),
+              ),
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(
+        height: 20,
+      )
+    ],
+  );
 }

@@ -89,11 +89,20 @@ class _ChatScreenState extends State<ChatScreen> {
                       var message = messages[index];
                       bool isMe = message['senderId'] == UserStatus.userIdFinal;
                       Timestamp? timestamp = message['timestamp'];
+                      // ! Time
                       String formattedTime = '';
                       if (timestamp != null) {
                         DateTime messageTime = timestamp.toDate();
                         formattedTime =
                             DateFormat('h:mm a').format(messageTime);
+                      }
+                      String formattedDate = '';
+                      // ! Data
+                      if (timestamp != null) {
+                        DateTime messageDate = timestamp
+                            .toDate(); // Convert Firestore Timestamp to DateTime
+                        formattedDate = DateFormat('MMMM d, y')
+                            .format(messageDate); // Format to "Month Day, Year"
                       }
 
                       return Align(
@@ -129,12 +138,24 @@ class _ChatScreenState extends State<ChatScreen> {
                               child: Text(
                                 formattedTime, // Show formatted time
                                 style: const TextStyle(
+                                    fontSize: 10, color: Colors.black),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right: isMe ? 13 : 0, left: !isMe ? 13 : 0),
+                              child: Text(
+                                formattedDate, // Show formatted time
+                                style: const TextStyle(
                                     fontSize: 10, color: Colors.grey),
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
-                            )
+                              height: 15,
+                            ),
                           ],
                         ),
                       );
