@@ -268,8 +268,11 @@ class _CycleListPageState extends State<CycleListPage> {
       builder: (context, state) {
         if (state is CycleLoadedState) {
           if (state.cycles.isNotEmpty) {
+            log('problem is here fix this 1');
             return Expanded(
               child: GridView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 6,
@@ -280,36 +283,33 @@ class _CycleListPageState extends State<CycleListPage> {
                 itemBuilder: (context, index) {
                   final cycle = state.cycles[index];
 
-                  return SizedBox(
-                    width:
-                        deviceWidth(context) > 400 ? 600 : deviceWidth(context),
-                    height: 180,
-                    // width: double.infinity,
-                    child: cycleProductCard(
-                      cycle: cycle,
-                      context: context,
-                      id: cycle.id,
-                      imagUrl: cycle.imageUrl[0],
-                      funtion: () {
-                        log('dddd');
-                        CustomNavigation.push(
-                            context,
-                            ProductDetails(
-                              cycle: cycle,
-                              fromCart: false,
-                              productId: cycle.id,
-                            ));
-                      },
-                      cycleName: cycle.name,
-                      price: cycle.price,
-                    ),
+                  return cycleProductCard(
+                    cycle: cycle,
+                    context: context,
+                    id: cycle.id,
+                    imagUrl: cycle.imageUrl[0],
+                    funtion: () {
+                      log('dddd');
+                      CustomNavigation.push(
+                          context,
+                          ProductDetails(
+                            cycle: cycle,
+                            fromCart: false,
+                            productId: cycle.id,
+                          ));
+                    },
+                    cycleName: cycle.name,
+                    price: cycle.price,
                   );
                 },
               ),
             );
           } else if (state is SearchIsEmpty) {
+            log('problem is here fix this 2');
+
             return Container();
           } else {
+            log('problem is here fix this 3');
             return Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -328,8 +328,8 @@ class _CycleListPageState extends State<CycleListPage> {
             );
           }
         } else if (state is CycleLoadingState) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
+          log('problem is here fix this 4');
+          return Expanded(
             child: const Center(
               child: CircularProgressIndicator(
                 color: CustomColors.green,
@@ -337,6 +337,7 @@ class _CycleListPageState extends State<CycleListPage> {
             ),
           );
         } else if (state is SearchIsEmpty) {
+          log('problem is here fix this 5');
           return Expanded(
             child: Center(
                 child: Column(
@@ -359,6 +360,7 @@ class _CycleListPageState extends State<CycleListPage> {
             )),
           );
         } else {
+          log('problem is here fix this 6');
           return const Expanded(
             child: Center(
               child: Text(
