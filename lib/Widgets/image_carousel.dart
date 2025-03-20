@@ -1,3 +1,5 @@
+import 'dart:nativewrappers/_internal/vm/lib/developer.dart';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,16 +45,16 @@ class _ImageCarouselState extends State<ImageCarousel> {
               isLoading = false;
             });
           } else {
-            print("Invalid data format for imageUrls");
+            log("Invalid data format for imageUrls");
           }
         } else {
-          print("Field 'imageUrls' not found in document");
+          log("Field 'imageUrls' not found in document");
         }
       } else {
-        print("Document does not exist");
+        log("Document does not exist");
       }
     } catch (e) {
-      print("Error fetching images: $e");
+      log("Error fetching images: $e");
     } finally {
       setState(() => isLoading = false);
     }
