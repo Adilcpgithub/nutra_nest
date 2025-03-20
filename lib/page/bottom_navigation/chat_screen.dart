@@ -137,8 +137,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   right: isMe ? 13 : 0, left: !isMe ? 13 : 0),
                               child: Text(
                                 formattedTime, // Show formatted time
-                                style: const TextStyle(
-                                    fontSize: 10, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    color: customTextTheme(context)),
                               ),
                             ),
                             const SizedBox(
