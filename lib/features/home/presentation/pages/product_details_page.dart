@@ -283,66 +283,66 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ],
                           ),
                           //! comment section
-                          Divider(
-                            thickness: 0.2,
-                            color: customTextTheme(context),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Ratings & Reviews',
-                                style: TextStyle(
-                                  color: customTextTheme(context),
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              ProductDetailsWidget.rateProdcutButton(
-                                context,
-                                () {
-                                  CustomNavigation.push(
-                                      context,
-                                      ReviewWidget(
-                                        productId: widget.productId,
-                                      ));
-                                },
-                              )
-                            ],
-                          ),
+                          // Divider(
+                          //   thickness: 0.2,
+                          //   color: customTextTheme(context),
+                          // ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Text(
+                          //       'Ratings & Reviews',
+                          //       style: TextStyle(
+                          //         color: customTextTheme(context),
+                          //         fontSize: 19,
+                          //         fontWeight: FontWeight.w500,
+                          //       ),
+                          //     ),
+                          //     ProductDetailsWidget.rateProdcutButton(
+                          //       context,
+                          //       () {
+                          //         CustomNavigation.push(
+                          //             context,
+                          //             ReviewWidget(
+                          //               productId: widget.productId,
+                          //             ));
+                          //       },
+                          //     )
+                          //   ],
+                          // ),
 
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Row(
-                                children: List.generate(5, (index) {
-                                  return Icon(
-                                    Icons.star,
-                                    color: index < rating
-                                        ? Colors.yellow
-                                        : Colors.grey,
-                                    size: 21,
-                                  );
-                                }),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Row(
+                          //       children: List.generate(5, (index) {
+                          //         return Icon(
+                          //           Icons.star,
+                          //           color: index < rating
+                          //               ? Colors.yellow
+                          //               : Colors.grey,
+                          //           size: 21,
+                          //         );
+                          //       }),
+                          //     ),
+                          //   ],
+                          // ),
+                          // const SizedBox(
+                          //   height: 10,
+                          // ),
 
-                          Divider(
-                            thickness: 0.2,
-                            color: customTextTheme(context),
-                          ),
+                          // Divider(
+                          //   thickness: 0.2,
+                          //   color: customTextTheme(context),
+                          // ),
 
-                          Container(
-                            height: 200,
-                            width: double.infinity,
-                            color: Colors.amberAccent,
-                          ),
+                          // Container(
+                          //   height: 200,
+                          //   width: double.infinity,
+                          //   color: Colors.amberAccent,
+                          // ),
                           // //!
                           const SizedBox(
                             height: 120,
