@@ -339,34 +339,48 @@ class _CycleListPageState extends State<CycleListPage> {
         } else if (state is SearchIsEmpty) {
           log('problem is here fix this 5');
           return Expanded(
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset('assets/Animation - 1738300675103.json',
-                    height: deviceWidth(context) / 2),
-                const SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'No result found!',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.bodySmall!.color,
-                  ),
-                )
-              ],
-            )),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: SizedBox(
+                height: deviceHeight(context) / 2,
+                child: Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    sizedBox10(),
+                    Lottie.asset('assets/Animation - 1738300675103.json',
+                        height: deviceWidth(context) / 2),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      'No result found!',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.bodySmall!.color,
+                      ),
+                    )
+                  ],
+                )),
+              ),
+            ),
           );
         } else {
           log('problem is here fix this 6');
-          return const Expanded(
-            child: Center(
-              child: Text(
-                'Something Went Wrong',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.red),
+          return Expanded(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: SizedBox(
+                height: deviceHeight(context) / 2,
+                child: Center(
+                  child: Text(
+                    'Something Went Wrong',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.red),
+                  ),
+                ),
               ),
             ),
           );
